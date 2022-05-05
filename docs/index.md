@@ -1,37 +1,114 @@
-## Welcome to GitHub Pages
+# PHPlater
+A simple PHP template engine that lets PHP do all the logic and then append it to the HTML in the template file. It is set to solve the problem of mixing too much logic into the template file itself and by that loosing some control over where the logic happens. You also get a bit more control over the data that is passed down to the template, and the code is easier to manage and to track.
 
-You can use the [editor on GitHub](https://github.com/ThaKladd/PHPlater/edit/gh-pages/docs/index.md) to maintain and preview the content for your website in Markdown files.
+---
+- [Installation](#installation)
+- [Simple Usage](#simple-usage)
+- [Advanced Usage](#advanced-usage)
+- [Contributing](#contributing)
+- [Documentation](#documentation)
+- [License](#licence)
+---
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Installation
 
-### Markdown
+PHP 8.0 or higher is needed for this class to work.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Use the package manager [composer](https://getcomposer.org/) to install PHPlater.
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```bash
+composer install phplater/phplater
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+## Simple Usage
 
-### Jekyll Themes
+**Given this PHP code**
+```php
+$phplater = new PHPlater();
+$phplater->plate('hello', 'world!');
+echo $phplater->render('Hello {{hello}}');
+```
+**This will be the output:**
+```
+Hello world!
+```
+## Advanced Usage
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/ThaKladd/PHPlater/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+Some more examples are available under [/examples](https://github.com/ThaKladd/PHPlater/tree/master/examples) and [/tests](https://github.com/ThaKladd/PHPlater/tree/master/tests)
 
-### Support or Contact
+**Given this template.tpl file**
+```html
+<div>
+    One: {{ one }}<br />
+    Two: {{ two.getTwo }}<br />
+    Three: {{ assoc.three }}<br />
+    Four: {{ assoc.4 }}<br />
+    Five: {{ assoc.5.0 }}<br />
+    Six: {{ assoc.six.0 }}<br />
+    Seven: {{ seven_obj.returnArray.seven }}
+</div>
+```
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+**And this PHP code**
+```php
+class Test {
+    function getTwo() {
+        return 'Kaksi';
+    }
+    public function returnArray() {
+        return ['seven' => 'Seitsemän'];
+    }
+}
+
+$phplater = new PHPlater();
+$phplater->plates([
+    'one' => 'Yksi',
+    'two' => new Test(),
+    'assoc' => [
+        'three' => 'Kolme',
+        4 => 'Neljä',
+        5 => ['Viisi'],
+        'six' => ['Kuusi']
+    ],
+    'seven_obj' => new Test()
+]);
+
+echo $phplater->render('template.tpl');
+```
+
+**This will be the output:**
+```html
+<div>
+    One: Yksi<br />
+    Two: Kaksi<br />
+    Three: Kolme<br />
+    Four: Neljä<br />
+    Five: Viisi<br />
+    Six: Kuusi<br />
+    Seven: Seitsemän 
+</div>
+```
+
+## Test
+
+Run the following
+```
+vendor\bin\phpunit tests/PHPlaterTest.php
+```
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## Documentation
+
+[PHPDocumentator](https://phpdoc.org/) v.3.0 is used for generating documentation from PHPDoc in code.
+Download [phpDocumentor.phar](https://phpdoc.org/phpDocumentor.phar) and run the following in the project folder to update it.
+
+```bash
+php c:/path/to/phpDocumentor.phar -d src -t docs
+```
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
