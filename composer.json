@@ -1,0 +1,24 @@
+{
+    "name": "phplater/phplater",
+    "description": "A simple PHP template engine that lets PHP do all the logic and then append it to the HTML in the template file.",
+    "homepage": "https://github.com/ThaKladd/PHPlater",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "John Larsen",
+            "email": "johninen@gmail.com",
+            "homepage": "https://betweenmovies.com",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require-dev": {
+        "phpunit/phpunit": "9.5"
+    }
+}
