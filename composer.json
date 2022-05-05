@@ -1,6 +1,11 @@
 {
     "name": "phplater/phplater",
     "description": "A simple PHP template engine that lets PHP do all the logic and then append it to the HTML in the template file.",
+    "keywords": [
+        "PHP",
+        "Template",
+        "Templating"
+    ],
     "homepage": "https://github.com/ThaKladd/PHPlater",
     "type": "library",
     "license": "MIT",
