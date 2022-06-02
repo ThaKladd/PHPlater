@@ -41,10 +41,20 @@ Search.appendIndex(
             "summary": "Set\u0020or\u0020get\u0020end\u0020template\u0020tag",
             "url": "classes/PHPlater.html#method_tagAfter"
         },                {
+            "fqsen": "\\PHPlater\u003A\u003ApregDelimiter\u0028\u0029",
+            "name": "pregDelimiter",
+            "summary": "Set\u0020or\u0020get\u0020preg\u0028regex\u0029\u0020delimiter",
+            "url": "classes/PHPlater.html#method_pregDelimiter"
+        },                {
             "fqsen": "\\PHPlater\u003A\u003Adelimiter\u0028\u0029",
             "name": "delimiter",
-            "summary": "Set\u0020or\u0020get\u0020preg\u0028regex\u0029\u0020delimiter",
+            "summary": "",
             "url": "classes/PHPlater.html#method_delimiter"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003AfilterSeperator\u0028\u0029",
+            "name": "filterSeperator",
+            "summary": "Set\u0020or\u0020get\u0020filter\u0020separator",
+            "url": "classes/PHPlater.html#method_filterSeperator"
         },                {
             "fqsen": "\\PHPlater\u003A\u003Aplates\u0028\u0029",
             "name": "plates",
@@ -66,15 +76,30 @@ Search.appendIndex(
             "summary": "Run\u0020to\u0020render\u0020the\u0020template",
             "url": "classes/PHPlater.html#method_render"
         },                {
+            "fqsen": "\\PHPlater\u003A\u003Afilter\u0028\u0029",
+            "name": "filter",
+            "summary": "Adds\u0020and\u0020gets\u0020the\u0020filter\u0020function,\u0020as\u0020well\u0020as\u0020calls\u0020it\nNote\u0020that\u0020if\u0020\u0024value\u0020is\u0020a\u0020string\u0020of\u0020a\u0020callable\u0020function\u0020it\u0020will\u0020be\u0020considered\u0020a\u0020set\u0020of\u0020the\u0020function\nOtherwise\u0020the\u0020filter\u0020function\u0020is\u0020called\u0020with\u0020\u0024value\u0020as\u0020argument",
+            "url": "classes/PHPlater.html#method_filter"
+        },                {
             "fqsen": "\\PHPlater\u003A\u003Afind\u0028\u0029",
             "name": "find",
             "summary": "Begins\u0020with\u0020the\u0020root\u0020plated\u0020and\u0020iterates\u0020through\u0020every\u0020one\u0020and\u0020extracts\u0020the\u0020matching\u0020value",
             "url": "classes/PHPlater.html#method_find"
         },                {
+            "fqsen": "\\PHPlater\u003A\u003AgetFiltersAndParts\u0028\u0029",
+            "name": "getFiltersAndParts",
+            "summary": "Helper\u0020method\u0020to\u0020separate\u0020nesting\u0020and\u0020filters",
+            "url": "classes/PHPlater.html#method_getFiltersAndParts"
+        },                {
             "fqsen": "\\PHPlater\u003A\u003Aextract\u0028\u0029",
             "name": "extract",
             "summary": "Will\u0020manage\u0020the\u0020content\u0020so\u0020that\u0020it\u0020is\u0020a\u0020string\u0020when\u0020stored\u0020into\u0020data",
             "url": "classes/PHPlater.html#method_extract"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003AcallFilters\u0028\u0029",
+            "name": "callFilters",
+            "summary": "Checks\u0020if\u0020there\u0020are\u0020filters\u0020on\u0020the\u0020plate,\u0020and\u0020applies\u0020them",
+            "url": "classes/PHPlater.html#method_callFilters"
         },                {
             "fqsen": "\\PHPlater\u003A\u003A\u0024data",
             "name": "data",

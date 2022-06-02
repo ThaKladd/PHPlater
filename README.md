@@ -89,6 +89,25 @@ echo $phplater->render('template.tpl');
 </div>
 ```
 
+### Filters
+**Given this code**
+```php
+$phplater = new PHPlater();
+$phplater->filter('uppercase', 'mb_strtoupper');
+$phplater->filter('add_ok', function (string $data) {
+    return $data . ' is ok';
+});
+
+$phplater->plate('string', 'test');
+
+echo $phplater->render('<b>This {{string|add_ok|uppercase}}</b>');
+```
+
+**This will be the output:**
+```html
+<b>This TEST IS OK</b>
+```
+
 ## Test
 
 Run the following

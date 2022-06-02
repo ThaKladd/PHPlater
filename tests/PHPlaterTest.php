@@ -157,7 +157,7 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->delimiter
+     * @covers  PHPlater->pregDelimiter
      * @uses    PHPlater->render
      * @uses    PHPlater->getSet
      * @uses    PHPlater->find
@@ -165,8 +165,66 @@ class PHPlaterTest extends TestCase {
      */
     public function testDelimiter() {
         $this->phplater->plate('string', 'ok');
-        $this->phplater->delimiter('=');
+        $this->phplater->pregDelimiter('=');
         $this->assertEquals('test ok', $this->phplater->render('test {{string}}'));
+    }
+
+    /**
+     * @covers  PHPlater->filter
+     * @uses    PHPlater->filterSeperator
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     * @uses    PHPlater->getFiltersAndParts
+     * @uses    PHPlater->callFilters
+     */
+    public function testFilter() {
+        $this->phplater->filter('uppercase', 'mb_strtoupper');
+        $this->phplater->filter('lowercase', 'mb_strtolower');
+        $this->phplater->filter('add_ok', function (string $data) {
+            return $data . ' ok';
+        });
+        $this->phplater->filter('implode', function (array $data) {
+            return implode('', $data);
+        });
+
+        $this->phplater->plate('string_one', 'ok');
+        $this->assertEquals('test OK', $this->phplater->render('test {{string_one|uppercase}}'));
+
+        $this->phplater->plate('string_two', 'OK');
+        $this->assertEquals('test ok', $this->phplater->render('test {{string_two|lowercase}}'));
+
+        $this->phplater->plate('string_three', 'test');
+        $this->assertEquals('TEST OK', $this->phplater->render('{{string_three|add_ok|uppercase}}'));
+
+        $this->phplater->plate('o', ['o', 'k']);
+        $this->phplater->plate('okey', [['o', 'k']]);
+        $this->phplater->plate('oks', '{{okey.0|implode}}');
+
+        $this->assertEquals('test OK', $this->phplater->render('test {{o|implode|uppercase}}'));
+        $this->assertEquals('test ok', $this->phplater->render('test {{okey.0|implode}}'));
+        $this->assertEquals('test ok', $this->phplater->render('test {{oks}}'));
+    }
+
+    /**
+     * @covers  PHPlater->filterSeperator
+     * @uses    PHPlater->filter
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     * @uses    PHPlater->getFiltersAndParts
+     * @uses    PHPlater->callFilters
+     */
+    public function testFilterSeperator() {
+        $this->phplater->filter('uppercase', 'mb_strtoupper');
+        $this->phplater->filter('add_ok', function (string $data) {
+            return $data . ' is ok';
+        });
+        $this->phplater->plate('string', 'test');
+        $this->phplater->filterSeperator('¤');
+        $this->assertEquals('This TEST IS OK', $this->phplater->render('This {{string¤add_ok¤uppercase}}'));
     }
 
 }

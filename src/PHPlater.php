@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The PHPlater class, a simple template engine.
  *
@@ -26,12 +27,13 @@ class PHPlater {
         'content' => '',
         'result' => '',
         'plates' => [],
-        'delimiter' => '|',
+        'preg_delimiter' => '|',
+        'filter_seperator' => '|',
         'tag_before' => '{{',
         'tag_after' => '}}'
     ];
 
-     /**
+    /**
      * Quick shortcut for getting and setting data inside current object
      *
      * @access private
@@ -143,8 +145,29 @@ class PHPlater {
      *
      * @return mixed Either the delimiter string, or the current PHPlater object
      */
+    public function pregDelimiter(?string $delimiter = null): string|PHPlater {
+        return $this->getSet('preg_delimiter', $delimiter);
+    }
+
+    /**
+     * @deprecated Deprecated since version v0.2.0 due to better naming, will be removed in v1.0.0
+     */
     public function delimiter(?string $delimiter = null): string|PHPlater {
-        return $this->getSet('delimiter', $delimiter);
+        return $this->pregDelimiter($delimiter);
+    }
+
+    /**
+     * Set or get filter separator
+     *
+     * Change delimiter if the current delimiter is part of template
+     *
+     * @access public
+     * @param  string $separator The separator to use to separate the filter function
+     *
+     * @return mixed Either the separator string, or the current PHPlater object
+     */
+    public function filterSeperator(?string $seperator = null): string|PHPlater {
+        return $this->getSet('filter_seperator', $seperator);
     }
 
     /**
@@ -205,12 +228,34 @@ class PHPlater {
      */
     public function render(?string $template = null, int $iterations = 1): string {
         $this->content($template);
-        $pattern = $this->delimiter() . $this->tagBefore() . '\s*(?P<x>[a-zA-Z0-9_\-\.]+?)\s*' . $this->tagAfter() . $this->delimiter();
+        $pattern = $this->pregDelimiter() . $this->tagBefore() . '\s*(?P<x>[a-zA-Z0-9_\-\.\\' . $this->filterSeperator() . ']+?)\s*' . $this->tagAfter() . $this->pregDelimiter();
         $this->result(preg_replace_callback($pattern, [$this, 'find'], $this->content()));
         if ($iterations-- && strstr($this->result(), $this->tagBefore()) && strstr($this->result(), $this->tagAfter())) {
             return $this->render($this->result(), $iterations);
         }
         return $this->result();
+    }
+
+    /**
+     * Adds and gets the filter function, as well as calls it
+     * Note that if $value is a string of a callable function it will be considered a set of the function
+     * Otherwise the filter function is called with $value as argument
+     *
+     * @access public
+     * @param  mixed $filter The name of the filter, either when set or when called
+     * @param  string $value The callable function, or the argument to call function with
+     *
+     * @return mixed The result of the called function, the function itself, or the current PHPlater object
+     */
+    public function filter(string $filter, callable|string|null|array $value = null): int|string|callable|PHPlater {
+        if ($filter && is_callable($value)) {
+            return $this->getSet($filter, $value);
+        } else if ($value === null) {
+            return $this->getSet($filter);
+        } else if ($filter) {
+            return $this->filter($filter)($value);
+        }
+        return $this;
     }
 
     /**
@@ -225,12 +270,26 @@ class PHPlater {
      * @return string The result after exchanging all the matched plates
      */
     private function find(array $match): string {
-        $parts = explode('.', $match['x']);
+        [$parts, $filters] = $this->getFiltersAndParts($match['x']);
         $plate = $this->plate(array_shift($parts));
         foreach ($parts as $part) {
             $plate = $this->extract($this->ifJsonToArray($plate), $part);
         }
-        return $plate;
+        return $this->callFilters($plate, $filters);
+    }
+
+    /**
+     * Helper method to separate nesting and filters
+     *
+     * @access private
+     * @param  string $plate The plate string
+     *
+     * @return array Nesting parts and filters separated into array
+     */
+    private function getFiltersAndParts(string $plate): array {
+        $parts = explode($this->filterSeperator(), $plate);
+        $first_part = array_shift($parts);
+        return [explode('.', $first_part), $parts];
     }
 
     /**
@@ -256,6 +315,20 @@ class PHPlater {
             $return = $plate[$part];
         }
         return $return;
+    }
+
+    /**
+     * Checks if there are filters on the plate, and applies them
+     *
+     * @access private
+     * @param mixed $plate The plate to check
+     * @return mixed The plate, or if filters applied then the resulting string
+     */
+    private function callFilters(object|array|string|int|float|bool|null $plate, array $filters = []): mixed {
+        foreach ($filters as $filter) {
+            $plate = $this->filter($filter, $plate);
+        }
+        return $plate;
     }
 
 }
