@@ -53,7 +53,7 @@ class PHPlater {
     /**
      * Will manage the content so that it is a string when stored into data
      *
-     * @access private
+     * @access public
      * @param  mixed $data Url to file or a text string, if null returns null
      *
      * @return mixed Returns content as a string or null if no data
@@ -65,7 +65,7 @@ class PHPlater {
     /**
      * Will manage the input so that if it is json it converted to an array, otherwise input is returned
      *
-     * @access private
+     * @access public
      * @param  mixed $data If valid json, return array
      *
      * @return mixed Returns valid content as an array if it is an json
@@ -187,7 +187,7 @@ class PHPlater {
     /**
      * Set the template to act upon
      *
-     * @access private
+     * @access public
      * @param  mixed $data Url to file, a text string to set template, or null to return template
      *
      * @return mixed Current template as string, or the current object if data is set
