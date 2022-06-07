@@ -208,6 +208,46 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
+     * @covers  PHPlater->filter
+     * @uses    PHPlater->filterSeperator
+     * @uses    PHPlater->getFunctionAndArguments
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     * @uses    PHPlater->getFiltersAndParts
+     * @uses    PHPlater->callFilters
+     */
+    public function testFilterArguments() {
+        $this->phplater->plate('testing', 'test');
+        $this->phplater->filter('add_args', function (string $test, string $is = 'no', string $ok = 'no') {
+            return $test . ' ' . $is . ' ' . $ok;
+        });
+        $this->assertEquals('test is ok', $this->phplater->render('{{testing|add_args:is,ok}}'));
+    }
+
+    /**
+     * @covers  PHPlater->testArgumentSeperator
+     * @uses    PHPlater->filter
+     * @uses    PHPlater->filterSeperator
+     * @uses    PHPlater->getFunctionAndArguments
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     * @uses    PHPlater->getFiltersAndParts
+     * @uses    PHPlater->callFilters
+     */
+    public function testArgumentSeperator() {
+        $this->phplater->plate('testing', 'test');
+        $this->phplater->argumentSeperator('$');
+        $this->phplater->filter('add_args', function (string $test, string $is = 'no', string $ok = 'no') {
+            return $test . ' ' . $is . ' ' . $ok;
+        });
+        $this->assertEquals('test is ok', $this->phplater->render('{{testing|add_args$is,ok}}'));
+    }
+
+    /**
      * @covers  PHPlater->filterSeperator
      * @uses    PHPlater->filter
      * @uses    PHPlater->render
