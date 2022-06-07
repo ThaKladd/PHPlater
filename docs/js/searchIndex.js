@@ -56,6 +56,11 @@ Search.appendIndex(
             "summary": "Set\u0020or\u0020get\u0020filter\u0020separator",
             "url": "classes/PHPlater.html#method_filterSeperator"
         },                {
+            "fqsen": "\\PHPlater\u003A\u003AargumentSeperator\u0028\u0029",
+            "name": "argumentSeperator",
+            "summary": "Set\u0020or\u0020get\u0020argument\u0020separator",
+            "url": "classes/PHPlater.html#method_argumentSeperator"
+        },                {
             "fqsen": "\\PHPlater\u003A\u003Aplates\u0028\u0029",
             "name": "plates",
             "summary": "Set\u0020or\u0020get\u0020all\u0020plates\u0020at\u0020once",
@@ -90,6 +95,11 @@ Search.appendIndex(
             "name": "getFiltersAndParts",
             "summary": "Helper\u0020method\u0020to\u0020separate\u0020nesting\u0020and\u0020filters",
             "url": "classes/PHPlater.html#method_getFiltersAndParts"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003AgetFunctionAndArguments\u0028\u0029",
+            "name": "getFunctionAndArguments",
+            "summary": "Helper\u0020method\u0020to\u0020separate\u0020filter\u0020and\u0020arguments",
+            "url": "classes/PHPlater.html#method_getFunctionAndArguments"
         },                {
             "fqsen": "\\PHPlater\u003A\u003Aextract\u0028\u0029",
             "name": "extract",

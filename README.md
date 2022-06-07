@@ -94,13 +94,13 @@ echo $phplater->render('template.tpl');
 ```php
 $phplater = new PHPlater();
 $phplater->filter('uppercase', 'mb_strtoupper');
-$phplater->filter('add_ok', function (string $data) {
-    return $data . ' is ok';
+$phplater->filter('add_ok', function (string $data, string $ok = '') {
+    return $data . ' is '.$ok;
 });
 
 $phplater->plate('string', 'test');
 
-echo $phplater->render('<b>This {{string|add_ok|uppercase}}</b>');
+echo $phplater->render('<b>This {{string|add_ok:ok|uppercase}}</b>');
 ```
 
 **This will be the output:**
@@ -119,6 +119,10 @@ vendor\bin\phpunit tests/PHPlaterTest.php
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
+
+## Issues to fix
+- When separators are changed all characters should be escaped in regex
+- Make it possible to change chaining . and argument ,
 
 ## Documentation
 

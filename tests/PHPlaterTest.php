@@ -240,11 +240,11 @@ class PHPlaterTest extends TestCase {
      */
     public function testArgumentSeperator() {
         $this->phplater->plate('testing', 'test');
-        $this->phplater->argumentSeperator('$');
+        $this->phplater->argumentSeperator('>');
         $this->phplater->filter('add_args', function (string $test, string $is = 'no', string $ok = 'no') {
             return $test . ' ' . $is . ' ' . $ok;
         });
-        $this->assertEquals('test is ok', $this->phplater->render('{{testing|add_args$is,ok}}'));
+        $this->assertEquals('test is ok', $this->phplater->render('{{testing|add_args>is,ok}}'));
     }
 
     /**
