@@ -88,6 +88,24 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
+     * @covers  PHPlater->chainSeperator
+     * @covers  PHPlater->plate
+     * @covers  PHPlater->render
+     * @uses    PHPlater->content
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->contentify
+     * @uses    PHPlater->ifJsonToArray
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     */
+    public function testChainSeperator() {
+        $this->phplater->plate('arr', ['arr' => ['arr' => ['value' => 'ok']]]);
+        $this->phplater->content('{{arr->arr->arr->value}}');
+        $this->phplater->chainSeperator('->');
+        $this->assertEquals('ok', $this->phplater->render());
+    }
+
+    /**
      * @covers  PHPlater->ifJsonToArray
      */
     public function testIfJsonToArray() {

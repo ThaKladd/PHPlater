@@ -121,8 +121,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ## Issues to fix
-- When separators are changed all characters should be escaped in regex
-- Make it possible to change chaining . and argument ,
+- Make it possible to change argument , separator (low priority)
 
 ## Documentation
 

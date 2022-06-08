@@ -56,6 +56,11 @@ Search.appendIndex(
             "summary": "Set\u0020or\u0020get\u0020filter\u0020separator",
             "url": "classes/PHPlater.html#method_filterSeperator"
         },                {
+            "fqsen": "\\PHPlater\u003A\u003AchainSeperator\u0028\u0029",
+            "name": "chainSeperator",
+            "summary": "Set\u0020or\u0020get\u0020chain\u0020separator",
+            "url": "classes/PHPlater.html#method_chainSeperator"
+        },                {
             "fqsen": "\\PHPlater\u003A\u003AargumentSeperator\u0028\u0029",
             "name": "argumentSeperator",
             "summary": "Set\u0020or\u0020get\u0020argument\u0020separator",

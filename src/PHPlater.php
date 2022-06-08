@@ -20,6 +20,7 @@ class PHPlater {
      *  @type array $plates Array of key value pairs that is the structure for the variables in the template. Can be multidimensional\
      *  @type string $preg_delimiter Regex delimiter if the default is in use inside template\
      *  @type string $filter_seperator Separator to distinguish the following filter function\
+     *  @type string $chain_seperator Separator to distinguish the call chain\
      *  @type string $argument_seperator Separator to distinguish the following arguments to the filter function\
      *  @type string $tag_before Tag before variable in template\
      *  @type string $tag_after Tag after variable in template.\
@@ -31,6 +32,7 @@ class PHPlater {
         'plates' => [],
         'preg_delimiter' => '|',
         'filter_seperator' => '|',
+        'chain_seperator' => '.',
         'argument_seperator' => ':',
         'tag_before' => '{{',
         'tag_after' => '}}'
@@ -174,6 +176,20 @@ class PHPlater {
     }
 
     /**
+     * Set or get chain separator
+     *
+     * From the standard array.obj.method, this can be changed to array->obj->method
+     *
+     * @access public
+     * @param  string $separator The separator to use to separate parts of the chain
+     *
+     * @return mixed Either the separator string, or the current PHPlater object
+     */
+    public function chainSeperator(?string $seperator = null): string|PHPlater {
+        return $this->getSet('chain_seperator', $seperator);
+    }
+
+    /**
      * Set or get argument separator
      *
      * Change delimiter if the current delimiter is part of template
@@ -245,8 +261,8 @@ class PHPlater {
      */
     public function render(?string $template = null, int $iterations = 1): string {
         $this->content($template);
-        $chars_to_include = ['\,', '\.', '\-', '\_', '\\' . $this->filterSeperator(), '\\' . $this->argumentSeperator()];
-        $pattern = $this->pregDelimiter() . $this->tagBefore() . '\s*(?P<x>[a-zA-Z0-9' . implode('', $chars_to_include) . ']+?)\s*' . $this->tagAfter() . $this->pregDelimiter();
+        $chars_to_include = [',', '-', '_', $this->filterSeperator(), $this->argumentSeperator(), $this->chainSeperator()];
+        $pattern = $this->pregDelimiter() . $this->tagBefore() . '\s*(?P<x>[a-zA-Z0-9' . preg_quote(implode('', $chars_to_include)) . ']+?)\s*' . $this->tagAfter() . $this->pregDelimiter();
         $this->result(preg_replace_callback($pattern, [$this, 'find'], $this->content()));
         if ($iterations-- && strstr($this->result(), $this->tagBefore()) && strstr($this->result(), $this->tagAfter())) {
             return $this->render($this->result(), $iterations);
@@ -312,7 +328,7 @@ class PHPlater {
     private function getFiltersAndParts(string $plate): array {
         $parts = explode($this->filterSeperator(), $plate);
         $first_part = array_shift($parts);
-        return [explode('.', $first_part), $parts];
+        return [explode($this->chainSeperator(), $first_part), $parts];
     }
 
     /**
