@@ -1,6 +1,9 @@
+# v0.3.0
+## Added argumnets to filters
+- Inspired by [Latte](https://github.com/nette/latte), filters can have arguments
 # v0.2.0
 ## Added filters
-- Added Twig style filters in the spirit of PHPlater
+- Added [Twig](https://github.com/twigphp/Twig) style filters in the spirit of PHPlater
 - Multiple filters can be applied
 - The filter separator can be defined by user
 - If template variable is array, json or object, filters can be applied to it as well

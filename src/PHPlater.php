@@ -18,7 +18,9 @@ class PHPlater {
      *  @type string $content Content of the template, either from string or file\
      *  @type string $result Where the result of the render is stored\
      *  @type array $plates Array of key value pairs that is the structure for the variables in the template. Can be multidimensional\
-     *  @type string $delimiter Regex delimiter if the default is in use inside template\
+     *  @type string $preg_delimiter Regex delimiter if the default is in use inside template\
+     *  @type string $filter_seperator Separator to distinguish the following filter function\
+     *  @type string $argument_seperator Separator to distinguish the following arguments to the filter function\
      *  @type string $tag_before Tag before variable in template\
      *  @type string $tag_after Tag after variable in template.\
      * }
@@ -29,6 +31,7 @@ class PHPlater {
         'plates' => [],
         'preg_delimiter' => '|',
         'filter_seperator' => '|',
+        'argument_seperator' => ':',
         'tag_before' => '{{',
         'tag_after' => '}}'
     ];
@@ -171,6 +174,20 @@ class PHPlater {
     }
 
     /**
+     * Set or get argument separator
+     *
+     * Change delimiter if the current delimiter is part of template
+     *
+     * @access public
+     * @param  string $separator The separator to use to separate the filter function from the arguments
+     *
+     * @return mixed Either the separator string, or the current PHPlater object
+     */
+    public function argumentSeperator(?string $seperator = null): string|PHPlater {
+        return $this->getSet('argument_seperator', $seperator);
+    }
+
+    /**
      * Set or get all plates at once
      *
      * The plates array is a key value store from which it is accessed from within the template
@@ -228,7 +245,8 @@ class PHPlater {
      */
     public function render(?string $template = null, int $iterations = 1): string {
         $this->content($template);
-        $pattern = $this->pregDelimiter() . $this->tagBefore() . '\s*(?P<x>[a-zA-Z0-9_\-\.\\' . $this->filterSeperator() . ']+?)\s*' . $this->tagAfter() . $this->pregDelimiter();
+        $chars_to_include = ['\,', '\.', '\-', '\_', '\\' . $this->filterSeperator(), '\\' . $this->argumentSeperator()];
+        $pattern = $this->pregDelimiter() . $this->tagBefore() . '\s*(?P<x>[a-zA-Z0-9' . implode('', $chars_to_include) . ']+?)\s*' . $this->tagAfter() . $this->pregDelimiter();
         $this->result(preg_replace_callback($pattern, [$this, 'find'], $this->content()));
         if ($iterations-- && strstr($this->result(), $this->tagBefore()) && strstr($this->result(), $this->tagAfter())) {
             return $this->render($this->result(), $iterations);
@@ -253,7 +271,12 @@ class PHPlater {
         } else if ($value === null) {
             return $this->getSet($filter);
         } else if ($filter) {
-            return $this->filter($filter)($value);
+            [$filter_function, $filter_arguments] = $this->getFunctionAndArguments($filter, $value);
+            if ($filter_arguments) {
+                array_unshift($filter_arguments, $value);
+                return call_user_func_array($filter_function, $filter_arguments);
+            }
+            return $filter_function($value);
         }
         return $this;
     }
@@ -290,6 +313,19 @@ class PHPlater {
         $parts = explode($this->filterSeperator(), $plate);
         $first_part = array_shift($parts);
         return [explode('.', $first_part), $parts];
+    }
+
+    /**
+     * Helper method to separate filter and arguments
+     *
+     * @access private
+     * @param  string $plate The filter string
+     *
+     * @return array Filter as first, arguments in second
+     */
+    private function getFunctionAndArguments(string $filter): array {
+        $parts = explode($this->argumentSeperator(), $filter);
+        return [$this->filter($parts[0]), isset($parts[1]) ? explode(',', $parts[1]) : []];
     }
 
     /**
