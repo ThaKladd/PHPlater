@@ -1,3 +1,7 @@
+# v0.3.1
+## Added chain separator
+- Added changable chain separator
+- Better handling and escaping of separators, so that they can be more than one char long
 # v0.3.0
 ## Added argumnets to filters
 - Inspired by [Latte](https://github.com/nette/latte), filters can have arguments
