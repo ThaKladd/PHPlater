@@ -120,8 +120,10 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 Please make sure to update tests as appropriate.
 
-## Issues to fix
+## Issues to fix and features to add
 - Make it possible to change argument , separator (low priority)
+- Instead of only adding a array of plates to a template, allow adding an array of an array of plates to a template (for lists of data, that returns the result for all plates, concatinated together)
+- Error handling
 
 ## Documentation
 
