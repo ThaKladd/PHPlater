@@ -41,6 +41,11 @@ Search.appendIndex(
             "summary": "Set\u0020or\u0020get\u0020end\u0020template\u0020tag",
             "url": "classes/PHPlater.html#method_tagAfter"
         },                {
+            "fqsen": "\\PHPlater\u003A\u003Amany\u0028\u0029",
+            "name": "many",
+            "summary": "If\u0020the\u0020template\u0020is\u0020to\u0020be\u0020iterated\u0020over\u0020a\u0020collection\u0020of\u0020plates,\u0020then\u0020this\u0020method\u0020has\u0020to\u0020be\u0020called\u0020with\u0020true",
+            "url": "classes/PHPlater.html#method_many"
+        },                {
             "fqsen": "\\PHPlater\u003A\u003ApregDelimiter\u0028\u0029",
             "name": "pregDelimiter",
             "summary": "Set\u0020or\u0020get\u0020preg\u0028regex\u0029\u0020delimiter",

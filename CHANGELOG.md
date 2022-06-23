@@ -1,3 +1,7 @@
+# v0.4.0
+## Added application of template to an array of plates
+- Added the many method to indicate that the template should be applied to a list of values
+- Access to value in array as first value on template
 # v0.3.1
 ## Added chain separator
 - Added changable chain separator

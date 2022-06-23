@@ -141,6 +141,18 @@ class PHPlater {
     }
 
     /**
+     * If the template is to be iterated over a collection of plates, then this method has to be called with true
+     *
+     * @access public
+     * @param  $many true or false(default) according to whether or not there are many plates to iterate over
+     *
+     * @return mixed Either bool value, or the current PHPlater object
+     */
+    public function many(?bool $many = null): bool|PHPlater {
+        return $this->getSet('many', $many);
+    }
+
+    /**
      * Set or get preg(regex) delimiter
      *
      * Change delimiter if the current delimiter is part of template
@@ -263,7 +275,8 @@ class PHPlater {
         $this->content($template);
         $chars_to_include = [',', '-', '_', $this->filterSeperator(), $this->argumentSeperator(), $this->chainSeperator()];
         $pattern = $this->pregDelimiter() . $this->tagBefore() . '\s*(?P<x>[a-zA-Z0-9' . preg_quote(implode('', $chars_to_include)) . ']+?)\s*' . $this->tagAfter() . $this->pregDelimiter();
-        $this->result(preg_replace_callback($pattern, [$this, 'find'], $this->content()));
+        $content = $this->many() ? $this->tagBefore() . ' 0 ' . $this->tagAfter() : $this->content();
+        $this->result(preg_replace_callback($pattern, [$this, 'find'], $content));
         if ($iterations-- && strstr($this->result(), $this->tagBefore()) && strstr($this->result(), $this->tagAfter())) {
             return $this->render($this->result(), $iterations);
         }
@@ -309,12 +322,20 @@ class PHPlater {
      * @return string The result after exchanging all the matched plates
      */
     private function find(array $match): string {
-        [$parts, $filters] = $this->getFiltersAndParts($match['x']);
-        $plate = $this->plate(array_shift($parts));
-        foreach ($parts as $part) {
-            $plate = $this->extract($this->ifJsonToArray($plate), $part);
+        if ($this->many()) {
+            $all_plates = '';
+            foreach ($this->plates() as $plates) {
+                $all_plates .= (new PHPlater())->plates($plates)->render($this->content());
+            }
+            return $all_plates;
+        } else {
+            [$parts, $filters] = $this->getFiltersAndParts($match['x']);
+            $plate = $this->plate(array_shift($parts));
+            foreach ($parts as $part) {
+                $plate = $this->extract($this->ifJsonToArray($plate), $part);
+            }
+            return $this->callFilters($plate, $filters);
         }
-        return $this->callFilters($plate, $filters);
     }
 
     /**

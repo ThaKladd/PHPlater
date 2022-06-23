@@ -60,3 +60,13 @@ $phplater->plate('from_array', $phplater_array->render('
 
 
 echo $phplater->render('./templates/test_page.tpl');
+
+$phplater = new PHPlater();
+$phplater->many(true)->plates([
+    ['assoc' => ['Yksitoista']],
+    ['assoc' => ['Kaksitoista']],
+    ['assoc' => ['Kolmetoista']],
+]);
+echo '<ul>';
+echo $phplater->render('<li>{{ assoc.0 }}</li>');
+echo '</ul>';

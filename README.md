@@ -89,6 +89,26 @@ echo $phplater->render('template.tpl');
 </div>
 ```
 
+### Many
+
+In order to ease the looping a array of similar values, it can be sent inn and iterated over on the same template
+
+**Given this code**
+```php
+$phplater = new PHPlater();
+$phplater->many(true)->plates([
+    ['value' => ['this']],
+    ['value' => ['is']],
+    ['value' => ['ok']]
+]);
+echo '<ul>'.$phplater->render('<li>{{ value.0 }}</li>').'</ul>';
+```
+
+**This will be the output:**
+```html
+<ul><li>this</li><li>is</li><li>ok</li></ul>
+```
+
 ### Filters
 **Given this code**
 ```php
@@ -122,7 +142,6 @@ Please make sure to update tests as appropriate.
 
 ## Issues to fix and features to add
 - Make it possible to change argument , separator (low priority)
-- Instead of only adding a array of plates to a template, allow adding an array of an array of plates to a template (for lists of data, that returns the result for all plates, concatinated together)
 - Error handling
 
 ## Documentation

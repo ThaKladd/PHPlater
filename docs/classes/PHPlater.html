@@ -210,6 +210,13 @@ Otherwise the filter function is called with $value as argument</dd>
 <dd>Will manage the input so that if it is json it converted to an array, otherwise input is returned</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PHPlater.html#method_many">many()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>If the template is to be iterated over a collection of plates, then this method has to be called with true</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PHPlater.html#method_plate">plate()</a>
     <span>
                                 &nbsp;: mixed    </span>
@@ -384,7 +391,7 @@ Otherwise the filter function is called with $value as argument</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">202</span>
+    <span class="phpdocumentor-element-found-in__line">214</span>
 
     </aside>
 
@@ -447,7 +454,7 @@ Otherwise the filter function is called with $value as argument</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">188</span>
+    <span class="phpdocumentor-element-found-in__line">200</span>
 
     </aside>
 
@@ -510,7 +517,7 @@ Otherwise the filter function is called with $value as argument</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">228</span>
+    <span class="phpdocumentor-element-found-in__line">240</span>
 
     </aside>
 
@@ -634,7 +641,7 @@ Otherwise the filter function is called with $value as argument</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">160</span>
+    <span class="phpdocumentor-element-found-in__line">172</span>
 
     </aside>
 
@@ -692,7 +699,7 @@ Otherwise the filter function is called with $value as argument</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">284</span>
+    <span class="phpdocumentor-element-found-in__line">297</span>
 
     </aside>
 
@@ -765,7 +772,7 @@ Otherwise the filter function is called with $value as argument</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">174</span>
+    <span class="phpdocumentor-element-found-in__line">186</span>
 
     </aside>
 
@@ -883,6 +890,68 @@ Otherwise the filter function is called with $value as argument</p>
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_many">
+        many()
+        <a href="classes/PHPlater.html#method_many" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">151</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">If the template is to be iterated over a collection of plates, then this method has to be called with true</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">many</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type"><a href=""><abbr title=""></abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$many</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$many</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><a href=""><abbr title=""></abbr></a></span>
+                 = <span class="phpdocumentor-signature__argument__default-value">null</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>true or false(default) according to whether or not there are many plates to iterate over</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">access</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>public</p>
+</section>
+
+                                    </dd>
+                        </dl>
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">mixed</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>Either bool value, or the current PHPlater object</p>
+</section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_plate">
         plate()
         <a href="classes/PHPlater.html#method_plate" class="headerlink"><i class="fas fa-link"></i></a>
@@ -890,7 +959,7 @@ Otherwise the filter function is called with $value as argument</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">243</span>
+    <span class="phpdocumentor-element-found-in__line">255</span>
 
     </aside>
 
@@ -963,7 +1032,7 @@ Otherwise the filter function is called with $value as argument</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">216</span>
+    <span class="phpdocumentor-element-found-in__line">228</span>
 
     </aside>
 
@@ -1027,7 +1096,7 @@ Otherwise the filter function is called with $value as argument</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">153</span>
+    <span class="phpdocumentor-element-found-in__line">165</span>
 
     </aside>
 
@@ -1091,7 +1160,7 @@ Otherwise the filter function is called with $value as argument</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">262</span>
+    <span class="phpdocumentor-element-found-in__line">274</span>
 
     </aside>
 
@@ -1367,7 +1436,7 @@ For instance, if you want to use HTML comment as the tag, you change this to &lt
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">379</span>
+    <span class="phpdocumentor-element-found-in__line">400</span>
 
     </aside>
 
@@ -1437,7 +1506,7 @@ For instance, if you want to use HTML comment as the tag, you change this to &lt
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">356</span>
+    <span class="phpdocumentor-element-found-in__line">377</span>
 
     </aside>
 
@@ -1508,7 +1577,7 @@ For instance, if you want to use HTML comment as the tag, you change this to &lt
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">311</span>
+    <span class="phpdocumentor-element-found-in__line">324</span>
 
     </aside>
 
@@ -1573,7 +1642,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">328</span>
+    <span class="phpdocumentor-element-found-in__line">349</span>
 
     </aside>
 
@@ -1635,7 +1704,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">342</span>
+    <span class="phpdocumentor-element-found-in__line">363</span>
 
     </aside>
 

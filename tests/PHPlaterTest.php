@@ -65,6 +65,22 @@ class PHPlaterTest extends TestCase {
 
     /**
      * @covers  PHPlater->render
+     * @uses    PHPlater->plate
+     * @uses    PHPlater->content
+     * @uses    PHPlater->contentify
+     * @uses    PHPlater->ifJsonToArray
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     */
+    public function testArrayAsPlates() {
+        $this->phplater->plates(['assoc' => 'test', 2 => 'ok']);
+        $this->phplater->plate(5, '!');
+        $this->assertEquals('test ok!', $this->phplater->render('{{assoc}} {{2}}{{5}}'));
+    }
+
+    /**
+     * @covers  PHPlater->render
      * @covers  PHPlater->plates
      * @uses    PHPlater->content
      * @uses    PHPlater->getSet
@@ -283,6 +299,24 @@ class PHPlaterTest extends TestCase {
         $this->phplater->plate('string', 'test');
         $this->phplater->filterSeperator('¤');
         $this->assertEquals('This TEST IS OK', $this->phplater->render('This {{string¤add_ok¤uppercase}}'));
+    }
+
+    /**
+     * @covers  PHPlater->many
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     * @uses    PHPlater->callFilters
+     */
+    public function testMany() {
+        $this->phplater->many(true)->plates([
+            ['value' => ['this']],
+            ['value' => ['test']],
+            ['value' => ['is']],
+            ['value' => ['ok']]
+        ]);
+        $this->assertEquals('<li>this</li><li>test</li><li>is</li><li>ok</li>', $this->phplater->render('<li>{{ value.0 }}</li>'));
     }
 
 }
