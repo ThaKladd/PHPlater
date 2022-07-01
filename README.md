@@ -149,6 +149,19 @@ echo $phplater->render('<b>This {{string|add_ok:ok|uppercase}}</b>');
 <b>This TEST IS OK</b>
 ```
 
+## Tags
+There are a minimal amount of tags to remeber in PHPlater, and almost all of them are changeable
+
+Tag|Description|Example
+---|---|---
+{{ and }}|Start and end tag for template variabel|`<li>{{var}}</li>`
+.|Chain separator by which to traverse plates|`<li>{{root.var}}</li>`
+\||Filter tag to variable, method followes (also preg delimiter)|`<li>{{var|method}}</li>`
+:|Seperator for when filter method need arguments|`<li>{{var|method:arg1}}</li>`
+,|Seperate the arguments given to method|`<li>{{var|method:arg1,arg2}}</li>`
+[[ and ]]|Start and end tag for each element in a list|`<ul>[[<li>{{var}}</li>]]</ul>`
+\.\.|Placement of list in the variable chain|`<ul>[[<li>{{list..var}}</li>]]</ul>`
+
 ## Test
 
 Run the following
