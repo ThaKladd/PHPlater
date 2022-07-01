@@ -1,7 +1,7 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
+$start_time = microtime(true);
 require '../vendor/autoload.php';
 include 'classes/TestPlate.php';
 include 'classes/Test.php';
@@ -65,8 +65,71 @@ $phplater = new PHPlater();
 $phplater->many(true)->plates([
     ['assoc' => ['Yksitoista']],
     ['assoc' => ['Kaksitoista']],
-    ['assoc' => ['Kolmetoista']],
+    ['assoc' => ['Kolmetoista']]
 ]);
 echo '<ul>';
 echo $phplater->render('<li>{{ assoc.0 }}</li>');
 echo '</ul>';
+
+$phplater = new PHPlater();
+$phplater->plates([
+    'list' => [
+        ['assoc' => [
+                'english' => 'Fourteen',
+                'finnish' => 'Neljätoista'
+            ]
+        ],
+        ['assoc' => [
+                'english' => 'Fifteen',
+                'finnish' => 'Viisitoista'
+            ]
+        ],
+        ['assoc' => [
+                'english' => 'Sixteen',
+                'finnish' => 'Kuusitoista'
+            ]
+        ]
+    ],
+    'values' => [
+        'Seitsemäntoista', 'Kahdeksantoista', 'Yhdeksäntoista'
+    ],
+    'deep' => [
+        'deeper' => [
+            'deepening' => [
+                'deepest' => [['Kaksikymmentä'], ['Kaksikymmentäyksi'], ['Kaksikymmentäkaksi']]
+            ]
+        ]
+    ]
+]);
+echo $phplater->render('
+    <ul>[[<li>{{ list..assoc.english }}: {{ list..assoc.finnish }}</li>]]</ul>
+    <ul>[[<li>{{ values.. }}</li>]]</ul>
+    <ul>[[<li>{{ deep.deeper.deepening.deepest..0 }}</li>]]</ul>
+');
+
+$phplater = new PHPlater();
+$phplater->plates([
+    ['assoc' => [
+            'english' => 'Twentythree',
+            'finnish' => 'Kaksikymmentäkolme'
+        ]
+    ],
+    ['assoc' => [
+            'english' => 'Twentyfour',
+            'finnish' => 'Kaksikymmentäneljä'
+        ]
+    ],
+    ['assoc' => [
+            'english' => 'Twentyfive',
+            'finnish' => 'Kaksikymmentäviisi'
+        ]
+    ]
+]);
+echo $phplater->render('
+    <ul>[[<li>{{ ..assoc.english }}: {{ ..assoc.finnish }}</li>]]</ul>
+');
+
+
+
+
+echo 'Page generated in ' . round(microtime(true) - $start_time, 3) . ' seconds.';

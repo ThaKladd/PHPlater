@@ -18,25 +18,22 @@ class PHPlater {
      *  @type string $content Content of the template, either from string or file\
      *  @type string $result Where the result of the render is stored\
      *  @type array $plates Array of key value pairs that is the structure for the variables in the template. Can be multidimensional\
-     *  @type string $preg_delimiter Regex delimiter if the default is in use inside template\
-     *  @type string $filter_seperator Separator to distinguish the following filter function\
-     *  @type string $chain_seperator Separator to distinguish the call chain\
-     *  @type string $argument_seperator Separator to distinguish the following arguments to the filter function\
-     *  @type string $tag_before Tag before variable in template\
-     *  @type string $tag_after Tag after variable in template.\
      * }
      */
     private array $data = [
         'content' => '',
         'result' => '',
-        'plates' => [],
-        'preg_delimiter' => '|',
-        'filter_seperator' => '|',
-        'chain_seperator' => '.',
-        'argument_seperator' => ':',
-        'tag_before' => '{{',
-        'tag_after' => '}}'
+        'plates' => []
     ];
+
+    public function __construct() {
+        $this->tags('{{', '}}');
+        $this->tagsList('[[', ']]');
+        $this->argumentSeperator(':');
+        $this->chainSeperator('.');
+        $this->filterSeperator('|');
+        $this->pregDelimiter('|');
+    }
 
     /**
      * Quick shortcut for getting and setting data inside current object
@@ -111,6 +108,54 @@ class PHPlater {
     }
 
     /**
+     * Set both list tags in one method
+     *
+     * Change tags if the current(default [[]]) tags are part of template
+     * Make sure there are no conflicts with the other tags
+     *
+     * @access public
+     * @param  string $before Tag before list template in template
+     * @param  string $after Tag after list template in template
+     *
+     * @return this The current PHPlater object
+     */
+    public function tagsList(string $before, string $after): PHPlater {
+        return $this->tagListBefore($before)->tagListAfter($after);
+    }
+
+    /**
+     * Set or get start list tag
+     *
+     * Change tag if the current(default [[) tag is part of template.
+     * For instance, if you want to change it to how other engines do, you can change it to  {{#
+     * Make sure there are no conflicts with the other tags
+     *
+     * @access public
+     * @param  $tag If set, this will be the new start tag of the list template in template
+     *
+     * @return mixed Either the content of the tag, or the current PHPlater object
+     */
+    public function tagListBefore(?string $tag = null): string|PHPlater {
+        return $this->getSet('tag_list_before', $tag ? preg_quote($tag) : $tag);
+    }
+
+    /**
+     * Set or get end list tag
+     *
+     * Change tag if the current(default ]]) tag is part of template.
+     * For instance, you change this to #}}
+     * Make sure there are no conflicts with the other tags
+     *
+     * @access public
+     * @param  $tag If set, this will be the new end tag of the list template in template
+     *
+     * @return mixed Either the content of the tag, or the current PHPlater object
+     */
+    public function tagListAfter(?string $tag = null): string|PHPlater {
+        return $this->getSet('tag_list_after', $tag ? preg_quote($tag) : $tag);
+    }
+
+    /**
      * Set or get start template tag
      *
      * Change tag if the current(default {{) tag is part of template.
@@ -122,7 +167,7 @@ class PHPlater {
      * @return mixed Either the content of the tag, or the current PHPlater object
      */
     public function tagBefore(?string $tag = null): string|PHPlater {
-        return $this->getSet('tag_before', $tag ? preg_quote($tag) : $tag);
+        return $this->getSet('tag_before', $tag);
     }
 
     /**
@@ -137,7 +182,7 @@ class PHPlater {
      * @return mixed Either the content of the tag, or the current PHPlater object
      */
     public function tagAfter(?string $tag = null): string|PHPlater {
-        return $this->getSet('tag_after', $tag ? preg_quote($tag) : $tag);
+        return $this->getSet('tag_after', $tag);
     }
 
     /**
@@ -273,14 +318,114 @@ class PHPlater {
      */
     public function render(?string $template = null, int $iterations = 1): string {
         $this->content($template);
-        $chars_to_include = [',', '-', '_', $this->filterSeperator(), $this->argumentSeperator(), $this->chainSeperator()];
-        $pattern = $this->pregDelimiter() . $this->tagBefore() . '\s*(?P<x>[a-zA-Z0-9' . preg_quote(implode('', $chars_to_include)) . ']+?)\s*' . $this->tagAfter() . $this->pregDelimiter();
+        $this->content($this->renderList());
         $content = $this->many() ? $this->tagBefore() . ' 0 ' . $this->tagAfter() : $this->content();
-        $this->result(preg_replace_callback($pattern, [$this, 'find'], $content));
+        $this->result(preg_replace_callback($this->pattern(), [$this, 'find'], $content));
         if ($iterations-- && strstr($this->result(), $this->tagBefore()) && strstr($this->result(), $this->tagAfter())) {
             return $this->render($this->result(), $iterations);
         }
         return $this->result();
+    }
+
+    /**
+     * Get the pattern used to fetch all the tags in the template
+     *
+     * @access private
+     *
+     * @return string The pattern for preg_replace_callback
+     */
+    private function pattern() {
+        $tags = preg_quote($this->filterSeperator() . $this->argumentSeperator() . $this->chainSeperator());
+        $before_tag = preg_quote($this->tagBefore());
+        $after_tag = preg_quote($this->tagAfter());
+        return $this->pregDelimiter() . $before_tag . '\s*(?P<x>[\w,\-' . $tags . ']+?)\s*' . $after_tag . $this->pregDelimiter();
+    }
+
+    /**
+     * Render the lists in template if they are there
+     *
+     * Replaces the list tags in the template, for each value in the closest common array
+     *
+     * @access private
+     * @return string The finished result after all plates are applied to the template
+     */
+    private function renderList(): string {
+        $pattern = $this->pregDelimiter() . $this->tagListBefore() . '(?P<x>.+\.\..+?)' . $this->tagListAfter() . $this->pregDelimiter();
+        return preg_replace_callback($pattern, [$this, 'findList'], $this->content());
+    }
+
+    /**
+     * Finds the list variable and exchanges the position with the keys, and then renders the result
+     *
+     * @access private
+     * @param  array $match The matched regular expression from renderList
+     *
+     * @return string The result after rendering all elements in the list
+     */
+    private function findList(array $match): string {
+        preg_match_all($this->pattern(), $match['x'], $matches);
+        $list_place = $this->chainSeperator() . $this->chainSeperator();
+        $all_before_parts = explode($list_place, $matches['x'][0]);
+        $list_is_last = end($all_before_parts) == '';
+        $list_is_first = reset($all_before_parts) == '';
+        //echo '<pre>' . print_r($all_parts, true) . '</pre>';
+
+        $core_parts = explode($this->chainSeperator(), $all_before_parts[0]);
+        //echo '<pre>' . print_r($core_parts, true) . '</pre>';
+
+        $list = $this->getList($this->plates(), $core_parts);
+        //echo '<pre>' . print_r($list, true) . '</pre>';
+        $elements = [];
+        $phplater = (new PHPlater())->plates($this->plates());
+        foreach ($list as $key => $item) {
+            $replace_with = ($list_is_first ? '' : $this->chainSeperator()) . $key . ($list_is_last ? '' : $this->chainSeperator());
+            $new_template = str_replace($list_place, $replace_with, $match['x']);
+            $elements[] = $phplater->render($new_template);
+        }
+        return implode('', $elements);
+    }
+
+    /**
+     * Finds and returns the list from the location ['one', 'two', 'three'] in plates
+     *
+     * @access private
+     * @param array $plates the plates array
+     * @param type $array List of values before the list
+     * @return array
+     */
+    private function getList($plates, $array = []) {
+        $key = array_shift($array);
+        if ($array) {
+            return $this->getList($plates[$key], $array);
+        }
+        return $key == '' ? $plates : $plates[$key];
+    }
+
+    /**
+     * Begins with the root plated and iterates through every one and extracts the matching value
+     *
+     * Each variable can be nested and in the end, the last vaulue is returned as the exhange for the match
+     * Example: key.value_as_array.value_as_object.method_to_call
+     *
+     * @access private
+     * @param  array $match The matched regular expression from render
+     *
+     * @return string The result after exchanging all the matched plates
+     */
+    private function find(array $match): string {
+        if ($this->many()) {
+            $all_plates = '';
+            foreach ($this->plates() as $plates) {
+                $all_plates .= (new PHPlater())->plates($plates)->render($this->content());
+            }
+            return $all_plates;
+        }
+        [$parts, $filters] = $this->getFiltersAndParts($match['x']);
+        $plate = $this->plate(array_shift($parts));
+        foreach ($parts as $part) {
+            $plate = $this->extract($this->ifJsonToArray($plate), $part);
+        }
+        return $this->callFilters($plate, $filters);
     }
 
     /**
@@ -308,34 +453,6 @@ class PHPlater {
             return $filter_function($value);
         }
         return $this;
-    }
-
-    /**
-     * Begins with the root plated and iterates through every one and extracts the matching value
-     *
-     * Each variable can be nested and in the end, the last vaulue is returned as the exhange for the match
-     * Example: key.value_as_array.value_as_object.method_to_call
-     *
-     * @access private
-     * @param  array $match The matched regular expression from render
-     *
-     * @return string The result after exchanging all the matched plates
-     */
-    private function find(array $match): string {
-        if ($this->many()) {
-            $all_plates = '';
-            foreach ($this->plates() as $plates) {
-                $all_plates .= (new PHPlater())->plates($plates)->render($this->content());
-            }
-            return $all_plates;
-        } else {
-            [$parts, $filters] = $this->getFiltersAndParts($match['x']);
-            $plate = $this->plate(array_shift($parts));
-            foreach ($parts as $part) {
-                $plate = $this->extract($this->ifJsonToArray($plate), $part);
-            }
-            return $this->callFilters($plate, $filters);
-        }
     }
 
     /**
