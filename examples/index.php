@@ -130,6 +130,9 @@ echo $phplater->render('
 ');
 
 
-
-
+/**
+ * Imagining a future implementation of an if else
+ * (( {{ test }} | {{ true }} | {{ false }} ))
+ * (( {{ test }} ?? {{ true }} :: {{ false }} ))
+ */
 echo 'Page generated in ' . round(microtime(true) - $start_time, 3) . ' seconds.';

@@ -347,7 +347,7 @@ class PHPlater {
      * Replaces the list tags in the template, for each value in the closest common array
      *
      * @access private
-     * 
+     *
      * @return string The finished result after all plates are applied to the template
      */
     private function renderList(): string {
@@ -390,7 +390,7 @@ class PHPlater {
      *
      * @return array
      */
-    private function getList($plates, $array = []) {
+    private function getList(array $plates, array $array = []): string|array {
         $key = array_shift($array);
         if ($array) {
             return $this->getList($plates[$key], $array);
