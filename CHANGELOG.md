@@ -1,3 +1,8 @@
+# v0.5.0
+## Added new syntax for iteration
+- New syntax for iterating lists in plates
+- Changes in escaping of seperators and tags
+- Optimizing some inner workings of the class
 # v0.4.0
 ## Added application of template to an array of plates
 - Added the many method to indicate that the template should be applied to a list of values
