@@ -185,8 +185,8 @@ class PHPlaterTest extends TestCase {
     public function testTags() {
         $this->phplater->plate('string', 'ok');
         $this->phplater->tags('<!--', '-->');
-        $this->assertEquals(preg_quote('<!--'), $this->phplater->tagBefore());
-        $this->assertEquals(preg_quote('-->'), $this->phplater->tagAfter());
+        $this->assertEquals('<!--', $this->phplater->tagBefore());
+        $this->assertEquals('-->', $this->phplater->tagAfter());
         $this->assertEquals('test ok', $this->phplater->render('test <!-- string -->'));
     }
 
@@ -317,6 +317,72 @@ class PHPlaterTest extends TestCase {
             ['value' => ['ok']]
         ]);
         $this->assertEquals('<li>this</li><li>test</li><li>is</li><li>ok</li>', $this->phplater->render('<li>{{ value.0 }}</li>'));
+    }
+
+    /**
+     * @covers  PHPlater->renderList
+     * @covers  PHPlater->findList
+     * @covers  PHPlater->getList
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     */
+    public function testListFirst() {
+        $this->phplater->plates([
+            ['value' => ['this']],
+            ['value' => ['ok']]
+        ]);
+        $this->assertEquals('<ul><li>this</li><li>ok</li></ul>', $this->phplater->render('<ul>[[<li>{{ ..value.0 }}</li>]]</ul>'));
+    }
+
+    /**
+     * @covers  PHPlater->renderList
+     * @covers  PHPlater->findList
+     * @covers  PHPlater->getList
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     */
+    public function testListOnly() {
+        $this->phplater->plates(['this', 'ok']);
+        $this->assertEquals('<ul><li>this</li><li>ok</li></ul>', $this->phplater->render('<ul>[[<li>{{ .. }}</li>]]</ul>'));
+    }
+
+    /**
+     * @covers  PHPlater->renderList
+     * @covers  PHPlater->findList
+     * @covers  PHPlater->getList
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     */
+    public function testListLast() {
+        $this->phplater->plates([
+            'list' => ['this', 'ok']
+        ]);
+        $this->assertEquals('<ul><li>this</li><li>ok</li></ul>', $this->phplater->render('<ul>[[<li>{{ list.. }}</li>]]</ul>'));
+    }
+
+    /**
+     * @covers  PHPlater->renderList
+     * @covers  PHPlater->findList
+     * @covers  PHPlater->getList
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     */
+    public function testList() {
+        $this->phplater->plates([
+            'list' => [
+                ['value' => ['this']],
+                ['value' => ['ok']]
+            ]
+        ]);
+        $this->assertEquals('<ul><li>this</li><li>ok</li></ul>', $this->phplater->render('<ul>[[<li>{{ list..value.0 }}</li>]]</ul>'));
     }
 
 }

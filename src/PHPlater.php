@@ -347,6 +347,7 @@ class PHPlater {
      * Replaces the list tags in the template, for each value in the closest common array
      *
      * @access private
+     * 
      * @return string The finished result after all plates are applied to the template
      */
     private function renderList(): string {
@@ -368,13 +369,8 @@ class PHPlater {
         $all_before_parts = explode($list_place, $matches['x'][0]);
         $list_is_last = end($all_before_parts) == '';
         $list_is_first = reset($all_before_parts) == '';
-        //echo '<pre>' . print_r($all_parts, true) . '</pre>';
-
         $core_parts = explode($this->chainSeperator(), $all_before_parts[0]);
-        //echo '<pre>' . print_r($core_parts, true) . '</pre>';
-
         $list = $this->getList($this->plates(), $core_parts);
-        //echo '<pre>' . print_r($list, true) . '</pre>';
         $elements = [];
         $phplater = (new PHPlater())->plates($this->plates());
         foreach ($list as $key => $item) {
@@ -389,8 +385,9 @@ class PHPlater {
      * Finds and returns the list from the location ['one', 'two', 'three'] in plates
      *
      * @access private
-     * @param array $plates the plates array
-     * @param type $array List of values before the list
+     * @param array $plates The plates array
+     * @param type $array List of values to iterate in plates
+     *
      * @return array
      */
     private function getList($plates, $array = []) {

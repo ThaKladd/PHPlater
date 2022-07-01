@@ -109,6 +109,27 @@ echo '<ul>'.$phplater->render('<li>{{ value.0 }}</li>').'</ul>';
 <ul><li>this</li><li>is</li><li>ok</li></ul>
 ```
 
+There is also a syntax for doing a foreach inside the template using tags and a placeholder without the many method
+
+**Given this code**
+```php
+$phplater = new PHPlater();
+$phplater->plates([
+    'list' => [
+        ['value' => ['this']],
+        ['value' => ['is']],
+        ['value' => ['ok']]
+    ]
+]);
+echo $phplater->render('<ul>[[<li>{{ list..value.0 }}</li>]]</ul>');
+```
+
+**This will be the output:**
+```html
+<ul><li>this</li><li>is</li><li>ok</li></ul>
+```
+
+
 ### Filters
 **Given this code**
 ```php
