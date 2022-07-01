@@ -157,7 +157,7 @@ Tag|Description|Example
 {{ and }}|Start and end tag for template variabel|`<li>{{var}}</li>`
 .|Chain separator by which to traverse plates|`<li>{{root.var}}</li>`
 \||Filter tag to variable, method followes (also preg delimiter)|`<li>{{var`<code>\|</code>`method}}</li>`
-:|Seperator for when filter method need arguments|`<li>{{var``<code>\|</code>`method:arg1}}</li>`
+:|Seperator for when filter method need arguments|`<li>{{var`<code>\|</code>`method:arg1}}</li>`
 ,|Seperate the arguments given to method|`<li>{{var`<code>\|</code>`method:arg1,arg2}}</li>`
 [[ and ]]|Start and end tag for each element in a list|`<ul>[[<li>{{var}}</li>]]</ul>`
 \.\.|Placement of list in the variable chain|`<ul>[[<li>{{list..var}}</li>]]</ul>`
