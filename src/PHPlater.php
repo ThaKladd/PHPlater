@@ -334,7 +334,7 @@ class PHPlater {
      *
      * @return string The pattern for preg_replace_callback
      */
-    private function pattern() {
+    private function pattern(): string {
         $tags = preg_quote($this->filterSeperator() . $this->argumentSeperator() . $this->chainSeperator());
         $before_tag = preg_quote($this->tagBefore());
         $after_tag = preg_quote($this->tagAfter());
