@@ -13,6 +13,7 @@ class PHPlater {
 
     /**
      * All data is managed within this one property array.
+     * Defaults are set in constructor, and they can be hidden inside array.
      *
      * @var array $data {\
      *  @type string $content Content of the template, either from string or file\
@@ -29,6 +30,8 @@ class PHPlater {
     public function __construct() {
         $this->tags('{{', '}}');
         $this->tagsList('[[', ']]');
+        $this->tagsConditional('((', '))');
+        $this->conditionalSeparators('??', '::');
         $this->argumentSeperator(':');
         $this->chainSeperator('.');
         $this->filterSeperator('|');
@@ -124,6 +127,52 @@ class PHPlater {
     }
 
     /**
+     * Set both conditional tags in one method
+     *
+     * Change tags if the current(default (( and ))) tags are part of template
+     * Make sure there are no conflicts with the other tags
+     *
+     * @access public
+     * @param  string $before Tag before conditional template in template
+     * @param  string $after Tag after conditional template in template
+     *
+     * @return this The current PHPlater object
+     */
+    public function tagsConditional(string $before, string $after): PHPlater {
+        return $this->tagConditionalBefore($before)->tagConditionalAfter($after);
+    }
+
+    /**
+     * Set or get start conditional tag
+     *
+     * Change tag if the current(default (() tag is part of template.
+     * Make sure there are no conflicts with the other tags
+     *
+     * @access public
+     * @param  $tag If set, this will be the new start tag of the conditional template in template
+     *
+     * @return mixed Either the content of the tag, or the current PHPlater object
+     */
+    public function tagConditionalBefore(?string $tag = null): string|PHPlater {
+        return $this->getSet('tag_conditional_before', $tag ? preg_quote($tag) : $tag);
+    }
+
+    /**
+     * Set or get end conditional tag
+     *
+     * Change tag if the current(default ))) tag is part of template.
+     * Make sure there are no conflicts with the other tags
+     *
+     * @access public
+     * @param  $tag If set, this will be the new end tag of the conditional template in template
+     *
+     * @return mixed Either the content of the tag, or the current PHPlater object
+     */
+    public function tagConditionalAfter(?string $tag = null): string|PHPlater {
+        return $this->getSet('tag_conditional_after', $tag ? preg_quote($tag) : $tag);
+    }
+
+    /**
      * Set or get start list tag
      *
      * Change tag if the current(default [[) tag is part of template.
@@ -186,15 +235,18 @@ class PHPlater {
     }
 
     /**
-     * If the template is to be iterated over a collection of plates, then this method has to be called with true
+     * Set both if and else tags in one method
+     *
+     * Change tags if the current(default ?? and ::) tags are part of template
      *
      * @access public
-     * @param  $many true or false(default) according to whether or not there are many plates to iterate over
+     * @param  string $if Tag for if
+     * @param  string $else Tag for else
      *
-     * @return mixed Either bool value, or the current PHPlater object
+     * @return this The current PHPlater object
      */
-    public function many(?bool $many = null): bool|PHPlater {
-        return $this->getSet('many', $many);
+    public function conditionalSeparators(string $if, string $else): PHPlater {
+        return $this->ifSeperator($if)->elseSeperator($else);
     }
 
     /**
@@ -261,6 +313,48 @@ class PHPlater {
     }
 
     /**
+     * Set or get if separator
+     * Default is ??
+     *
+     * Change delimiter if the current delimiter is part of template
+     *
+     * @access public
+     * @param  string $separator The separator to use to separate the filter function
+     *
+     * @return mixed Either the separator string, or the current PHPlater object
+     */
+    public function ifSeperator(?string $seperator = null): string|PHPlater {
+        return $this->getSet('if_seperator', $seperator);
+    }
+
+    /**
+     * Set or get else separator
+     * Default is ::
+     *
+     * Change delimiter if the current delimiter is part of template
+     *
+     * @access public
+     * @param  string $separator The separator to use to separate the filter function
+     *
+     * @return mixed Either the separator string, or the current PHPlater object
+     */
+    public function elseSeperator(?string $seperator = null): string|PHPlater {
+        return $this->getSet('else_seperator', $seperator);
+    }
+
+    /**
+     * If the template is to be iterated over a collection of plates, then this method has to be called with true
+     *
+     * @access public
+     * @param  $many true or false(default) according to whether or not there are many plates to iterate over
+     *
+     * @return mixed Either bool value, or the current PHPlater object
+     */
+    public function many(?bool $many = null): bool|PHPlater {
+        return $this->getSet('many', $many);
+    }
+
+    /**
      * Set or get all plates at once
      *
      * The plates array is a key value store from which it is accessed from within the template
@@ -318,6 +412,7 @@ class PHPlater {
      */
     public function render(?string $template = null, int $iterations = 1): string {
         $this->content($template);
+        $this->content($this->renderConditional());
         $this->content($this->renderList());
         $content = $this->many() ? $this->tagBefore() . ' 0 ' . $this->tagAfter() : $this->content();
         $this->result(preg_replace_callback($this->pattern(), [$this, 'find'], $content));
@@ -356,6 +451,20 @@ class PHPlater {
     }
 
     /**
+     * Render the conditional in template if they are there
+     *
+     * Replaces the conditional tags in the template, for each value in the closest common array
+     *
+     * @access private
+     *
+     * @return string The finished result after all plates are applied to the template
+     */
+    private function renderConditional(): string {
+        $pattern = $this->pregDelimiter() . $this->tagConditionalBefore() . '(?P<x>.+?)' . $this->tagConditionalAfter() . $this->pregDelimiter();
+        return preg_replace_callback($pattern, [$this, 'findConditional'], $this->content());
+    }
+
+    /**
      * Finds the list variable and exchanges the position with the keys, and then renders the result
      *
      * @access private
@@ -379,6 +488,27 @@ class PHPlater {
             $elements[] = $phplater->render($new_template);
         }
         return implode('', $elements);
+    }
+
+    /**
+     * Finds the list variable and exchanges the position with the keys, and then renders the result
+     *
+     * @access private
+     * @param  array $match The matched regular expression from renderList
+     *
+     * @return string The result after rendering all elements in the list
+     */
+    private function findConditional(array $match): string {
+        $phplater = (new PHPlater())->plates($this->plates());
+        $splittedConditional = explode($this->ifSeperator(), $match['x']);
+        $condition = trim($splittedConditional[0]);
+        $splittedIfElse = explode($this->elseSeperator(), $splittedConditional[1]);
+        $ifTrue = trim($splittedIfElse[0] ?? '');
+        $ifFalse = trim($splittedIfElse[1] ?? '');
+        if ($phplater->render($condition)) {
+            return $phplater->render($ifTrue);
+        }
+        return $phplater->render($ifFalse);
     }
 
     /**

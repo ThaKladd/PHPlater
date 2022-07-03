@@ -7,7 +7,7 @@ include 'classes/TestPlate.php';
 include 'classes/Test.php';
 
 $return = [];
-$runs = 500;
+$runs = 1;
 for ($y = 0; $y < $runs; $y++) {
 
 
@@ -130,6 +130,29 @@ for ($y = 0; $y < $runs; $y++) {
     ]);
     $return['fourth'] = $phplater->render('
         <ul>[[<li>{{ ..assoc.english }}: {{ ..assoc.finnish }}</li>]]</ul>
+    ');
+
+    $phplater = new PHPlater();
+    $phplater->plates([
+        'assoc' => [
+            'value' => [
+                [
+                    'uk' => '',
+                    'fi' => 'Kaksikymmentäkuusi'
+                ], [
+                    'uk' => 'Twentyseven',
+                    'fi' => ''
+                ]
+            ]
+        ]
+    ]);
+    $return['fifth'] = $phplater->render('
+        Value 0 is (( {{assoc.value.0.fi}} ?? {{assoc.value.0.fi}} :: {{assoc.value.0.uk}} )) <br>
+        Value 1 is (( {{assoc.value.1.fi}} ?? {{assoc.value.1.fi}} :: {{assoc.value.1.uk}} )) <br>
+        Value 0 is (( {{assoc.value.0.fi}} ?? :: {{assoc.value.0.uk}} )) <br>
+        Value 1 is (( {{assoc.value.1.fi}} ?? :: {{assoc.value.1.uk}} )) <br>
+        Value 0 is (( {{assoc.value.0.fi}} ?? {{assoc.value.0.fi}} )) <br>
+        Value 1 is (( {{assoc.value.1.fi}} ?? {{assoc.value.1.fi}} )) <br>
     ');
 }
 echo implode('', $return);
