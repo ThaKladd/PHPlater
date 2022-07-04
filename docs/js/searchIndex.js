@@ -103,8 +103,13 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PHPlater\u003A\u003AargumentSeperator\u0028\u0029",
             "name": "argumentSeperator",
-            "summary": "Set\u0020or\u0020get\u0020argument\u0020separator",
+            "summary": "Set\u0020or\u0020get\u0020argument\u0020separator\nCan\u0020be\u0020confused\u0020with\u0020argumentListSeperator.\u0020This\u0020method\u0020is\u0020to\u0020delimit\u0020where\u0020method\u0020name\u0020ends\u0020and\u0020arguments\u0020begins\nDefault\u0020value\u0020is\u0020\u003A",
             "url": "classes/PHPlater.html#method_argumentSeperator"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003AargumentListSeperator\u0028\u0029",
+            "name": "argumentListSeperator",
+            "summary": "Set\u0020or\u0020get\u0020argument\u0020list\u0020separator\nCan\u0020be\u0020confused\u0020with\u0020argumentSeperator.\u0020This\u0020method\u0020is\u0020the\u0020seperator\u0020between\u0020the\u0020arguments\u0020if\u0020there\u0020are\u0020more\u0020than\u0020one.",
+            "url": "classes/PHPlater.html#method_argumentListSeperator"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AifSeperator\u0028\u0029",
             "name": "ifSeperator",

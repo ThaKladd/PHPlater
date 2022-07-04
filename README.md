@@ -218,8 +218,8 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ## Issues to fix and features to add
-- Make it possible to change argument , separator (low priority)
 - Error handling
+- Benchmarking
 
 ## Documentation
 

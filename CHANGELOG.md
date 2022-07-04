@@ -2,6 +2,7 @@
 ## Added conditionals
 - Conditioals are now supported
 - Support for common operands for comparsion
+- Method to change argument list , seperator
 # v0.5.0
 ## Added new syntax for iteration
 - New syntax for iterating lists in plates

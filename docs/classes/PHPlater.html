@@ -159,11 +159,21 @@ The musts is to add a template, and to map the variables there to the plates in 
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PHPlater.html#method_argumentListSeperator">argumentListSeperator()</a>
+    <span>
+                                &nbsp;: mixed    </span>
+</dt>
+<dd>Set or get argument list separator
+Can be confused with argumentSeperator. This method is the seperator between the arguments if there are more than one.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PHPlater.html#method_argumentSeperator">argumentSeperator()</a>
     <span>
                                 &nbsp;: mixed    </span>
 </dt>
-<dd>Set or get argument separator</dd>
+<dd>Set or get argument separator
+Can be confused with argumentListSeperator. This method is to delimit where method name ends and arguments begins
+Default value is :</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PHPlater.html#method_chainSeperator">chainSeperator()</a>
@@ -534,6 +544,71 @@ Default is ??</dd>
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_argumentListSeperator">
+        argumentListSeperator()
+        <a href="classes/PHPlater.html#method_argumentListSeperator" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">330</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Set or get argument list separator
+Can be confused with argumentSeperator. This method is the seperator between the arguments if there are more than one.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">argumentListSeperator</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$seperator</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+
+        <section class="phpdocumentor-description"><p>The default value is ,</p>
+<p>Change delimiter if the current delimiter is part of template</p>
+</section>
+
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$seperator</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string|null</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">null</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"></section>
+
+            </dd>
+            </dl>
+
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">access</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>public</p>
+</section>
+
+                                    </dd>
+                        </dl>
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">mixed</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>Either the separator string, or the current PHPlater object</p>
+</section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_argumentSeperator">
         argumentSeperator()
         <a href="classes/PHPlater.html#method_argumentSeperator" class="headerlink"><i class="fas fa-link"></i></a>
@@ -541,11 +616,13 @@ Default is ??</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">311</span>
+    <span class="phpdocumentor-element-found-in__line">314</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Set or get argument separator</p>
+        <p class="phpdocumentor-summary">Set or get argument separator
+Can be confused with argumentListSeperator. This method is to delimit where method name ends and arguments begins
+Default value is :</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -604,7 +681,7 @@ Default is ??</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">297</span>
+    <span class="phpdocumentor-element-found-in__line">298</span>
 
     </aside>
 
@@ -667,7 +744,7 @@ Default is ??</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">248</span>
+    <span class="phpdocumentor-element-found-in__line">249</span>
 
     </aside>
 
@@ -740,7 +817,7 @@ Default is ??</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">379</span>
+    <span class="phpdocumentor-element-found-in__line">398</span>
 
     </aside>
 
@@ -802,7 +879,7 @@ Default is ??</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">66</span>
+    <span class="phpdocumentor-element-found-in__line">67</span>
 
     </aside>
 
@@ -864,7 +941,7 @@ Default is ??</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">269</span>
+    <span class="phpdocumentor-element-found-in__line">270</span>
 
     </aside>
 
@@ -922,7 +999,7 @@ Default is ??</dd>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">341</span>
+    <span class="phpdocumentor-element-found-in__line">360</span>
 
     </aside>
 
@@ -986,7 +1063,7 @@ Default is ::</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">613</span>
+    <span class="phpdocumentor-element-found-in__line">632</span>
 
     </aside>
 
@@ -1059,7 +1136,7 @@ Otherwise the filter function is called with $value as argument</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">283</span>
+    <span class="phpdocumentor-element-found-in__line">284</span>
 
     </aside>
 
@@ -1122,7 +1199,7 @@ Otherwise the filter function is called with $value as argument</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">78</span>
+    <span class="phpdocumentor-element-found-in__line">79</span>
 
     </aside>
 
@@ -1184,7 +1261,7 @@ Otherwise the filter function is called with $value as argument</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">326</span>
+    <span class="phpdocumentor-element-found-in__line">345</span>
 
     </aside>
 
@@ -1248,7 +1325,7 @@ Default is ??</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">353</span>
+    <span class="phpdocumentor-element-found-in__line">372</span>
 
     </aside>
 
@@ -1310,7 +1387,7 @@ Default is ??</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">394</span>
+    <span class="phpdocumentor-element-found-in__line">413</span>
 
     </aside>
 
@@ -1383,7 +1460,7 @@ Default is ??</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">367</span>
+    <span class="phpdocumentor-element-found-in__line">386</span>
 
     </aside>
 
@@ -1447,7 +1524,7 @@ Default is ??</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">262</span>
+    <span class="phpdocumentor-element-found-in__line">263</span>
 
     </aside>
 
@@ -1511,7 +1588,7 @@ Default is ??</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">413</span>
+    <span class="phpdocumentor-element-found-in__line">432</span>
 
     </aside>
 
@@ -1584,7 +1661,7 @@ Default is ??</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">233</span>
+    <span class="phpdocumentor-element-found-in__line">234</span>
 
     </aside>
 
@@ -1649,7 +1726,7 @@ For instance, if you want to use HTML comment as the tag, you change this to --&
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">218</span>
+    <span class="phpdocumentor-element-found-in__line">219</span>
 
     </aside>
 
@@ -1714,7 +1791,7 @@ For instance, if you want to use HTML comment as the tag, you change this to &lt
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">171</span>
+    <span class="phpdocumentor-element-found-in__line">172</span>
 
     </aside>
 
@@ -1779,7 +1856,7 @@ Make sure there are no conflicts with the other tags</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">156</span>
+    <span class="phpdocumentor-element-found-in__line">157</span>
 
     </aside>
 
@@ -1844,7 +1921,7 @@ Make sure there are no conflicts with the other tags</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">203</span>
+    <span class="phpdocumentor-element-found-in__line">204</span>
 
     </aside>
 
@@ -1910,7 +1987,7 @@ Make sure there are no conflicts with the other tags</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">187</span>
+    <span class="phpdocumentor-element-found-in__line">188</span>
 
     </aside>
 
@@ -1976,7 +2053,7 @@ Make sure there are no conflicts with the other tags</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">109</span>
+    <span class="phpdocumentor-element-found-in__line">110</span>
 
     </aside>
 
@@ -2049,7 +2126,7 @@ Make sure there are no conflicts with the other tags</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">141</span>
+    <span class="phpdocumentor-element-found-in__line">142</span>
 
     </aside>
 
@@ -2123,7 +2200,7 @@ Make sure there are no conflicts with the other tags</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">125</span>
+    <span class="phpdocumentor-element-found-in__line">126</span>
 
     </aside>
 
@@ -2197,7 +2274,7 @@ Make sure there are no conflicts with the other tags</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">688</span>
+    <span class="phpdocumentor-element-found-in__line">707</span>
 
     </aside>
 
@@ -2267,7 +2344,7 @@ Make sure there are no conflicts with the other tags</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">535</span>
+    <span class="phpdocumentor-element-found-in__line">554</span>
 
     </aside>
 
@@ -2347,7 +2424,7 @@ Make sure there are no conflicts with the other tags</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">665</span>
+    <span class="phpdocumentor-element-found-in__line">684</span>
 
     </aside>
 
@@ -2418,7 +2495,7 @@ Make sure there are no conflicts with the other tags</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">586</span>
+    <span class="phpdocumentor-element-found-in__line">605</span>
 
     </aside>
 
@@ -2483,7 +2560,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">501</span>
+    <span class="phpdocumentor-element-found-in__line">520</span>
 
     </aside>
 
@@ -2545,7 +2622,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">475</span>
+    <span class="phpdocumentor-element-found-in__line">494</span>
 
     </aside>
 
@@ -2607,7 +2684,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">637</span>
+    <span class="phpdocumentor-element-found-in__line">656</span>
 
     </aside>
 
@@ -2669,7 +2746,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">651</span>
+    <span class="phpdocumentor-element-found-in__line">670</span>
 
     </aside>
 
@@ -2730,7 +2807,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">567</span>
+    <span class="phpdocumentor-element-found-in__line">586</span>
 
     </aside>
 
@@ -2799,7 +2876,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">50</span>
+    <span class="phpdocumentor-element-found-in__line">51</span>
 
     </aside>
 
@@ -2870,7 +2947,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">432</span>
+    <span class="phpdocumentor-element-found-in__line">451</span>
 
     </aside>
 
@@ -2920,7 +2997,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">462</span>
+    <span class="phpdocumentor-element-found-in__line">481</span>
 
     </aside>
 
@@ -2972,7 +3049,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">448</span>
+    <span class="phpdocumentor-element-found-in__line">467</span>
 
     </aside>
 
@@ -3024,7 +3101,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlater.php"><a href="files/src-phplater.html"><abbr title="src/PHPlater.php">PHPlater.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">94</span>
+    <span class="phpdocumentor-element-found-in__line">95</span>
 
     </aside>
 

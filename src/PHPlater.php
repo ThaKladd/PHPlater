@@ -33,6 +33,7 @@ class PHPlater {
         $this->tagsConditional('((', '))');
         $this->conditionalSeparators('??', '::');
         $this->argumentSeperator(':');
+        $this->argumentListSeperator(',');
         $this->chainSeperator('.');
         $this->filterSeperator('|');
         $this->pregDelimiter('|');
@@ -300,6 +301,8 @@ class PHPlater {
 
     /**
      * Set or get argument separator
+     * Can be confused with argumentListSeperator. This method is to delimit where method name ends and arguments begins
+     * Default value is :
      *
      * Change delimiter if the current delimiter is part of template
      *
@@ -310,6 +313,22 @@ class PHPlater {
      */
     public function argumentSeperator(?string $seperator = null): string|PHPlater {
         return $this->getSet('argument_seperator', $seperator);
+    }
+
+    /**
+     * Set or get argument list separator
+     * Can be confused with argumentSeperator. This method is the seperator between the arguments if there are more than one.
+     * The default value is ,
+     *
+     * Change delimiter if the current delimiter is part of template
+     *
+     * @access public
+     * @param  string $separator The separator to use to separate the filter function from the arguments
+     *
+     * @return mixed Either the separator string, or the current PHPlater object
+     */
+    public function argumentListSeperator(?string $seperator = null): string|PHPlater {
+        return $this->getSet('argument_list_seperator', $seperator);
     }
 
     /**
@@ -650,7 +669,7 @@ class PHPlater {
      */
     private function getFunctionAndArguments(string $filter): array {
         $parts = explode($this->argumentSeperator(), $filter);
-        return [$this->filter($parts[0]), isset($parts[1]) ? explode(',', $parts[1]) : []];
+        return [$this->filter($parts[0]), isset($parts[1]) ? explode($this->argumentListSeperator(), $parts[1]) : []];
     }
 
     /**

@@ -261,7 +261,7 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->testArgumentSeperator
+     * @covers  PHPlater->argumentSeperator
      * @uses    PHPlater->filter
      * @uses    PHPlater->filterSeperator
      * @uses    PHPlater->getFunctionAndArguments
@@ -279,6 +279,27 @@ class PHPlaterTest extends TestCase {
             return $test . ' ' . $is . ' ' . $ok;
         });
         $this->assertEquals('test is ok', $this->phplater->render('{{testing|add_args>is,ok}}'));
+    }
+
+    /**
+     * @covers  PHPlater->argumentListSeperator
+     * @uses    PHPlater->filter
+     * @uses    PHPlater->filterSeperator
+     * @uses    PHPlater->getFunctionAndArguments
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     * @uses    PHPlater->getFiltersAndParts
+     * @uses    PHPlater->callFilters
+     */
+    public function testArgumentListSeperator() {
+        $this->phplater->plate('testing', 'test');
+        $this->phplater->argumentListSeperator('_');
+        $this->phplater->filter('add_args', function (string $test, string $is = 'no', string $ok = 'no') {
+            return $test . ' ' . $is . ' ' . $ok;
+        });
+        $this->assertEquals('test is ok', $this->phplater->render('{{testing|add_args:is_ok}}'));
     }
 
     /**
