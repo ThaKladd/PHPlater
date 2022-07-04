@@ -203,7 +203,7 @@ Tag|Description|Example
 \.\.|Placement of list in the variable chain|`<ul>[[<li>{{list..var}}</li>]]</ul>`
 (( and ))|Start and end tag for conditional expression|`(( {{var}} ?? true :: false ))`
 ??|Tag after condition, followed by true result|`(( {{var}} ?? true ))`
-::|Tag after condition and true result, followed by false result|`(( {{var}} ?? :: false ))`
+::|Tag after true result, followed by false result|`(( {{var}} ?? :: false ))`
 
 ## Test
 
