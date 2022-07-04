@@ -158,9 +158,9 @@ The conditional evaluates one or two variables, and return either a true value o
 ```php
 $phplater = new PHPlater();
 $phplater->plates([
-    'array' => ['check', 'check', 'true', 'false']
+    'arr' => ['check', 'check', 'true', 'false']
 ]);
-echo $phplater->render('(( {{ array.0 }} == {{ array.1 }} ?? <b>{{ array.2 }}</b> :: {{ array.3 }} ))');
+echo $phplater->render('(( {{ arr.0 }} == {{ arr.1 }} ?? <b>{{ arr.2 }}</b> :: {{ arr.3 }} ))');
 ```
 
 **This will be the output:**
