@@ -182,7 +182,7 @@ Operator|Description
 \<|Less than
 \<\>|Not equal
 \<=\>|Spaceship operator
-%|Modulo, reminder (when 0, then its falsy)
+%|Modulo, reminder (0 is falsy)
 &&|And
 and|And
 \|\||Or
@@ -194,7 +194,7 @@ There are a minimal amount of tags to remeber in PHPlater, and almost all of the
 
 Tag|Description|Example
 ---|---|---
-{{ and }}|Start and end tag for template variabel|`<li>{{var}}</li>`
+{{ and }}|Start and end tag for template variable|`<li>{{var}}</li>`
 .|Chain separator by which to traverse plates|`<li>{{root.var}}</li>`
 \||Filter tag to variable, method followes|`<li>{{var`<code>\|</code>`method}}</li>`
 :|Seperator if filter method need arguments|`<li>{{var`<code>\|</code>`method:arg1}}</li>`
