@@ -153,7 +153,7 @@ echo $phplater->render('<b>This {{string|add_ok:ok|uppercase}}</b>');
 
 ### Conditionals
 
-The condition ecaluates one or two variables, and return either a true value or a false value. These must have a space before and after the operator and the syntax is as follows.
+The conditional evaluates one or two variables, and return either a true value or a false value. These must have a space before and after the operator and the syntax is as follows.
 
 ```php
 $phplater = new PHPlater();
