@@ -153,6 +153,11 @@ for ($y = 0; $y < $runs; $y++) {
         Value 1 is (( {{assoc.value.1.fi}} ?? :: {{assoc.value.1.uk}} )) <br>
         Value 0 is (( {{assoc.value.0.fi}} ?? {{assoc.value.0.fi}} )) <br>
         Value 1 is (( {{assoc.value.1.fi}} ?? {{assoc.value.1.fi}} )) <br>
+        Value 0 is (( {{assoc.value.0.fi}} ?? <b>{{assoc.value.0.fi}}</b> :: {{assoc.value.0.uk}} )) <br>
+        Value 1 is (( {{assoc.value.1.fi}} ?? {{assoc.value.1.fi}} :: Kaksikymmentäseitsemän )) <br>
+        Value is (( 1 == 1 ?? true :: false )) <br>
+        Value is (( 1 == 2 ?? true :: false )) <br>
+        Value is (( {{assoc.value.1.fi}} == Kaksikymmentäseitsemän ?? true :: false )) <br>
     ');
 }
 echo implode('', $return);

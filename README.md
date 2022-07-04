@@ -1,5 +1,5 @@
 # PHPlater
-A simple PHP template engine that lets PHP do all the logic and then append it to the HTML in the template file. It is set to solve the problem of mixing too much logic into the template file itself and by that loosing some control over where the logic happens. You also get a bit more control over the data that is passed down to the template, and the code is easier to manage and to track.
+A simple PHP template engine that lets PHP do all the logic(even if some logic is supported in the engine) and then append it to the HTML in the template file. It is set to solve the problem of mixing too much logic into the template file itself and by that loosing some control over where the logic happens. Some of the syntax is also unique, and the engine itself is very lightweight. You also get a bit more control over the data that is passed down to the template, and the code is easier to manage and to track.
 
 ---
 - [Installation](#installation)
@@ -129,8 +129,10 @@ echo $phplater->render('<ul>[[<li>{{ list..value.0 }}</li>]]</ul>');
 <ul><li>this</li><li>is</li><li>ok</li></ul>
 ```
 
-
 ### Filters
+
+Filters gets inspiration from [Twig](https://github.com/twigphp/Twig) and and come after | tag with arguments to the method inspired by [Latte](https://github.com/nette/latte)
+
 **Given this code**
 ```php
 $phplater = new PHPlater();
@@ -149,6 +151,44 @@ echo $phplater->render('<b>This {{string|add_ok:ok|uppercase}}</b>');
 <b>This TEST IS OK</b>
 ```
 
+### Conditionals
+
+The condition ecaluates one or two variables, and return either a true value or a false value. These must have a space before and after the operator and the syntax is as follows.
+
+```php
+$phplater = new PHPlater();
+$phplater->plates([
+    'array' => ['check', 'check', 'true', 'false']
+]);
+echo $phplater->render('(( {{ array.0 }} == {{ array.1 }} ?? <b>{{ array.2 }}</b> :: {{ array.3 }} ))');
+```
+
+**This will be the output:**
+```html
+<b>true</b>
+```
+
+These are the supported comparsion operations
+
+Operator|Description
+---|---
+==|Equal
+!=|Not equal
+!==|Strict not equal
+===|Strict equal
+\>=|Greater than or equal
+\<=|Less than or equal
+\>|Greater than
+\<|Less than
+\<\>|Not equal
+\<=\>|Spaceship operator
+%|Modulo, reminder (when 0, then its falsy)
+&&|And
+and|And
+\|\||Or
+or|Or
+xor|Either one or the other but not both
+
 ## Tags
 There are a minimal amount of tags to remeber in PHPlater, and almost all of them are changeable
 
@@ -161,6 +201,9 @@ Tag|Description|Example
 ,|Seperate the arguments given to method|`<li>{{var`<code>\|</code>`method:arg1,arg2}}</li>`
 [[ and ]]|Start and end tag for each element in a list|`<ul>[[<li>{{var}}</li>]]</ul>`
 \.\.|Placement of list in the variable chain|`<ul>[[<li>{{list..var}}</li>]]</ul>`
+(( and ))|Start and end tag for conditional expression|`(( {{var}} ?? true :: false ))`
+??|Tag after condition, followed by true result|`(( {{var}} ?? true ))`
+::|Tag after condition and true result, followed by false result|`(( {{var}} ?? :: false ))`
 
 ## Test
 

@@ -412,8 +412,8 @@ class PHPlater {
      */
     public function render(?string $template = null, int $iterations = 1): string {
         $this->content($template);
-        $this->content($this->renderConditional());
         $this->content($this->renderList());
+        $this->content($this->renderConditional());
         $content = $this->many() ? $this->tagBefore() . ' 0 ' . $this->tagAfter() : $this->content();
         $this->result(preg_replace_callback($this->pattern(), [$this, 'find'], $content));
         if ($iterations-- && strstr($this->result(), $this->tagBefore()) && strstr($this->result(), $this->tagAfter())) {
@@ -491,24 +491,68 @@ class PHPlater {
     }
 
     /**
-     * Finds the list variable and exchanges the position with the keys, and then renders the result
+     * Finds the conditionals and exchanges the position with the rendering and subsequent evaluation of values and then renders the result
      *
      * @access private
-     * @param  array $match The matched regular expression from renderList
+     * @param  array $match The matched regular expression from renderConditional
      *
-     * @return string The result after rendering all elements in the list
+     * @return string The result after rendering all conditionals
      */
     private function findConditional(array $match): string {
         $phplater = (new PHPlater())->plates($this->plates());
-        $splittedConditional = explode($this->ifSeperator(), $match['x']);
-        $condition = trim($splittedConditional[0]);
-        $splittedIfElse = explode($this->elseSeperator(), $splittedConditional[1]);
-        $ifTrue = trim($splittedIfElse[0] ?? '');
-        $ifFalse = trim($splittedIfElse[1] ?? '');
-        if ($phplater->render($condition)) {
+        $splitted_conditional = explode($this->ifSeperator(), $match['x']);
+        $condition = trim($splitted_conditional[0]);
+        $operators = ['\={2,3}', '\!\={1,2}', '\>\=', '\<\=', '\<\>', '\<\=\>', '\>', '\<', '%', '&{2}', '\|{2}', 'xor', 'and', 'or'];
+        preg_match('/.+\s(' . implode('|', $operators) . ')\s.+/', $condition, $matches);
+        $rendered_condition = false;
+        if (isset($matches[1]) && $matches[1]) {
+            $a_and_b = explode($matches[1], $condition);
+            $a = trim($phplater->render($a_and_b[0]));
+            $b = trim($phplater->render($a_and_b[1]));
+            $rendered_condition = $this->evaluateOperation($a, $matches[1], $b);
+        } else {
+            $rendered_condition = $phplater->render($condition);
+        }
+        $splitted_if_else = explode($this->elseSeperator(), $splitted_conditional[1]);
+        $ifTrue = trim($splitted_if_else[0] ?? '');
+        $ifFalse = trim($splitted_if_else[1] ?? '');
+        if ($rendered_condition) {
             return $phplater->render($ifTrue);
         }
         return $phplater->render($ifFalse);
+    }
+
+    /**
+     * Method to return value of operation when done with a matched string operand
+     *
+     * @access private
+     * @param  string $a The first value
+     * @param  string $operator The operand to evaluate first and second value with
+     * @param  string $b The second value
+     *
+     * @return bool|int The result after evaluating the values with the given operand
+     */
+    private function evaluateOperation(string $a, string $operator, string $b): bool|int {
+        $a = is_numeric($a) ? (int) $a : $a;
+        $b = is_numeric($b) ? (int) $b : $b;
+
+        return match ($operator) {
+            '==' => $a == $b,
+            '!==' => $a !== $b,
+            '===' => $a === $b,
+            '!=' => $a != $b,
+            '>=' => $a >= $b,
+            '<=' => $a <= $b,
+            '>' => $a > $b,
+            '<' => $a < $b,
+            '<>' => $a <> $b,
+            '<=>' => $a <=> $b,
+            '%' => $a % $b,
+            '&&', 'and' => $a && $b,
+            '||', 'or' => $a || $b,
+            'xor' => $a xor $b,
+            default => $a
+        };
     }
 
     /**

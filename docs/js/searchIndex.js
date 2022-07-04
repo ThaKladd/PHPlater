@@ -41,6 +41,21 @@ Search.appendIndex(
             "summary": "Set\u0020both\u0020list\u0020tags\u0020in\u0020one\u0020method",
             "url": "classes/PHPlater.html#method_tagsList"
         },                {
+            "fqsen": "\\PHPlater\u003A\u003AtagsConditional\u0028\u0029",
+            "name": "tagsConditional",
+            "summary": "Set\u0020both\u0020conditional\u0020tags\u0020in\u0020one\u0020method",
+            "url": "classes/PHPlater.html#method_tagsConditional"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003AtagConditionalBefore\u0028\u0029",
+            "name": "tagConditionalBefore",
+            "summary": "Set\u0020or\u0020get\u0020start\u0020conditional\u0020tag",
+            "url": "classes/PHPlater.html#method_tagConditionalBefore"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003AtagConditionalAfter\u0028\u0029",
+            "name": "tagConditionalAfter",
+            "summary": "Set\u0020or\u0020get\u0020end\u0020conditional\u0020tag",
+            "url": "classes/PHPlater.html#method_tagConditionalAfter"
+        },                {
             "fqsen": "\\PHPlater\u003A\u003AtagListBefore\u0028\u0029",
             "name": "tagListBefore",
             "summary": "Set\u0020or\u0020get\u0020start\u0020list\u0020tag",
@@ -61,10 +76,10 @@ Search.appendIndex(
             "summary": "Set\u0020or\u0020get\u0020end\u0020template\u0020tag",
             "url": "classes/PHPlater.html#method_tagAfter"
         },                {
-            "fqsen": "\\PHPlater\u003A\u003Amany\u0028\u0029",
-            "name": "many",
-            "summary": "If\u0020the\u0020template\u0020is\u0020to\u0020be\u0020iterated\u0020over\u0020a\u0020collection\u0020of\u0020plates,\u0020then\u0020this\u0020method\u0020has\u0020to\u0020be\u0020called\u0020with\u0020true",
-            "url": "classes/PHPlater.html#method_many"
+            "fqsen": "\\PHPlater\u003A\u003AconditionalSeparators\u0028\u0029",
+            "name": "conditionalSeparators",
+            "summary": "Set\u0020both\u0020if\u0020and\u0020else\u0020tags\u0020in\u0020one\u0020method",
+            "url": "classes/PHPlater.html#method_conditionalSeparators"
         },                {
             "fqsen": "\\PHPlater\u003A\u003ApregDelimiter\u0028\u0029",
             "name": "pregDelimiter",
@@ -90,6 +105,21 @@ Search.appendIndex(
             "name": "argumentSeperator",
             "summary": "Set\u0020or\u0020get\u0020argument\u0020separator",
             "url": "classes/PHPlater.html#method_argumentSeperator"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003AifSeperator\u0028\u0029",
+            "name": "ifSeperator",
+            "summary": "Set\u0020or\u0020get\u0020if\u0020separator\nDefault\u0020is\u0020\u003F\u003F",
+            "url": "classes/PHPlater.html#method_ifSeperator"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003AelseSeperator\u0028\u0029",
+            "name": "elseSeperator",
+            "summary": "Set\u0020or\u0020get\u0020else\u0020separator\nDefault\u0020is\u0020\u003A\u003A",
+            "url": "classes/PHPlater.html#method_elseSeperator"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003Amany\u0028\u0029",
+            "name": "many",
+            "summary": "If\u0020the\u0020template\u0020is\u0020to\u0020be\u0020iterated\u0020over\u0020a\u0020collection\u0020of\u0020plates,\u0020then\u0020this\u0020method\u0020has\u0020to\u0020be\u0020called\u0020with\u0020true",
+            "url": "classes/PHPlater.html#method_many"
         },                {
             "fqsen": "\\PHPlater\u003A\u003Aplates\u0028\u0029",
             "name": "plates",
@@ -121,10 +151,25 @@ Search.appendIndex(
             "summary": "Render\u0020the\u0020lists\u0020in\u0020template\u0020if\u0020they\u0020are\u0020there",
             "url": "classes/PHPlater.html#method_renderList"
         },                {
+            "fqsen": "\\PHPlater\u003A\u003ArenderConditional\u0028\u0029",
+            "name": "renderConditional",
+            "summary": "Render\u0020the\u0020conditional\u0020in\u0020template\u0020if\u0020they\u0020are\u0020there",
+            "url": "classes/PHPlater.html#method_renderConditional"
+        },                {
             "fqsen": "\\PHPlater\u003A\u003AfindList\u0028\u0029",
             "name": "findList",
             "summary": "Finds\u0020the\u0020list\u0020variable\u0020and\u0020exchanges\u0020the\u0020position\u0020with\u0020the\u0020keys,\u0020and\u0020then\u0020renders\u0020the\u0020result",
             "url": "classes/PHPlater.html#method_findList"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003AfindConditional\u0028\u0029",
+            "name": "findConditional",
+            "summary": "Finds\u0020the\u0020conditionals\u0020and\u0020exchanges\u0020the\u0020position\u0020with\u0020the\u0020rendering\u0020and\u0020subsequent\u0020evaluation\u0020of\u0020values\u0020and\u0020then\u0020renders\u0020the\u0020result",
+            "url": "classes/PHPlater.html#method_findConditional"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003AevaluateOperation\u0028\u0029",
+            "name": "evaluateOperation",
+            "summary": "Method\u0020to\u0020return\u0020value\u0020of\u0020operation\u0020when\u0020done\u0020with\u0020a\u0020matched\u0020string\u0020operand",
+            "url": "classes/PHPlater.html#method_evaluateOperation"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AgetList\u0028\u0029",
             "name": "getList",

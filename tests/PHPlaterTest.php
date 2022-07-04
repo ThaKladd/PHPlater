@@ -385,4 +385,62 @@ class PHPlaterTest extends TestCase {
         $this->assertEquals('<ul><li>this</li><li>ok</li></ul>', $this->phplater->render('<ul>[[<li>{{ list..value.0 }}</li>]]</ul>'));
     }
 
+    /**
+     * @covers  PHPlater->renderList
+     * @covers  PHPlater->findList
+     * @covers  PHPlater->getList
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     */
+    public function testConditionals() {
+        $this->phplater->plates([
+            'list' => [
+                ['value' => ['this']],
+                ['value' => ['ok']]
+            ]
+        ]);
+        $this->assertEquals('1. this is ok', $this->phplater->render('1. this is (( {{ list.0.value.0 }} ?? {{ list.1.value.0 }} :: not ok ))'));
+        $this->assertEquals('2. this is ok', $this->phplater->render('2. this is (( {{ list.0.value.2 }} ?? not ok :: {{ list.1.value.0 }} ))'));
+        $this->assertEquals('3. this is ok', $this->phplater->render('3. this is (( {{ list.0.value.0 }} ?? ok ))'));
+        $this->assertEquals('4. this is ok', $this->phplater->render('4. this is (( {{ list.0.value.1 }} ?? :: ok ))'));
+        $this->assertEquals('5. this is <b>ok</b>', $this->phplater->render('5. this is (( {{ list.0.value.0 }} ?? <b>{{ list.1.value.0 }}</b> :: not ok ))'));
+    }
+
+    /**
+     * @covers  PHPlater->renderList
+     * @covers  PHPlater->findList
+     * @covers  PHPlater->getList
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     */
+    public function testConditionalOperators() {
+        $this->phplater->plates([
+            'list' => [
+                ['value' => [2]],
+                ['value' => ['ok']]
+            ]
+        ]);
+
+        $this->assertEquals('1. this is ok', $this->phplater->render('1. this is (( {{ list.0.value.0 }} == 2 ?? ok :: not ok ))'));
+        $this->assertEquals('2. this is ok', $this->phplater->render('2. this is (( {{ list.0.value.0 }} === 2 ?? ok :: not ok ))'));
+        $this->assertEquals('3. this is ok', $this->phplater->render('3. this is (( {{ list.0.value.0 }} != 1 ?? ok :: not ok ))'));
+        $this->assertEquals('4. this is ok', $this->phplater->render('4. this is (( {{ list.0.value.0 }} !== 1 ?? ok :: not ok ))'));
+        $this->assertEquals('5. this is ok', $this->phplater->render('5. this is (( {{ list.0.value.0 }} >= 1 ?? ok :: not ok ))'));
+        $this->assertEquals('6. this is ok', $this->phplater->render('6. this is (( {{ list.0.value.0 }} <= 3 ?? ok :: not ok ))'));
+        $this->assertEquals('7. this is ok', $this->phplater->render('7. this is (( {{ list.0.value.0 }} > 1 ?? ok :: not ok ))'));
+        $this->assertEquals('8. this is ok', $this->phplater->render('8. this is (( {{ list.0.value.0 }} < 3 ?? ok :: not ok ))'));
+        $this->assertEquals('9. this is ok', $this->phplater->render('9. this is (( {{ list.0.value.0 }} <> 1 ?? ok :: not ok ))'));
+        $this->assertEquals('10. this is ok', $this->phplater->render('10. this is (( {{ list.0.value.0 }} <=> 1 ?? ok :: not ok ))'));
+        $this->assertEquals('11. this is ok', $this->phplater->render('11. this is (( {{ list.0.value.0 }} % 3 ?? ok :: not ok ))'));
+        $this->assertEquals('12. this is ok', $this->phplater->render('12. this is (( {{ list.0.value.0 }} && {{ list.0.value.1 }} ?? not ok :: ok ))'));
+        $this->assertEquals('13. this is ok', $this->phplater->render('13. this is (( {{ list.0.value.0 }} and {{ list.0.value.1 }} ?? not ok :: ok ))'));
+        $this->assertEquals('14. this is ok', $this->phplater->render('14. this is (( {{ list.0.value.0 }} || {{ list.0.value.2 }} ?? ok :: not ok ))'));
+        $this->assertEquals('15. this is ok', $this->phplater->render('15. this is (( {{ list.0.value.0 }} or {{ list.0.value.2 }} ?? ok :: not ok ))'));
+        $this->assertEquals('16. this is ok', $this->phplater->render('16. this is (( {{ list.0.value.2 }} xor {{ list.0.value.0 }} ?? ok :: not ok ))'));
+    }
+
 }
