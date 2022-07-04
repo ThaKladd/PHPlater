@@ -207,7 +207,7 @@ Tag|Description|Example
 
 ## Test
 
-Run the following
+PHPUnit 9.5.0 is used. Run the following
 ```
 vendor\bin\phpunit tests/PHPlaterTest.php
 ```
@@ -223,7 +223,7 @@ Please make sure to update tests as appropriate.
 
 ## Documentation
 
-[PHPDocumentator](https://phpdoc.org/) v.3.0 is used for generating documentation from PHPDoc in code.
+[PHPDocumentator](https://phpdoc.org/) v.3.3.1 is used for generating documentation from PHPDoc in code.
 Download [phpDocumentor.phar](https://phpdoc.org/phpDocumentor.phar) and run the following in the project folder to update it.
 
 ```bash
