@@ -1,7 +1,7 @@
 # v0.6.0
 ## Added conditionals
-- Conditioals are now supported
-- Support for common operands for comparsion
+- Conditionals are now supported
+- Support for common operands for comparison
 - Method to change argument list , seperator
 # v0.5.0
 ## Added new syntax for iteration

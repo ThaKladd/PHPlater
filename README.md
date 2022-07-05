@@ -168,7 +168,7 @@ echo $phplater->render('(( {{ arr.0 }} == {{ arr.1 }} ?? <b>{{ arr.2 }}</b> :: {
 <b>true</b>
 ```
 
-These are the supported comparsion operations
+These are the supported comparison operations
 
 Operator|Description
 ---|---
