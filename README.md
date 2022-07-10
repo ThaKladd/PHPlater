@@ -200,6 +200,7 @@ Tag|Description|Example
 :|Seperator if filter method need arguments|`<li>{{var`<code>\|</code>`method:arg1}}</li>`
 ,|Seperate the arguments given to method|`<li>{{var`<code>\|</code>`method:arg1,arg2}}</li>`
 [[ and ]]|Start and end tag for each element in a list|`<ul>[[<li>{{var}}</li>]]</ul>`
+\#|To get the key from list|`<ul>[[<li>{{ # }}</li>]]</ul>`
 \.\.|Placement of list in the variable chain|`<ul>[[<li>{{list..var}}</li>]]</ul>`
 (( and ))|Start and end tag for conditional expression|`(( {{var}} ?? true :: false ))`
 ??|Tag after condition, followed by true result|`(( {{var}} ?? true ))`
