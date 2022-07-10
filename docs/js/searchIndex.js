@@ -31,64 +31,74 @@ Search.appendIndex(
             "summary": "Stores\u0020the\u0020result\u0020of\u0020the\u0020variable\u0020to\u0020value\u0020change\u0020in\u0020template\u0020for\u0020each\u0020run",
             "url": "classes/PHPlater.html#method_result"
         },                {
+            "fqsen": "\\PHPlater\u003A\u003Atag\u0028\u0029",
+            "name": "tag",
+            "summary": "Set\u0020or\u0020get\u0020tag\u0020by\u0020a\u0020constant",
+            "url": "classes/PHPlater.html#method_tag"
+        },                {
             "fqsen": "\\PHPlater\u003A\u003Atags\u0028\u0029",
             "name": "tags",
-            "summary": "Set\u0020both\u0020template\u0020tags\u0020in\u0020one\u0020method",
+            "summary": "Set\u0020all\u0020tags\u0020you\u0020want\u0020in\u0020one\u0020method\u0020or\u0020get\u0020all\u0020tags\u0020that\u0020are\u0020set",
             "url": "classes/PHPlater.html#method_tags"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003AtagsVariables\u0028\u0029",
+            "name": "tagsVariables",
+            "summary": "Set\u0020both\u0020template\u0020variable\u0020tags\u0020in\u0020one\u0020method",
+            "url": "classes/PHPlater.html#method_tagsVariables"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AtagsList\u0028\u0029",
             "name": "tagsList",
             "summary": "Set\u0020both\u0020list\u0020tags\u0020in\u0020one\u0020method",
             "url": "classes/PHPlater.html#method_tagsList"
         },                {
-            "fqsen": "\\PHPlater\u003A\u003AtagsConditional\u0028\u0029",
-            "name": "tagsConditional",
+            "fqsen": "\\PHPlater\u003A\u003AtagsConditionals\u0028\u0029",
+            "name": "tagsConditionals",
             "summary": "Set\u0020both\u0020conditional\u0020tags\u0020in\u0020one\u0020method",
-            "url": "classes/PHPlater.html#method_tagsConditional"
+            "url": "classes/PHPlater.html#method_tagsConditionals"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AtagConditionalBefore\u0028\u0029",
             "name": "tagConditionalBefore",
-            "summary": "Set\u0020or\u0020get\u0020start\u0020conditional\u0020tag",
+            "summary": "",
             "url": "classes/PHPlater.html#method_tagConditionalBefore"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AtagConditionalAfter\u0028\u0029",
             "name": "tagConditionalAfter",
-            "summary": "Set\u0020or\u0020get\u0020end\u0020conditional\u0020tag",
+            "summary": "",
             "url": "classes/PHPlater.html#method_tagConditionalAfter"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AtagListBefore\u0028\u0029",
             "name": "tagListBefore",
-            "summary": "Set\u0020or\u0020get\u0020start\u0020list\u0020tag",
+            "summary": "",
             "url": "classes/PHPlater.html#method_tagListBefore"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AtagListAfter\u0028\u0029",
             "name": "tagListAfter",
-            "summary": "Set\u0020or\u0020get\u0020end\u0020list\u0020tag",
+            "summary": "",
             "url": "classes/PHPlater.html#method_tagListAfter"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AtagBefore\u0028\u0029",
             "name": "tagBefore",
-            "summary": "Set\u0020or\u0020get\u0020start\u0020template\u0020tag",
+            "summary": "",
             "url": "classes/PHPlater.html#method_tagBefore"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AtagAfter\u0028\u0029",
             "name": "tagAfter",
-            "summary": "Set\u0020or\u0020get\u0020end\u0020template\u0020tag",
+            "summary": "",
             "url": "classes/PHPlater.html#method_tagAfter"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AtagKey\u0028\u0029",
             "name": "tagKey",
-            "summary": "Set\u0020or\u0020get\u0020tag\u0020for\u0020key\u0020in\u0020list",
+            "summary": "",
             "url": "classes/PHPlater.html#method_tagKey"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AconditionalSeparators\u0028\u0029",
             "name": "conditionalSeparators",
-            "summary": "Set\u0020both\u0020if\u0020and\u0020else\u0020tags\u0020in\u0020one\u0020method",
+            "summary": "",
             "url": "classes/PHPlater.html#method_conditionalSeparators"
         },                {
             "fqsen": "\\PHPlater\u003A\u003ApregDelimiter\u0028\u0029",
             "name": "pregDelimiter",
-            "summary": "Set\u0020or\u0020get\u0020preg\u0028regex\u0029\u0020delimiter",
+            "summary": "",
             "url": "classes/PHPlater.html#method_pregDelimiter"
         },                {
             "fqsen": "\\PHPlater\u003A\u003Adelimiter\u0028\u0029",
@@ -98,32 +108,32 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PHPlater\u003A\u003AfilterSeperator\u0028\u0029",
             "name": "filterSeperator",
-            "summary": "Set\u0020or\u0020get\u0020filter\u0020separator",
+            "summary": "",
             "url": "classes/PHPlater.html#method_filterSeperator"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AchainSeperator\u0028\u0029",
             "name": "chainSeperator",
-            "summary": "Set\u0020or\u0020get\u0020chain\u0020separator",
+            "summary": "",
             "url": "classes/PHPlater.html#method_chainSeperator"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AargumentSeperator\u0028\u0029",
             "name": "argumentSeperator",
-            "summary": "Set\u0020or\u0020get\u0020argument\u0020separator\nCan\u0020be\u0020confused\u0020with\u0020argumentListSeperator.\u0020This\u0020method\u0020is\u0020to\u0020delimit\u0020where\u0020method\u0020name\u0020ends\u0020and\u0020arguments\u0020begins\nDefault\u0020value\u0020is\u0020\u003A",
+            "summary": "",
             "url": "classes/PHPlater.html#method_argumentSeperator"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AargumentListSeperator\u0028\u0029",
             "name": "argumentListSeperator",
-            "summary": "Set\u0020or\u0020get\u0020argument\u0020list\u0020separator\nCan\u0020be\u0020confused\u0020with\u0020argumentSeperator.\u0020This\u0020method\u0020is\u0020the\u0020seperator\u0020between\u0020the\u0020arguments\u0020if\u0020there\u0020are\u0020more\u0020than\u0020one.",
+            "summary": "",
             "url": "classes/PHPlater.html#method_argumentListSeperator"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AifSeperator\u0028\u0029",
             "name": "ifSeperator",
-            "summary": "Set\u0020or\u0020get\u0020if\u0020separator\nDefault\u0020is\u0020\u003F\u003F",
+            "summary": "",
             "url": "classes/PHPlater.html#method_ifSeperator"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AelseSeperator\u0028\u0029",
             "name": "elseSeperator",
-            "summary": "Set\u0020or\u0020get\u0020else\u0020separator\nDefault\u0020is\u0020\u003A\u003A",
+            "summary": "",
             "url": "classes/PHPlater.html#method_elseSeperator"
         },                {
             "fqsen": "\\PHPlater\u003A\u003Amany\u0028\u0029",
@@ -215,6 +225,76 @@ Search.appendIndex(
             "name": "callFilters",
             "summary": "Checks\u0020if\u0020there\u0020are\u0020filters\u0020on\u0020the\u0020plate,\u0020and\u0020applies\u0020them",
             "url": "classes/PHPlater.html#method_callFilters"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003ATAG_BEFORE",
+            "name": "TAG_BEFORE",
+            "summary": "",
+            "url": "classes/PHPlater.html#constant_TAG_BEFORE"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003ATAG_AFTER",
+            "name": "TAG_AFTER",
+            "summary": "",
+            "url": "classes/PHPlater.html#constant_TAG_AFTER"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003ATAG_LIST_BEFORE",
+            "name": "TAG_LIST_BEFORE",
+            "summary": "",
+            "url": "classes/PHPlater.html#constant_TAG_LIST_BEFORE"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003ATAG_LIST_AFTER",
+            "name": "TAG_LIST_AFTER",
+            "summary": "",
+            "url": "classes/PHPlater.html#constant_TAG_LIST_AFTER"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003ATAG_LIST_KEY",
+            "name": "TAG_LIST_KEY",
+            "summary": "",
+            "url": "classes/PHPlater.html#constant_TAG_LIST_KEY"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003ATAG_CONDITIONAL_BEFORE",
+            "name": "TAG_CONDITIONAL_BEFORE",
+            "summary": "",
+            "url": "classes/PHPlater.html#constant_TAG_CONDITIONAL_BEFORE"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003ATAG_CONDITIONAL_AFTER",
+            "name": "TAG_CONDITIONAL_AFTER",
+            "summary": "",
+            "url": "classes/PHPlater.html#constant_TAG_CONDITIONAL_AFTER"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003ATAG_IF",
+            "name": "TAG_IF",
+            "summary": "",
+            "url": "classes/PHPlater.html#constant_TAG_IF"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003ATAG_ELSE",
+            "name": "TAG_ELSE",
+            "summary": "",
+            "url": "classes/PHPlater.html#constant_TAG_ELSE"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003ATAG_ARGUMENT",
+            "name": "TAG_ARGUMENT",
+            "summary": "",
+            "url": "classes/PHPlater.html#constant_TAG_ARGUMENT"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003ATAG_ARGUMENT_LIST",
+            "name": "TAG_ARGUMENT_LIST",
+            "summary": "",
+            "url": "classes/PHPlater.html#constant_TAG_ARGUMENT_LIST"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003ATAG_CHAIN",
+            "name": "TAG_CHAIN",
+            "summary": "",
+            "url": "classes/PHPlater.html#constant_TAG_CHAIN"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003ATAG_FILTER",
+            "name": "TAG_FILTER",
+            "summary": "",
+            "url": "classes/PHPlater.html#constant_TAG_FILTER"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003ATAG_DELIMITER",
+            "name": "TAG_DELIMITER",
+            "summary": "",
+            "url": "classes/PHPlater.html#constant_TAG_DELIMITER"
         },                {
             "fqsen": "\\PHPlater\u003A\u003A\u0024data",
             "name": "data",

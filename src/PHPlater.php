@@ -11,6 +11,21 @@
  */
 class PHPlater {
 
+    const TAG_BEFORE = 0;
+    const TAG_AFTER = 1;
+    const TAG_LIST_BEFORE = 2;
+    const TAG_LIST_AFTER = 3;
+    const TAG_LIST_KEY = 4;
+    const TAG_CONDITIONAL_BEFORE = 5;
+    const TAG_CONDITIONAL_AFTER = 6;
+    const TAG_IF = 7;
+    const TAG_ELSE = 8;
+    const TAG_ARGUMENT = 9;
+    const TAG_ARGUMENT_LIST = 10;
+    const TAG_CHAIN = 11;
+    const TAG_FILTER = 12;
+    const TAG_DELIMITER = 13;
+
     /**
      * All data is managed within this one property array.
      * Defaults are set in constructor, and they can be hidden inside array.
@@ -24,20 +39,22 @@ class PHPlater {
     private array $data = [
         'content' => '',
         'result' => '',
-        'plates' => []
+        'plates' => [],
+        'tags' => []
     ];
 
     public function __construct() {
-        $this->tags('{{', '}}');
+        $this->tagsVariables('{{', '}}');
         $this->tagsList('[[', ']]');
-        $this->tagKey('#');
-        $this->tagsConditional('((', '))');
-        $this->conditionalSeparators('??', '::');
-        $this->argumentSeperator(':');
-        $this->argumentListSeperator(',');
-        $this->chainSeperator('.');
-        $this->filterSeperator('|');
-        $this->pregDelimiter('|');
+        $this->tagsConditionals('((', '))');
+        $this->tag(self::TAG_IF, '??');
+        $this->tag(self::TAG_ELSE, '::');
+        $this->tag(self::TAG_LIST_KEY, '#');
+        $this->tag(self::TAG_ARGUMENT, ':');
+        $this->tag(self::TAG_ARGUMENT_LIST, ',');
+        $this->tag(self::TAG_CHAIN, '.');
+        $this->tag(self::TAG_FILTER, '|');
+        $this->tag(self::TAG_DELIMITER, '|');
     }
 
     /**
@@ -98,7 +115,42 @@ class PHPlater {
     }
 
     /**
-     * Set both template tags in one method
+     * Set or get tag by a constant
+     *
+     * @access public
+     * @param  string $tag_constant The constant to set or get tag with
+     * @param  string $tag The tag string, if you want to set the tag
+     *
+     * @return mixed The current PHPlater object if a set, the string tag if it is get
+     */
+    public function tag(int $tag_constant, string|null $tag = null): string|PHPlater {
+        if ($tag === null) {
+            return $this->data['tags'][$tag_constant] ?? '';
+        }
+        $this->data['tags'][$tag_constant] = $tag;
+        return $this;
+    }
+
+    /**
+     * Set all tags you want in one method or get all tags that are set
+     *
+     * @access public
+     * @param  string $tags an array with constant as key, and tag as value
+     *
+     * @return mixed The current PHPlater object or an array with all the tags
+     */
+    public function tags(null|array $tags = null): array|PHPlater {
+        if ($tags === null) {
+            return $this->data['tags'];
+        }
+        foreach ($tags as $const => $tag) {
+            $this->tag($const, $tag);
+        }
+        return $this;
+    }
+
+    /**
+     * Set both template variable tags in one method
      *
      * Change tags if the current(default {{}}) tags are part of template
      *
@@ -108,8 +160,11 @@ class PHPlater {
      *
      * @return this The current PHPlater object
      */
-    public function tags(string $before, string $after): PHPlater {
-        return $this->tagBefore($before)->tagAfter($after);
+    public function tagsVariables(string $before, string $after): PHPlater {
+        return $this->tags([
+            self::TAG_BEFORE => preg_quote($before),
+            self::TAG_AFTER => preg_quote($after)
+        ]);
     }
 
     /**
@@ -125,7 +180,10 @@ class PHPlater {
      * @return this The current PHPlater object
      */
     public function tagsList(string $before, string $after): PHPlater {
-        return $this->tagListBefore($before)->tagListAfter($after);
+        return $this->tags([
+            self::TAG_LIST_BEFORE => preg_quote($before),
+            self::TAG_LIST_AFTER => preg_quote($after)
+        ]);
     }
 
     /**
@@ -140,144 +198,74 @@ class PHPlater {
      *
      * @return this The current PHPlater object
      */
-    public function tagsConditional(string $before, string $after): PHPlater {
-        return $this->tagConditionalBefore($before)->tagConditionalAfter($after);
+    public function tagsConditionals(string $before, string $after): PHPlater {
+        return $this->tags([
+            self::TAG_CONDITIONAL_BEFORE => preg_quote($before),
+            self::TAG_CONDITIONAL_AFTER => preg_quote($after)
+        ]);
     }
 
     /**
-     * Set or get start conditional tag
-     *
-     * Change tag if the current(default (() tag is part of template.
-     * Make sure there are no conflicts with the other tags
-     *
-     * @access public
-     * @param  $tag If set, this will be the new start tag of the conditional template in template
-     *
-     * @return mixed Either the content of the tag, or the current PHPlater object
+     * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
      */
     public function tagConditionalBefore(?string $tag = null): string|PHPlater {
-        return $this->getSet('tag_conditional_before', $tag ? preg_quote($tag) : $tag);
+        return $this->tag(self::TAG_CONDITIONAL_BEFORE, $tag ? preg_quote($tag) : $tag);
     }
 
     /**
-     * Set or get end conditional tag
-     *
-     * Change tag if the current(default ))) tag is part of template.
-     * Make sure there are no conflicts with the other tags
-     *
-     * @access public
-     * @param  $tag If set, this will be the new end tag of the conditional template in template
-     *
-     * @return mixed Either the content of the tag, or the current PHPlater object
+     * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
      */
     public function tagConditionalAfter(?string $tag = null): string|PHPlater {
-        return $this->getSet('tag_conditional_after', $tag ? preg_quote($tag) : $tag);
+        return $this->tag(self::TAG_CONDITIONAL_AFTER, $tag ? preg_quote($tag) : $tag);
     }
 
     /**
-     * Set or get start list tag
-     *
-     * Change tag if the current(default [[) tag is part of template.
-     * For instance, if you want to change it to how other engines do, you can change it to  {{#
-     * Make sure there are no conflicts with the other tags
-     *
-     * @access public
-     * @param  $tag If set, this will be the new start tag of the list template in template
-     *
-     * @return mixed Either the content of the tag, or the current PHPlater object
+     * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
      */
     public function tagListBefore(?string $tag = null): string|PHPlater {
-        return $this->getSet('tag_list_before', $tag ? preg_quote($tag) : $tag);
+        return $this->tag(self::TAG_LIST_BEFORE, $tag ? preg_quote($tag) : $tag);
     }
 
     /**
-     * Set or get end list tag
-     *
-     * Change tag if the current(default ]]) tag is part of template.
-     * For instance, you change this to #}}
-     * Make sure there are no conflicts with the other tags
-     *
-     * @access public
-     * @param  $tag If set, this will be the new end tag of the list template in template
-     *
-     * @return mixed Either the content of the tag, or the current PHPlater object
+     * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
      */
     public function tagListAfter(?string $tag = null): string|PHPlater {
-        return $this->getSet('tag_list_after', $tag ? preg_quote($tag) : $tag);
+        return $this->tag(self::TAG_LIST_AFTER, $tag ? preg_quote($tag) : $tag);
     }
 
     /**
-     * Set or get start template tag
-     *
-     * Change tag if the current(default {{) tag is part of template.
-     * For instance, if you want to use HTML comment as the tag, you change this to <!--
-     *
-     * @access public
-     * @param  $tag If set, this will be the new start tag of the variable in template
-     *
-     * @return mixed Either the content of the tag, or the current PHPlater object
+     * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
      */
     public function tagBefore(?string $tag = null): string|PHPlater {
-        return $this->getSet('tag_before', $tag);
+        return $this->tag(self::TAG_BEFORE, $tag);
     }
 
     /**
-     * Set or get end template tag
-     *
-     * Change tag if the current(default }}) tag is part of template.
-     * For instance, if you want to use HTML comment as the tag, you change this to -->
-     *
-     * @access public
-     * @param  $tag If set, this will be the new end tag of the variable in template
-     *
-     * @return mixed Either the content of the tag, or the current PHPlater object
+     * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
      */
     public function tagAfter(?string $tag = null): string|PHPlater {
-        return $this->getSet('tag_after', $tag);
+        return $this->tag(self::TAG_AFTER, $tag);
     }
 
     /**
-     * Set or get tag for key in list
-     *
-     * Change tag if the current(default #) tag is part of template.
-     * Cannot be alphanumeric
-     *
-     * @access public
-     * @param  $tag If set, this will be the new key tag of the variable in template
-     *
-     * @return mixed Either the content of the tag, or the current PHPlater object
+     * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
      */
     public function tagKey(?string $tag = null): string|PHPlater {
-        return $this->getSet('tag_key', $tag);
+        return $this->tag(self::TAG_LIST_KEY, $tag);
     }
 
     /**
-     * Set both if and else tags in one method
-     *
-     * Change tags if the current(default ?? and ::) tags are part of template
-     *
-     * @access public
-     * @param  string $if Tag for if
-     * @param  string $else Tag for else
-     *
-     * @return this The current PHPlater object
+     * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
      */
     public function conditionalSeparators(string $if, string $else): PHPlater {
-        return $this->ifSeperator($if)->elseSeperator($else);
+        return $this->tag(self::TAG_IF, $if)->tag(self::TAG_ELSE, $else);
     }
 
     /**
-     * Set or get preg(regex) delimiter
-     *
-     * Change delimiter if the current delimiter is part of template
-     *
-     * @access public
-     * @param  string $delimiter The delimiter to use for preg method
-     *
-     * @return mixed Either the delimiter string, or the current PHPlater object
+     * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
      */
     public function pregDelimiter(?string $delimiter = null): string|PHPlater {
-        return $this->getSet('preg_delimiter', $delimiter);
+        return $this->tag(self::TAG_DELIMITER, $delimiter);
     }
 
     /**
@@ -288,93 +276,45 @@ class PHPlater {
     }
 
     /**
-     * Set or get filter separator
-     *
-     * Change delimiter if the current delimiter is part of template
-     *
-     * @access public
-     * @param  string $separator The separator to use to separate the filter function
-     *
-     * @return mixed Either the separator string, or the current PHPlater object
+     * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
      */
     public function filterSeperator(?string $seperator = null): string|PHPlater {
-        return $this->getSet('filter_seperator', $seperator);
+        return $this->tag(self::TAG_FILTER, $seperator);
     }
 
     /**
-     * Set or get chain separator
-     *
-     * From the standard array.obj.method, this can be changed to array->obj->method
-     *
-     * @access public
-     * @param  string $separator The separator to use to separate parts of the chain
-     *
-     * @return mixed Either the separator string, or the current PHPlater object
+     * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
      */
     public function chainSeperator(?string $seperator = null): string|PHPlater {
-        return $this->getSet('chain_seperator', $seperator);
+        return $this->tag(self::TAG_CHAIN, $seperator);
     }
 
     /**
-     * Set or get argument separator
-     * Can be confused with argumentListSeperator. This method is to delimit where method name ends and arguments begins
-     * Default value is :
-     *
-     * Change delimiter if the current delimiter is part of template
-     *
-     * @access public
-     * @param  string $separator The separator to use to separate the filter function from the arguments
-     *
-     * @return mixed Either the separator string, or the current PHPlater object
+     * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
      */
     public function argumentSeperator(?string $seperator = null): string|PHPlater {
-        return $this->getSet('argument_seperator', $seperator);
+        return $this->tag(self::TAG_ARGUMENT, $seperator);
     }
 
     /**
-     * Set or get argument list separator
-     * Can be confused with argumentSeperator. This method is the seperator between the arguments if there are more than one.
-     * The default value is ,
-     *
-     * Change delimiter if the current delimiter is part of template
-     *
-     * @access public
-     * @param  string $separator The separator to use to separate the filter function from the arguments
-     *
-     * @return mixed Either the separator string, or the current PHPlater object
+     * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
      */
     public function argumentListSeperator(?string $seperator = null): string|PHPlater {
-        return $this->getSet('argument_list_seperator', $seperator);
+        return $this->tag(self::TAG_ARGUMENT_LIST, $seperator);
     }
 
     /**
-     * Set or get if separator
-     * Default is ??
-     *
-     * Change delimiter if the current delimiter is part of template
-     *
-     * @access public
-     * @param  string $separator The separator to use to separate the filter function
-     *
-     * @return mixed Either the separator string, or the current PHPlater object
+     * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
      */
     public function ifSeperator(?string $seperator = null): string|PHPlater {
-        return $this->getSet('if_seperator', $seperator);
+        return $this->tag(self::TAG_IF, $seperator);
     }
 
     /**
-     * Set or get else separator
-     * Default is ::
-     *
-     * Change delimiter if the current delimiter is part of template
-     *
-     * @access public
-     * @param  string $separator The separator to use to separate the filter function
-     *
-     * @return mixed Either the separator string, or the current PHPlater object
+     * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
      */
     public function elseSeperator(?string $seperator = null): string|PHPlater {
-        return $this->getSet('else_seperator', $seperator);
+        return $this->tag(self::TAG_ELSE, $seperator);
     }
 
     /**
@@ -428,7 +368,9 @@ class PHPlater {
      */
     public function plate(string $name, object|array|string|int|float|bool|null $plate = null): mixed {
         if ($plate === null) {
-            return $this->data['plates'][$name] ?? $this->tagBefore() . $name . $this->tagAfter();
+            $tag_before = stripslashes($this->tag(self::TAG_BEFORE));
+            $tag_after = stripslashes($this->tag(self::TAG_AFTER));
+            return $this->data['plates'][$name] ?? $tag_before . $name . $tag_after;
         }
         $this->data['plates'][$name] = $this->ifJsonToArray($plate);
         return $this;
@@ -449,9 +391,11 @@ class PHPlater {
         $this->content($template);
         $this->content($this->renderList());
         $this->content($this->renderConditional());
-        $content = $this->many() ? $this->tagBefore() . ' 0 ' . $this->tagAfter() : $this->content();
+        $tag_before = stripslashes($this->tag(self::TAG_BEFORE));
+        $tag_after = stripslashes($this->tag(self::TAG_AFTER));
+        $content = $this->many() ? $tag_before . ' 0 ' . $tag_after : $this->content();
         $this->result(preg_replace_callback($this->pattern(), [$this, 'find'], $content));
-        if ($iterations-- && strstr($this->result(), $this->tagBefore()) && strstr($this->result(), $this->tagAfter())) {
+        if ($iterations-- && strstr($this->result(), $tag_before) && strstr($this->result(), $tag_after)) {
             return $this->render($this->result(), $iterations);
         }
         return $this->result();
@@ -465,10 +409,11 @@ class PHPlater {
      * @return string The pattern for preg_replace_callback
      */
     private function pattern(): string {
-        $tags = preg_quote($this->filterSeperator() . $this->argumentSeperator() . $this->chainSeperator());
-        $before_tag = preg_quote($this->tagBefore());
-        $after_tag = preg_quote($this->tagAfter());
-        return $this->pregDelimiter() . $before_tag . '\s*(?P<x>[\w,\-' . $tags . ']+?)\s*' . $after_tag . $this->pregDelimiter();
+        $tags = preg_quote($this->tag(self::TAG_FILTER) . $this->tag(self::TAG_ARGUMENT) . $this->tag(self::TAG_CHAIN));
+        $tag_before = $this->tag(self::TAG_BEFORE);
+        $tag_after = $this->tag(self::TAG_AFTER);
+        $delimiter = $this->tag(self::TAG_DELIMITER);
+        return $delimiter . $tag_before . '\s*(?P<x>[\w,\-' . $tags . ']+?)\s*' . $tag_after . $delimiter;
     }
 
     /**
@@ -481,7 +426,10 @@ class PHPlater {
      * @return string The finished result after all plates are applied to the template
      */
     private function renderList(): string {
-        $pattern = $this->pregDelimiter() . $this->tagListBefore() . '(?P<x>.+\.\..+?)' . $this->tagListAfter() . $this->pregDelimiter();
+        $tag_before = $this->tag(self::TAG_LIST_BEFORE);
+        $tag_after = $this->tag(self::TAG_LIST_AFTER);
+        $delimiter = $this->tag(self::TAG_DELIMITER);
+        $pattern = $delimiter . $tag_before . '(?P<x>.+\.\..+?)' . $tag_after . $delimiter;
         return preg_replace_callback($pattern, [$this, 'findList'], $this->content());
     }
 
@@ -495,7 +443,10 @@ class PHPlater {
      * @return string The finished result after all plates are applied to the template
      */
     private function renderConditional(): string {
-        $pattern = $this->pregDelimiter() . $this->tagConditionalBefore() . '(?P<x>.+?)' . $this->tagConditionalAfter() . $this->pregDelimiter();
+        $tag_before = $this->tag(self::TAG_CONDITIONAL_BEFORE);
+        $tag_after = $this->tag(self::TAG_CONDITIONAL_AFTER);
+        $delimiter = $this->tag(self::TAG_DELIMITER);
+        $pattern = $delimiter . $tag_before . '(?P<x>.+?)' . $tag_after . $delimiter;
         return preg_replace_callback($pattern, [$this, 'findConditional'], $this->content());
     }
 
@@ -509,18 +460,23 @@ class PHPlater {
      */
     private function findList(array $match): string {
         preg_match_all($this->pattern(), $match['x'], $matches);
-        $list_place = $this->chainSeperator() . $this->chainSeperator();
+        $tag_chain = $this->tag(self::TAG_CHAIN);
+        $delimiter = $this->tag(self::TAG_DELIMITER);
+        $tag_before = $this->tag(self::TAG_BEFORE);
+        $tag_after = $this->tag(self::TAG_AFTER);
+        $tag_list_key = preg_quote($this->tag(self::TAG_LIST_KEY));
+        $list_place = $tag_chain . $tag_chain;
         $all_before_parts = explode($list_place, $matches['x'][0]);
         $list_is_last = end($all_before_parts) == '';
         $list_is_first = reset($all_before_parts) == '';
-        $core_parts = explode($this->chainSeperator(), $all_before_parts[0]);
+        $core_parts = explode($tag_chain, $all_before_parts[0]);
         $list = $this->getList($this->plates(), $core_parts);
         $elements = [];
         $phplater = (new PHPlater())->plates($this->plates());
         foreach ($list as $key => $item) {
-            $replace_with = ($list_is_first ? '' : $this->chainSeperator()) . $key . ($list_is_last ? '' : $this->chainSeperator());
+            $replace_with = ($list_is_first ? '' : $tag_chain) . $key . ($list_is_last ? '' : $tag_chain);
             $new_template = str_replace($list_place, $replace_with, $match['x']);
-            $key_pattern = $this->pregDelimiter() . $this->tagBefore() . '\s*' . preg_quote($this->tagKey()) . '\s*' . $this->tagAfter() . $this->pregDelimiter();
+            $key_pattern = $delimiter . $tag_before . '\s*' . $tag_list_key . '\s*' . $tag_after . $delimiter;
             if (preg_match_all($key_pattern, $new_template, $key_matches) > 0) {
                 foreach (array_unique($key_matches[0]) as $key_match) {
                     $new_template = str_replace($key_match, $key, $new_template);
@@ -541,7 +497,7 @@ class PHPlater {
      */
     private function findConditional(array $match): string {
         $phplater = (new PHPlater())->plates($this->plates());
-        $splitted_conditional = explode($this->ifSeperator(), $match['x']);
+        $splitted_conditional = explode($this->tag(self::TAG_IF), $match['x']);
         $condition = trim($splitted_conditional[0]);
         $operators = ['\={2,3}', '\!\={1,2}', '\>\=', '\<\=', '\<\>', '\<\=\>', '\>', '\<', '%', '&{2}', '\|{2}', 'xor', 'and', 'or'];
         preg_match('/.+\s(' . implode('|', $operators) . ')\s.+/', $condition, $matches);
@@ -554,7 +510,7 @@ class PHPlater {
         } else {
             $rendered_condition = $phplater->render($condition);
         }
-        $splitted_if_else = explode($this->elseSeperator(), $splitted_conditional[1]);
+        $splitted_if_else = explode($this->tag(self::TAG_ELSE), $splitted_conditional[1]);
         $ifTrue = trim($splitted_if_else[0] ?? '');
         $ifFalse = trim($splitted_if_else[1] ?? '');
         if ($rendered_condition) {
@@ -676,9 +632,9 @@ class PHPlater {
      * @return array Nesting parts and filters separated into array
      */
     private function getFiltersAndParts(string $plate): array {
-        $parts = explode($this->filterSeperator(), $plate);
+        $parts = explode($this->tag(self::TAG_FILTER), $plate);
         $first_part = array_shift($parts);
-        return [explode($this->chainSeperator(), $first_part), $parts];
+        return [explode($this->tag(self::TAG_CHAIN), $first_part), $parts];
     }
 
     /**
@@ -690,8 +646,8 @@ class PHPlater {
      * @return array Filter as first, arguments in second
      */
     private function getFunctionAndArguments(string $filter): array {
-        $parts = explode($this->argumentSeperator(), $filter);
-        return [$this->filter($parts[0]), isset($parts[1]) ? explode($this->argumentListSeperator(), $parts[1]) : []];
+        $parts = explode($this->tag(self::TAG_ARGUMENT), $filter);
+        return [$this->filter($parts[0]), isset($parts[1]) ? explode($this->tag(self::TAG_ARGUMENT_LIST), $parts[1]) : []];
     }
 
     /**
