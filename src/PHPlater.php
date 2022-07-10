@@ -152,7 +152,8 @@ class PHPlater {
     /**
      * Set both template variable tags in one method
      *
-     * Change tags if the current(default {{}}) tags are part of template
+     * Change tags if the current(default {{ and }}) tags are part of template
+     * Make sure there are no conflicts with the other tags
      *
      * @access public
      * @param  string $before Tag before variable in template
@@ -170,7 +171,7 @@ class PHPlater {
     /**
      * Set both list tags in one method
      *
-     * Change tags if the current(default [[]]) tags are part of template
+     * Change tags if the current(default [[ and ]]) tags are part of template
      * Make sure there are no conflicts with the other tags
      *
      * @access public
@@ -499,8 +500,8 @@ class PHPlater {
         $phplater = (new PHPlater())->plates($this->plates());
         $splitted_conditional = explode($this->tag(self::TAG_IF), $match['x']);
         $condition = trim($splitted_conditional[0]);
-        $operators = ['\={2,3}', '\!\={1,2}', '\>\=', '\<\=', '\<\>', '\<\=\>', '\>', '\<', '%', '&{2}', '\|{2}', 'xor', 'and', 'or'];
-        preg_match('/.+\s(' . implode('|', $operators) . ')\s.+/', $condition, $matches);
+        $operators = ['\={3}', '\={2}', '\!\={2}', '\!\={1}', '\<\=\>', '\>\=', '\<\=', '\<\>', '\>', '\<', '%', '&{2}', '\|{2}', 'xor', 'and', 'or'];
+        preg_match('/.+\s*(' . implode('|', $operators) . ')\s*.+/U', $condition, $matches);
         $rendered_condition = false;
         if (isset($matches[1]) && $matches[1]) {
             $a_and_b = explode($matches[1], $condition);
@@ -532,7 +533,6 @@ class PHPlater {
     private function evaluateOperation(string $a, string $operator, string $b): bool|int {
         $a = is_numeric($a) ? (int) $a : $a;
         $b = is_numeric($b) ? (int) $b : $b;
-
         return match ($operator) {
             '==' => $a == $b,
             '!==' => $a !== $b,
@@ -544,10 +544,10 @@ class PHPlater {
             '<' => $a < $b,
             '<>' => $a <> $b,
             '<=>' => $a <=> $b,
-            '%' => $a % $b,
             '&&', 'and' => $a && $b,
             '||', 'or' => $a || $b,
             'xor' => $a xor $b,
+            '%' => $a % $b,
             default => $a
         };
     }

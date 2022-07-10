@@ -73,6 +73,30 @@ class PHPlaterTest extends TestCase {
      * @uses    PHPlater->find
      * @uses    PHPlater->extract
      */
+    public function testVariableWhitespace() {
+        $this->phplater->plate('string', 'is');
+        $this->phplater->plate('number', '5.');
+        $this->phplater->plate('test', 'test');
+        $this->phplater->plate('good', 'ok');
+        $this->assertEquals('1. test is ok', $this->phplater->render('1. test {{string}} ok'));
+        $this->assertEquals('2. test is ok', $this->phplater->render('2. test {{ string}} ok'));
+        $this->assertEquals('3. test is ok', $this->phplater->render('3. test {{string }} ok'));
+        $this->assertEquals('4. test is ok', $this->phplater->render('4. test {{ string }} ok'));
+        $this->assertEquals('5. test is ok', $this->phplater->render('{{ number }} {{test }} {{ string}} {{good}}'));
+        $this->phplater->plate('number', '6.');
+        $this->assertEquals('6. test is ok', $this->phplater->render('{{ number  }} {{test  }} {{  string}} {{    good       }}'));
+    }
+
+    /**
+     * @covers  PHPlater->render
+     * @uses    PHPlater->plate
+     * @uses    PHPlater->content
+     * @uses    PHPlater->contentify
+     * @uses    PHPlater->ifJsonToArray
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     */
     public function testArrayAsPlates() {
         $this->phplater->plates(['assoc' => 'test', 2 => 'ok']);
         $this->phplater->plate(5, '!');
@@ -403,6 +427,27 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
+     * @covers  PHPlater->tagsList
+     * @covers  PHPlater->renderList
+     * @covers  PHPlater->findList
+     * @covers  PHPlater->getList
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     */
+    public function testListTags() {
+        $this->phplater->plates([
+            'list' => [
+                ['value' => ['this']],
+                ['value' => ['ok']]
+            ]
+        ]);
+        $this->phplater->tagsList('-foreach-', '-end-');
+        $this->assertEquals('<ul><li>this</li><li>ok</li></ul>', $this->phplater->render('<ul>-foreach-<li>{{ list..value.0 }}</li>-end-</ul>'));
+    }
+
+    /**
      * @covers  PHPlater->renderList
      * @covers  PHPlater->findList
      * @covers  PHPlater->getList
@@ -442,9 +487,9 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->renderList
-     * @covers  PHPlater->findList
-     * @covers  PHPlater->getList
+     * @covers  PHPlater->renderConditional
+     * @covers  PHPlater->findConditional
+     * @covers  PHPlater->evaluateOperation
      * @uses    PHPlater->render
      * @uses    PHPlater->getSet
      * @uses    PHPlater->find
@@ -465,9 +510,59 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->renderList
-     * @covers  PHPlater->findList
-     * @covers  PHPlater->getList
+     * @covers  PHPlater->renderConditional
+     * @covers  PHPlater->findConditional
+     * @covers  PHPlater->tagsConditionals
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     */
+    public function testConditionalTags() {
+        $this->phplater->plates([
+            'list' => [
+                ['value' => ['this']],
+                ['value' => ['ok']]
+            ]
+        ]);
+        $this->phplater->tagsConditionals('<?', '?>');
+        $this->assertEquals('this is ok', $this->phplater->render('this is <? {{ list.0.value.0 }} ?? {{ list.1.value.0 }} :: not ok ?>'));
+        $this->phplater->tag(PHPlater::TAG_IF, 'TRUE:');
+        $this->assertEquals('this is ok', $this->phplater->render('this is <? {{ list.0.value.0 }} TRUE: {{ list.1.value.0 }} :: not ok ?>'));
+        $this->phplater->tag(PHPlater::TAG_ELSE, 'FALSE:');
+        $this->assertEquals('this is ok', $this->phplater->render('this is <? {{ list.0.value.0 }} TRUE: {{ list.1.value.0 }} FALSE: not ok ?>'));
+    }
+
+    /**
+     * @covers  PHPlater->renderConditional
+     * @covers  PHPlater->findConditional
+     * @covers  PHPlater->evaluateOperation
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     */
+    public function testConditionalWhitespaces() {
+        $this->phplater->plates([
+            'list' => [
+                ['value' => ['this']],
+                ['value' => ['ok']]
+            ]
+        ]);
+
+        $this->assertEquals('1. this is ok', $this->phplater->render('1. this is (({{list.0.value.0}} ?? {{ list.1.value.0   }} :: not ok))'));
+        $this->assertEquals('2. this is ok', $this->phplater->render('2. this is (( {{ list.0.value.2 }} ?? not ok :: {{  list.1.value.0 }}))'));
+        $this->assertEquals('3. this is ok', $this->phplater->render('3. this is (( {{list.0.value.0 }} ?? ok   ))'));
+        $this->assertEquals('4. this is ok', $this->phplater->render('4. this is ((    {{ list.0.value.1}} ?? ::   ok ))'));
+        $this->assertEquals('5. this is <b> ok </b>', $this->phplater->render('5. this is (( {{ list.0.value.0 }}  ??  <b> {{ list.1.value.0 }} </b> :: not ok ))'));
+        $this->assertEquals('6. this is ok', $this->phplater->render('6. this is (({{list.0.value.0}}??{{list.1.value.0}}::not ok))'));
+        $this->assertEquals('7. this is ok', $this->phplater->render('7. this is (({{list.0.value.0}} ??{{ list.1.value.0   }}::not ok))'));
+    }
+
+    /**
+     * @covers  PHPlater->renderConditional
+     * @covers  PHPlater->findConditional
+     * @covers  PHPlater->evaluateOperation
      * @uses    PHPlater->render
      * @uses    PHPlater->getSet
      * @uses    PHPlater->find
@@ -497,6 +592,41 @@ class PHPlaterTest extends TestCase {
         $this->assertEquals('14. this is ok', $this->phplater->render('14. this is (( {{ list.0.value.0 }} || {{ list.0.value.2 }} ?? ok :: not ok ))'));
         $this->assertEquals('15. this is ok', $this->phplater->render('15. this is (( {{ list.0.value.0 }} or {{ list.0.value.2 }} ?? ok :: not ok ))'));
         $this->assertEquals('16. this is ok', $this->phplater->render('16. this is (( {{ list.0.value.2 }} xor {{ list.0.value.0 }} ?? ok :: not ok ))'));
+    }
+
+    /**
+     * @covers  PHPlater->renderConditional
+     * @covers  PHPlater->findConditional
+     * @covers  PHPlater->evaluateOperation
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     */
+    public function testConditionalOperatorWhitespace() {
+        $this->phplater->plates([
+            'list' => [
+                ['value' => [2]],
+                ['value' => ['ok']]
+            ]
+        ]);
+
+        $this->assertEquals('1. this is ok', $this->phplater->render('1. this is (( {{ list.0.value.0 }}==2 ?? ok :: not ok ))'));
+        $this->assertEquals('2. this is ok', $this->phplater->render('2. this is (( {{ list.0.value.0 }}===2 ?? ok :: not ok ))'));
+        $this->assertEquals('3. this is ok', $this->phplater->render('3. this is (( {{ list.0.value.0 }}!=1 ?? ok :: not ok ))'));
+        $this->assertEquals('4. this is ok', $this->phplater->render('4. this is (( {{ list.0.value.0 }}!==1 ?? ok :: not ok ))'));
+        $this->assertEquals('5. this is ok', $this->phplater->render('5. this is (( {{ list.0.value.0 }}>=1 ?? ok :: not ok ))'));
+        $this->assertEquals('6. this is ok', $this->phplater->render('6. this is (( {{ list.0.value.0 }}<=3 ?? ok :: not ok ))'));
+        $this->assertEquals('7. this is ok', $this->phplater->render('7. this is (( {{ list.0.value.0 }}>1 ?? ok :: not ok ))'));
+        $this->assertEquals('8. this is ok', $this->phplater->render('8. this is (( {{ list.0.value.0 }}<3 ?? ok :: not ok ))'));
+        $this->assertEquals('9. this is ok', $this->phplater->render('9. this is (( {{ list.0.value.0 }}<>1 ?? ok :: not ok ))'));
+        $this->assertEquals('10. this is ok', $this->phplater->render('10. this is (( {{ list.0.value.0 }}<=>1 ?? ok :: not ok ))'));
+        $this->assertEquals('11. this is ok', $this->phplater->render('11. this is (( {{ list.0.value.0 }}%3 ?? ok :: not ok ))'));
+        $this->assertEquals('12. this is ok', $this->phplater->render('12. this is (( {{ list.0.value.0 }}&&{{ list.0.value.1 }} ?? not ok :: ok ))'));
+        $this->assertEquals('13. this is ok', $this->phplater->render('13. this is (( {{ list.0.value.0 }}and{{ list.0.value.1 }} ?? not ok :: ok ))'));
+        $this->assertEquals('14. this is ok', $this->phplater->render('14. this is (( {{ list.0.value.0 }}||{{ list.0.value.2 }} ?? ok :: not ok ))'));
+        $this->assertEquals('15. this is ok', $this->phplater->render('15. this is (( {{ list.0.value.0 }}or{{ list.0.value.2 }} ?? ok :: not ok ))'));
+        $this->assertEquals('16. this is ok', $this->phplater->render('16. this is (( {{ list.0.value.2 }}xor{{ list.0.value.0 }} ?? ok :: not ok ))'));
     }
 
 }
