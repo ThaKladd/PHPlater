@@ -394,7 +394,7 @@ class PHPlater {
         $this->content($this->renderConditional());
         $tag_before = stripslashes($this->tag(self::TAG_BEFORE));
         $tag_after = stripslashes($this->tag(self::TAG_AFTER));
-        $content = $this->many() ? $tag_before . ' 0 ' . $tag_after : $this->content();
+        $content = $this->many() ? $tag_before . '0' . $tag_after : $this->content();
         $this->result(preg_replace_callback($this->pattern(), [$this, 'find'], $content));
         if ($iterations-- && strstr($this->result(), $tag_before) && strstr($this->result(), $tag_after)) {
             return $this->render($this->result(), $iterations);
@@ -466,18 +466,17 @@ class PHPlater {
         $tag_before = $this->tag(self::TAG_BEFORE);
         $tag_after = $this->tag(self::TAG_AFTER);
         $tag_list_key = preg_quote($this->tag(self::TAG_LIST_KEY));
-        $list_place = $tag_chain . $tag_chain;
-        $all_before_parts = explode($list_place, $matches['x'][0]);
-        $list_is_last = end($all_before_parts) == '';
-        $list_is_first = reset($all_before_parts) == '';
+        $key_pattern = $delimiter . $tag_before . '\s*' . $tag_list_key . '\s*' . $tag_after . $delimiter;
+        $tag_list = $tag_chain . $tag_chain;
+        $all_before_parts = explode($tag_list, $matches['x'][0]);
+        $tag_last = end($all_before_parts) == '' ? '' : $tag_chain;
+        $tag_first = reset($all_before_parts) == '' ? '' : $tag_chain;
         $core_parts = explode($tag_chain, $all_before_parts[0]);
         $list = $this->getList($this->plates(), $core_parts);
         $elements = [];
         $phplater = (new PHPlater())->plates($this->plates());
         foreach ($list as $key => $item) {
-            $replace_with = ($list_is_first ? '' : $tag_chain) . $key . ($list_is_last ? '' : $tag_chain);
-            $new_template = str_replace($list_place, $replace_with, $match['x']);
-            $key_pattern = $delimiter . $tag_before . '\s*' . $tag_list_key . '\s*' . $tag_after . $delimiter;
+            $new_template = str_replace($tag_list, $tag_first . $key . $tag_last, $match['x']);
             if (preg_match_all($key_pattern, $new_template, $key_matches) > 0) {
                 foreach (array_unique($key_matches[0]) as $key_match) {
                     $new_template = str_replace($key_match, $key, $new_template);
