@@ -30,6 +30,7 @@ class PHPlater {
     public function __construct() {
         $this->tags('{{', '}}');
         $this->tagsList('[[', ']]');
+        $this->tagKey('#');
         $this->tagsConditional('((', '))');
         $this->conditionalSeparators('??', '::');
         $this->argumentSeperator(':');
@@ -233,6 +234,21 @@ class PHPlater {
      */
     public function tagAfter(?string $tag = null): string|PHPlater {
         return $this->getSet('tag_after', $tag);
+    }
+
+    /**
+     * Set or get tag for key in list
+     *
+     * Change tag if the current(default #) tag is part of template.
+     * Cannot be alphanumeric
+     *
+     * @access public
+     * @param  $tag If set, this will be the new key tag of the variable in template
+     *
+     * @return mixed Either the content of the tag, or the current PHPlater object
+     */
+    public function tagKey(?string $tag = null): string|PHPlater {
+        return $this->getSet('tag_key', $tag);
     }
 
     /**
@@ -504,6 +520,12 @@ class PHPlater {
         foreach ($list as $key => $item) {
             $replace_with = ($list_is_first ? '' : $this->chainSeperator()) . $key . ($list_is_last ? '' : $this->chainSeperator());
             $new_template = str_replace($list_place, $replace_with, $match['x']);
+            $key_pattern = $this->pregDelimiter() . $this->tagBefore() . '\s*' . preg_quote($this->tagKey()) . '\s*' . $this->tagAfter() . $this->pregDelimiter();
+            if (preg_match_all($key_pattern, $new_template, $key_matches) > 0) {
+                foreach (array_unique($key_matches[0]) as $key_match) {
+                    $new_template = str_replace($key_match, $key, $new_template);
+                }
+            }
             $elements[] = $phplater->render($new_template);
         }
         return implode('', $elements);

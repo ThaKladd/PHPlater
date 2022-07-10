@@ -410,6 +410,45 @@ class PHPlaterTest extends TestCase {
      * @covers  PHPlater->renderList
      * @covers  PHPlater->findList
      * @covers  PHPlater->getList
+     * @covers  PHPlater->tagKey
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     */
+    public function testListAssocWithKey() {
+        $this->phplater->plates([
+            'list' => [
+                ['value' => ['this' => 'ok']]
+            ]
+        ]);
+        $this->assertEquals('<ul><li>this ok</li></ul>', $this->phplater->render('<ul>[[<li>{{ # }} {{ list.0.value.. }}</li>]]</ul>'));
+    }
+
+    /**
+     * @covers  PHPlater->renderList
+     * @covers  PHPlater->findList
+     * @covers  PHPlater->getList
+     * @covers  PHPlater->tagKey
+     * @uses    PHPlater->render
+     * @uses    PHPlater->getSet
+     * @uses    PHPlater->find
+     * @uses    PHPlater->extract
+     */
+    public function testListAssocWithKeyChange() {
+        $this->phplater->plates([
+            'list' => [
+                ['value' => ['this' => 'ok']]
+            ]
+        ]);
+        $this->phplater->tagKey('+');
+        $this->assertEquals('<ul><li>this ok</li></ul>', $this->phplater->render('<ul>[[<li>{{ + }} {{ list.0.value.. }}</li>]]</ul>'));
+    }
+
+    /**
+     * @covers  PHPlater->renderList
+     * @covers  PHPlater->findList
+     * @covers  PHPlater->getList
      * @uses    PHPlater->render
      * @uses    PHPlater->getSet
      * @uses    PHPlater->find

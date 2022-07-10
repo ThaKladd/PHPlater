@@ -76,6 +76,11 @@ Search.appendIndex(
             "summary": "Set\u0020or\u0020get\u0020end\u0020template\u0020tag",
             "url": "classes/PHPlater.html#method_tagAfter"
         },                {
+            "fqsen": "\\PHPlater\u003A\u003AtagKey\u0028\u0029",
+            "name": "tagKey",
+            "summary": "Set\u0020or\u0020get\u0020tag\u0020for\u0020key\u0020in\u0020list",
+            "url": "classes/PHPlater.html#method_tagKey"
+        },                {
             "fqsen": "\\PHPlater\u003A\u003AconditionalSeparators\u0028\u0029",
             "name": "conditionalSeparators",
             "summary": "Set\u0020both\u0020if\u0020and\u0020else\u0020tags\u0020in\u0020one\u0020method",
