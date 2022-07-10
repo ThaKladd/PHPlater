@@ -1,3 +1,6 @@
+# v0.7.0
+## Key tag
+- Added key tag for getting key from lists
 # v0.6.0
 ## Added conditionals
 - Conditionals are now supported
