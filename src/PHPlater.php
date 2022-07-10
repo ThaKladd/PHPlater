@@ -40,7 +40,8 @@ class PHPlater {
         'content' => '',
         'result' => '',
         'plates' => [],
-        'tags' => []
+        'tags' => [],
+        'cache' => []
     ];
 
     public function __construct() {
@@ -390,16 +391,29 @@ class PHPlater {
      */
     public function render(?string $template = null, int $iterations = 1): string {
         $this->content($template);
-        $this->content($this->renderList());
-        $this->content($this->renderConditional());
+        $this->content($this->renderCallback($this->patternForList(), 'findList', $this->content()));
+        $this->content($this->renderCallback($this->patternForConditional(), 'findConditional', $this->content()));
         $tag_before = stripslashes($this->tag(self::TAG_BEFORE));
         $tag_after = stripslashes($this->tag(self::TAG_AFTER));
         $content = $this->many() ? $tag_before . '0' . $tag_after : $this->content();
-        $this->result(preg_replace_callback($this->pattern(), [$this, 'find'], $content));
-        if ($iterations-- && strstr($this->result(), $tag_before) && strstr($this->result(), $tag_after)) {
-            return $this->render($this->result(), $iterations);
+        $this->content($this->renderCallback($this->patternForVariable(), 'find', $content));
+        if ($iterations-- && strstr($this->content(), $tag_before) && strstr($this->content(), $tag_after)) {
+            return $this->render($this->content(), $iterations);
         }
-        return $this->result();
+        return $this->content();
+    }
+
+
+    /**
+     * Renders the content with a callback to a method
+     *
+     * @param string $pattern The pattern to apply
+     * @param string $method The method to call
+     * @param string $content The content to render
+     * @return string The resulting content
+     */
+    private function renderCallback(string $pattern, string $method, string $content): string {
+        return preg_replace_callback($pattern, [$this, $method], $content);
     }
 
     /**
@@ -409,12 +423,23 @@ class PHPlater {
      *
      * @return string The pattern for preg_replace_callback
      */
-    private function pattern(): string {
+    private function patternForVariable(): string {
         $tags = preg_quote($this->tag(self::TAG_FILTER) . $this->tag(self::TAG_ARGUMENT) . $this->tag(self::TAG_CHAIN));
-        $tag_before = $this->tag(self::TAG_BEFORE);
-        $tag_after = $this->tag(self::TAG_AFTER);
+        return $this->pattern(self::TAG_BEFORE, '\s*(?P<x>[\w,\-' . $tags . ']+?)\s*', self::TAG_AFTER);
+    }
+
+    /**
+     * Get the pattern used to fetch all the variable tags in the template
+     *
+     * @access private
+     *
+     * @return string The pattern for preg_replace_callback
+     */
+    private function pattern(int $before, string $pattern, int $after): string {
+        $tag_before = $this->tag($before);
+        $tag_after = $this->tag($after);
         $delimiter = $this->tag(self::TAG_DELIMITER);
-        return $delimiter . $tag_before . '\s*(?P<x>[\w,\-' . $tags . ']+?)\s*' . $tag_after . $delimiter;
+        return $delimiter . $tag_before . $pattern . $tag_after . $delimiter;
     }
 
     /**
@@ -424,47 +449,32 @@ class PHPlater {
      *
      * @return string The pattern for preg_replace_callback
      */
-    private function keyPattern(): string {
-        $delimiter = $this->tag(self::TAG_DELIMITER);
-        $tag_before = $this->tag(self::TAG_BEFORE);
-        $tag_after = $this->tag(self::TAG_AFTER);
+    private function patternForKey(): string {
         $tag_list_key = preg_quote($this->tag(self::TAG_LIST_KEY));
-        return $delimiter . $tag_before . '\s*' . $tag_list_key . '\s*' . $tag_after . $delimiter;
+        return $this->pattern(self::TAG_BEFORE, '\s*' . $tag_list_key . '\s*', self::TAG_AFTER);
     }
 
     /**
-     * Render the lists in template if they are there
-     *
-     * Replaces the list tags in the template, for each value in the closest common array
+     * Get the pattern used for list
      *
      * @access private
      *
-     * @return string The finished result after all plates are applied to the template
+     * @return string The pattern for preg_replace_callback
      */
-    private function renderList(): string {
-        $tag_before = $this->tag(self::TAG_LIST_BEFORE);
-        $tag_after = $this->tag(self::TAG_LIST_AFTER);
-        $delimiter = $this->tag(self::TAG_DELIMITER);
+    private function patternForList(): string {
         $tag_chain = preg_quote($this->tag(self::TAG_CHAIN));
-        $pattern = $delimiter . $tag_before . '(?P<x>.+' . $tag_chain . $tag_chain . '.+?)' . $tag_after . $delimiter;
-        return preg_replace_callback($pattern, [$this, 'findList'], $this->content());
+        return $this->pattern(self::TAG_LIST_BEFORE, '(?P<x>.+' . $tag_chain . $tag_chain . '.+?)', self::TAG_LIST_AFTER);
     }
 
     /**
-     * Render the conditional in template if they are there
-     *
-     * Replaces the conditional tags in the template, for each value in the closest common array
+     * Get the pattern used for conditional
      *
      * @access private
      *
-     * @return string The finished result after all plates are applied to the template
+     * @return string The pattern for preg_replace_callback
      */
-    private function renderConditional(): string {
-        $tag_before = $this->tag(self::TAG_CONDITIONAL_BEFORE);
-        $tag_after = $this->tag(self::TAG_CONDITIONAL_AFTER);
-        $delimiter = $this->tag(self::TAG_DELIMITER);
-        $pattern = $delimiter . $tag_before . '(?P<x>.+?)' . $tag_after . $delimiter;
-        return preg_replace_callback($pattern, [$this, 'findConditional'], $this->content());
+    private function patternForConditional(): string {
+        return $this->pattern(self::TAG_CONDITIONAL_BEFORE, '(?P<x>.+?)', self::TAG_CONDITIONAL_AFTER);
     }
 
     /**
@@ -476,9 +486,9 @@ class PHPlater {
      * @return string The result after rendering all elements in the list
      */
     private function findList(array $match): string {
-        preg_match_all($this->pattern(), $match['x'], $matches);
+        preg_match_all($this->patternForVariable(), $match['x'], $matches);
         $tag_chain = $this->tag(self::TAG_CHAIN);
-        $key_pattern = $this->keyPattern();
+        $key_pattern = $this->patternForKey();
         $tag_list = $tag_chain . $tag_chain;
         $all_before_parts = explode($tag_list, $matches['x'][0]);
         $tag_last = end($all_before_parts) == '' ? '' : $tag_chain;
