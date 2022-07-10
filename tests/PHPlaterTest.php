@@ -451,7 +451,8 @@ class PHPlaterTest extends TestCase {
      * @covers  PHPlater->renderList
      * @covers  PHPlater->findList
      * @covers  PHPlater->getList
-     * @covers  PHPlater->tagKey
+     * @covers  PHPlater->keyPattern
+     * @covers  PHPlater->replaceKeys
      * @uses    PHPlater->render
      * @uses    PHPlater->getSet
      * @uses    PHPlater->find
@@ -470,6 +471,8 @@ class PHPlaterTest extends TestCase {
      * @covers  PHPlater->renderList
      * @covers  PHPlater->findList
      * @covers  PHPlater->getList
+     * @covers  PHPlater->keyPattern
+     * @covers  PHPlater->replaceKeys
      * @covers  PHPlater->tag
      * @uses    PHPlater->render
      * @uses    PHPlater->getSet

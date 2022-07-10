@@ -403,7 +403,7 @@ class PHPlater {
     }
 
     /**
-     * Get the pattern used to fetch all the tags in the template
+     * Get the pattern used to fetch all the variable tags in the template
      *
      * @access private
      *
@@ -415,6 +415,21 @@ class PHPlater {
         $tag_after = $this->tag(self::TAG_AFTER);
         $delimiter = $this->tag(self::TAG_DELIMITER);
         return $delimiter . $tag_before . '\s*(?P<x>[\w,\-' . $tags . ']+?)\s*' . $tag_after . $delimiter;
+    }
+
+    /**
+     * Get the pattern used to fetch all the keys in the template list
+     *
+     * @access private
+     *
+     * @return string The pattern for preg_replace_callback
+     */
+    private function keyPattern(): string {
+        $delimiter = $this->tag(self::TAG_DELIMITER);
+        $tag_before = $this->tag(self::TAG_BEFORE);
+        $tag_after = $this->tag(self::TAG_AFTER);
+        $tag_list_key = preg_quote($this->tag(self::TAG_LIST_KEY));
+        return $delimiter . $tag_before . '\s*' . $tag_list_key . '\s*' . $tag_after . $delimiter;
     }
 
     /**
@@ -430,7 +445,8 @@ class PHPlater {
         $tag_before = $this->tag(self::TAG_LIST_BEFORE);
         $tag_after = $this->tag(self::TAG_LIST_AFTER);
         $delimiter = $this->tag(self::TAG_DELIMITER);
-        $pattern = $delimiter . $tag_before . '(?P<x>.+\.\..+?)' . $tag_after . $delimiter;
+        $tag_chain = preg_quote($this->tag(self::TAG_CHAIN));
+        $pattern = $delimiter . $tag_before . '(?P<x>.+' . $tag_chain . $tag_chain . '.+?)' . $tag_after . $delimiter;
         return preg_replace_callback($pattern, [$this, 'findList'], $this->content());
     }
 
@@ -462,29 +478,38 @@ class PHPlater {
     private function findList(array $match): string {
         preg_match_all($this->pattern(), $match['x'], $matches);
         $tag_chain = $this->tag(self::TAG_CHAIN);
-        $delimiter = $this->tag(self::TAG_DELIMITER);
-        $tag_before = $this->tag(self::TAG_BEFORE);
-        $tag_after = $this->tag(self::TAG_AFTER);
-        $tag_list_key = preg_quote($this->tag(self::TAG_LIST_KEY));
-        $key_pattern = $delimiter . $tag_before . '\s*' . $tag_list_key . '\s*' . $tag_after . $delimiter;
+        $key_pattern = $this->keyPattern();
         $tag_list = $tag_chain . $tag_chain;
         $all_before_parts = explode($tag_list, $matches['x'][0]);
         $tag_last = end($all_before_parts) == '' ? '' : $tag_chain;
         $tag_first = reset($all_before_parts) == '' ? '' : $tag_chain;
         $core_parts = explode($tag_chain, $all_before_parts[0]);
-        $list = $this->getList($this->plates(), $core_parts);
         $elements = [];
         $phplater = (new PHPlater())->plates($this->plates());
+        $list = $this->getList($this->plates(), $core_parts);
         foreach ($list as $key => $item) {
             $new_template = str_replace($tag_list, $tag_first . $key . $tag_last, $match['x']);
-            if (preg_match_all($key_pattern, $new_template, $key_matches) > 0) {
-                foreach (array_unique($key_matches[0]) as $key_match) {
-                    $new_template = str_replace($key_match, $key, $new_template);
-                }
-            }
+            $new_template = $this->replaceKeys($new_template, $key, $key_pattern);
             $elements[] = $phplater->render($new_template);
         }
         return implode('', $elements);
+    }
+
+    /**
+     * Replaces the key tags with the current key in list
+     *
+     * @param string $template The list part of the template
+     * @param string $key The key for the current iteration of the list
+     * @param string $pattern the pattern of how to match the key
+     * @return string
+     */
+    private function replaceKeys(string $template, string $key, string $pattern): string {
+        if (preg_match_all($pattern, $template, $key_matches) > 0) {
+            foreach (array_unique($key_matches[0]) as $key_match) {
+                $template = str_replace($key_match, $key, $template);
+            }
+        }
+        return $template;
     }
 
     /**
@@ -513,10 +538,7 @@ class PHPlater {
         $splitted_if_else = explode($this->tag(self::TAG_ELSE), $splitted_conditional[1]);
         $ifTrue = trim($splitted_if_else[0] ?? '');
         $ifFalse = trim($splitted_if_else[1] ?? '');
-        if ($rendered_condition) {
-            return $phplater->render($ifTrue);
-        }
-        return $phplater->render($ifFalse);
+        return $rendered_condition ? $phplater->render($ifTrue) : $phplater->render($ifFalse);
     }
 
     /**
