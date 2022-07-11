@@ -1,3 +1,9 @@
+# v0.8.0
+## Error handling
+- Some errors now throw catchable exeptions
+- Fixed a few major issues
+- Refactored lot of code
+- Updated phpUnit tests to use phar
 # v0.7.0
 ## Key tag
 - Added key tag for getting key from lists

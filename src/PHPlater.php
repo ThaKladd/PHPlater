@@ -202,6 +202,7 @@ class PHPlater {
 
     /**
      * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
+     * @codeCoverageIgnore
      */
     public function tagConditionalBefore(?string $tag = null): string|PHPlater {
         return $this->tag(self::TAG_CONDITIONAL_BEFORE, $tag ? preg_quote($tag) : $tag);
@@ -209,6 +210,7 @@ class PHPlater {
 
     /**
      * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
+     * @codeCoverageIgnore
      */
     public function tagConditionalAfter(?string $tag = null): string|PHPlater {
         return $this->tag(self::TAG_CONDITIONAL_AFTER, $tag ? preg_quote($tag) : $tag);
@@ -216,6 +218,7 @@ class PHPlater {
 
     /**
      * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
+     * @codeCoverageIgnore
      */
     public function tagListBefore(?string $tag = null): string|PHPlater {
         return $this->tag(self::TAG_LIST_BEFORE, $tag ? preg_quote($tag) : $tag);
@@ -223,6 +226,7 @@ class PHPlater {
 
     /**
      * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
+     * @codeCoverageIgnore
      */
     public function tagListAfter(?string $tag = null): string|PHPlater {
         return $this->tag(self::TAG_LIST_AFTER, $tag ? preg_quote($tag) : $tag);
@@ -230,6 +234,7 @@ class PHPlater {
 
     /**
      * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
+     * @codeCoverageIgnore
      */
     public function tagBefore(?string $tag = null): string|PHPlater {
         return $this->tag(self::TAG_BEFORE, $tag);
@@ -237,6 +242,7 @@ class PHPlater {
 
     /**
      * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
+     * @codeCoverageIgnore
      */
     public function tagAfter(?string $tag = null): string|PHPlater {
         return $this->tag(self::TAG_AFTER, $tag);
@@ -244,6 +250,7 @@ class PHPlater {
 
     /**
      * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
+     * @codeCoverageIgnore
      */
     public function tagKey(?string $tag = null): string|PHPlater {
         return $this->tag(self::TAG_LIST_KEY, $tag);
@@ -251,6 +258,7 @@ class PHPlater {
 
     /**
      * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
+     * @codeCoverageIgnore
      */
     public function conditionalSeparators(string $if, string $else): PHPlater {
         return $this->tag(self::TAG_IF, $if)->tag(self::TAG_ELSE, $else);
@@ -258,6 +266,7 @@ class PHPlater {
 
     /**
      * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
+     * @codeCoverageIgnore
      */
     public function pregDelimiter(?string $delimiter = null): string|PHPlater {
         return $this->tag(self::TAG_DELIMITER, $delimiter);
@@ -265,6 +274,7 @@ class PHPlater {
 
     /**
      * @deprecated Deprecated since version v0.2.0 due to better naming, will be removed in v1.0.0
+     * @codeCoverageIgnore
      */
     public function delimiter(?string $delimiter = null): string|PHPlater {
         return $this->pregDelimiter($delimiter);
@@ -272,6 +282,7 @@ class PHPlater {
 
     /**
      * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
+     * @codeCoverageIgnore
      */
     public function filterSeperator(?string $seperator = null): string|PHPlater {
         return $this->tag(self::TAG_FILTER, $seperator);
@@ -279,6 +290,7 @@ class PHPlater {
 
     /**
      * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
+     * @codeCoverageIgnore
      */
     public function chainSeperator(?string $seperator = null): string|PHPlater {
         return $this->tag(self::TAG_CHAIN, $seperator);
@@ -286,6 +298,7 @@ class PHPlater {
 
     /**
      * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
+     * @codeCoverageIgnore
      */
     public function argumentSeperator(?string $seperator = null): string|PHPlater {
         return $this->tag(self::TAG_ARGUMENT, $seperator);
@@ -293,6 +306,7 @@ class PHPlater {
 
     /**
      * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
+     * @codeCoverageIgnore
      */
     public function argumentListSeperator(?string $seperator = null): string|PHPlater {
         return $this->tag(self::TAG_ARGUMENT_LIST, $seperator);
@@ -300,6 +314,7 @@ class PHPlater {
 
     /**
      * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
+     * @codeCoverageIgnore
      */
     public function ifSeperator(?string $seperator = null): string|PHPlater {
         return $this->tag(self::TAG_IF, $seperator);
@@ -307,6 +322,7 @@ class PHPlater {
 
     /**
      * @deprecated Deprecated since version v0.7.0 due to change in how accessed, will be removed in v1.0.0
+     * @codeCoverageIgnore
      */
     public function elseSeperator(?string $seperator = null): string|PHPlater {
         return $this->tag(self::TAG_ELSE, $seperator);
@@ -384,6 +400,7 @@ class PHPlater {
         $tag_before = stripslashes($this->tag(self::TAG_BEFORE));
         $tag_after = stripslashes($this->tag(self::TAG_AFTER));
         $content = $this->many() ? $tag_before . '0' . $tag_after : $this->result();
+
         $this->result($this->renderCallback($this->patternForVariable(), 'find', $content));
         if ($iterations-- && strstr($this->result(), $tag_before) && strstr($this->result(), $tag_after)) {
             return $this->render($this->result(), $iterations);

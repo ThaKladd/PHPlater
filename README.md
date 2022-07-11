@@ -208,10 +208,12 @@ Tag|Description|Example
 
 ## Test
 
-PHPUnit 9.5.0 is used. Run the following
+PHPUnit 9.5.21 is used. Download [phpunit.phar](https://phar.phpunit.de/) and, in the root folder of the project, run tests with
 ```
-vendor\bin\phpunit tests/PHPlaterTest.php
+php c:/path/to/phpunit.phar
 ```
+
+For code coverage, add " --coverage-text" to the command, and use [xDebug](https://xdebug.org/download) or similar of your choice.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

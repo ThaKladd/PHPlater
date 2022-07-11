@@ -1,6 +1,9 @@
 <?php
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers  PHPlater
+ */
 class PHPlaterTest extends TestCase {
 
     public $phplater;
@@ -38,14 +41,27 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->render
-     * @uses    PHPlater->plate
-     * @uses    PHPlater->content
-     * @uses    PHPlater->contentify
-     * @uses    PHPlater->ifJsonToArray
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::__construct
+     * @covers  PHPlater::tag
+     * @covers  PHPlater::tags
+     * @covers  PHPlater::tagsVariables
+     * @covers  PHPlater::tagsList
+     * @covers  PHPlater::tagsConditionals
+     */
+    public function testConstruct() {
+        $phplater = new PHPlater();
+        $this->assertEquals('::', $phplater->tag(PHPlater::TAG_ELSE));
+        $this->assertEquals(preg_quote('(('), $phplater->tag(PHPlater::TAG_CONDITIONAL_BEFORE));
+        $this->assertEquals(preg_quote('[['), $phplater->tag(PHPlater::TAG_LIST_BEFORE));
+        $this->assertEquals(preg_quote('{{'), $phplater->tag(PHPlater::TAG_BEFORE));
+    }
+
+    /**
+     * @covers  PHPlater::render
+     * @covers  PHPlater::plate
+     * @covers  PHPlater::result
+     * @covers  PHPlater::renderCallback
+     * @covers  PHPlater::patternForVariable
      */
     public function testSimpleRender() {
         $this->phplater->plate('string', 'ok');
@@ -64,14 +80,8 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->render
-     * @uses    PHPlater->plate
-     * @uses    PHPlater->content
-     * @uses    PHPlater->contentify
-     * @uses    PHPlater->ifJsonToArray
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::render
+     * @covers  PHPlater::plate
      */
     public function testVariableWhitespace() {
         $this->phplater->plate('string', 'is');
@@ -88,14 +98,9 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->render
-     * @uses    PHPlater->plate
-     * @uses    PHPlater->content
-     * @uses    PHPlater->contentify
-     * @uses    PHPlater->ifJsonToArray
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::render
+     * @covers  PHPlater::plate
+     * @covers  PHPlater::plates
      */
     public function testArrayAsPlates() {
         $this->phplater->plates(['assoc' => 'test', 2 => 'ok']);
@@ -104,14 +109,9 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->render
-     * @covers  PHPlater->plates
-     * @uses    PHPlater->content
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->contentify
-     * @uses    PHPlater->ifJsonToArray
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::render
+     * @covers  PHPlater::plates
+     * @covers  PHPlater::content
      */
     public function testAdvancedRender() {
         file_put_contents($this->tpl_file, '{{str}}, {{json.value}}, {{json.arr.0.value}}, {{obj.prop}}, {{obj.this.prop}}, {{obj.arr.arr.0}}, {{arr.arr.arr.value}}, {{arr.obj.prop}}');
@@ -128,15 +128,11 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->tag
-     * @covers  PHPlater->plate
-     * @covers  PHPlater->render
-     * @uses    PHPlater->content
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->contentify
-     * @uses    PHPlater->ifJsonToArray
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::tag
+     * @covers  PHPlater::plate
+     * @covers  PHPlater::render
+     * @covers  PHPlater::content
+     * @covers  PHPlater::extract
      */
     public function testChainSeperator() {
         $this->phplater->plate('arr', ['arr' => ['arr' => ['value' => 'ok']]]);
@@ -146,7 +142,7 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->ifJsonToArray
+     * @covers  PHPlater::ifJsonToArray
      */
     public function testIfJsonToArray() {
         $this->assertEquals(['value' => 'ok'], $this->phplater->ifJsonToArray('{"value": "ok"}'));
@@ -157,8 +153,7 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->contentify
-     * @uses    PHPlater->getSet
+     * @covers  PHPlater::contentify
      */
     public function testContentify() {
         file_put_contents($this->tpl_file, 'value ok');
@@ -167,9 +162,7 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->content
-     * @uses    PHPlater->contentify
-     * @uses    PHPlater->getSet
+     * @covers  PHPlater::content
      */
     public function testContent() {
         file_put_contents($this->tpl_file, 'value ok');
@@ -178,10 +171,7 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->content
-     * @uses    PHPlater->contentify
+     * @covers  PHPlater::render
      */
     public function testEmptyRender() {
         file_put_contents($this->tpl_file, '');
@@ -189,8 +179,7 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->plate
-     * @uses    PHPlater->getSet
+     * @covers  PHPlater::plate
      */
     public function testPlate() {
         $this->phplater->plate('test', 'ok');
@@ -198,12 +187,8 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->tagsVariables
-     * @covers  PHPlater->tag
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->render
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::tagsVariables
+     * @covers  PHPlater::tag
      */
     public function testTags() {
         $this->phplater->plate('string', 'ok');
@@ -214,11 +199,7 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->tag
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::tag
      */
     public function testDelimiter() {
         $this->phplater->plate('string', 'ok');
@@ -227,13 +208,10 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->filter
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
-     * @uses    PHPlater->getFiltersAndParts
-     * @uses    PHPlater->callFilters
+     * @covers  PHPlater::filter
+     * @covers  PHPlater::getFiltersAndParts
+     * @covers  PHPlater::extract
+     * @covers  PHPlater::callFilters
      */
     public function testFilter() {
         $this->phplater->filter('uppercase', 'mb_strtoupper');
@@ -264,15 +242,11 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->filter
-     * @covers  PHPlater->tag
-     * @uses    PHPlater->getFunctionAndArguments
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
-     * @uses    PHPlater->getFiltersAndParts
-     * @uses    PHPlater->callFilters
+     * @covers  PHPlater::filter
+     * @covers  PHPlater::tag
+     * @covers  PHPlater::getFunctionAndArguments
+     * @covers  PHPlater::extract
+     * @covers  PHPlater::callFilters
      */
     public function testFilterArguments() {
         $this->phplater->plate('testing', 'test');
@@ -283,15 +257,7 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->tag
-     * @uses    PHPlater->filter
-     * @uses    PHPlater->getFunctionAndArguments
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
-     * @uses    PHPlater->getFiltersAndParts
-     * @uses    PHPlater->callFilters
+     * @covers  PHPlater::tag
      */
     public function testArgumentSeperator() {
         $this->phplater->plate('testing', 'test');
@@ -303,15 +269,7 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->tag
-     * @uses    PHPlater->filter
-     * @uses    PHPlater->getFunctionAndArguments
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
-     * @uses    PHPlater->getFiltersAndParts
-     * @uses    PHPlater->callFilters
+     * @covers  PHPlater::tag
      */
     public function testArgumentListSeperator() {
         $this->phplater->plate('testing', 'test');
@@ -323,14 +281,7 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->tag
-     * @uses    PHPlater->filter
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
-     * @uses    PHPlater->getFiltersAndParts
-     * @uses    PHPlater->callFilters
+     * @covers  PHPlater::tag
      */
     public function testFilterSeperator() {
         $this->phplater->filter('uppercase', 'mb_strtoupper');
@@ -343,12 +294,7 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->many
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
-     * @uses    PHPlater->callFilters
+     * @covers  PHPlater::many
      */
     public function testMany() {
         $this->phplater->many(true)->plates([
@@ -361,13 +307,10 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->renderList
-     * @covers  PHPlater->findList
-     * @covers  PHPlater->getList
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::patternForList
+     * @covers  PHPlater::pattern
+     * @covers  PHPlater::findList
+     * @covers  PHPlater::getList
      */
     public function testListFirst() {
         $this->phplater->plates([
@@ -378,13 +321,10 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->renderList
-     * @covers  PHPlater->findList
-     * @covers  PHPlater->getList
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::patternForList
+     * @covers  PHPlater::pattern
+     * @covers  PHPlater::findList
+     * @covers  PHPlater::getList
      */
     public function testListOnly() {
         $this->phplater->plates(['this', 'ok']);
@@ -392,13 +332,10 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->renderList
-     * @covers  PHPlater->findList
-     * @covers  PHPlater->getList
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::patternForList
+     * @covers  PHPlater::pattern
+     * @covers  PHPlater::findList
+     * @covers  PHPlater::getList
      */
     public function testListLast() {
         $this->phplater->plates([
@@ -408,13 +345,10 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->renderList
-     * @covers  PHPlater->findList
-     * @covers  PHPlater->getList
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::patternForList
+     * @covers  PHPlater::pattern
+     * @covers  PHPlater::findList
+     * @covers  PHPlater::getList
      */
     public function testList() {
         $this->phplater->plates([
@@ -427,14 +361,11 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->tagsList
-     * @covers  PHPlater->renderList
-     * @covers  PHPlater->findList
-     * @covers  PHPlater->getList
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::tagsList
+     * @covers  PHPlater::patternForList
+     * @covers  PHPlater::pattern
+     * @covers  PHPlater::findList
+     * @covers  PHPlater::getList
      */
     public function testListTags() {
         $this->phplater->plates([
@@ -448,15 +379,12 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->renderList
-     * @covers  PHPlater->findList
-     * @covers  PHPlater->getList
-     * @covers  PHPlater->keyPattern
-     * @covers  PHPlater->replaceKeys
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::patternForList
+     * @covers  PHPlater::pattern
+     * @covers  PHPlater::findList
+     * @covers  PHPlater::getList
+     * @covers  PHPlater::patternForKey
+     * @covers  PHPlater::replaceKeys
      */
     public function testListAssocWithKey() {
         $this->phplater->plates([
@@ -468,16 +396,13 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->renderList
-     * @covers  PHPlater->findList
-     * @covers  PHPlater->getList
-     * @covers  PHPlater->keyPattern
-     * @covers  PHPlater->replaceKeys
-     * @covers  PHPlater->tag
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::patternForList
+     * @covers  PHPlater::pattern
+     * @covers  PHPlater::findList
+     * @covers  PHPlater::getList
+     * @covers  PHPlater::patternForKey
+     * @covers  PHPlater::replaceKeys
+     * @covers  PHPlater::tag
      */
     public function testListAssocWithKeyChange() {
         $this->phplater->plates([
@@ -490,13 +415,11 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->renderConditional
-     * @covers  PHPlater->findConditional
-     * @covers  PHPlater->evaluateOperation
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::doOpreration
+     * @covers  PHPlater::findConditional
+     * @covers  PHPlater::evaluateOperation
+     * @covers  PHPlater::patternForConditional
+     * @covers  PHPlater::pattern
      */
     public function testConditionals() {
         $this->phplater->plates([
@@ -513,13 +436,11 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->renderConditional
-     * @covers  PHPlater->findConditional
-     * @covers  PHPlater->tagsConditionals
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::doOpreration
+     * @covers  PHPlater::findConditional
+     * @covers  PHPlater::tagsConditionals
+     * @covers  PHPlater::patternForConditional
+     * @covers  PHPlater::pattern
      */
     public function testConditionalTags() {
         $this->phplater->plates([
@@ -537,13 +458,11 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->renderConditional
-     * @covers  PHPlater->findConditional
-     * @covers  PHPlater->evaluateOperation
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::doOpreration
+     * @covers  PHPlater::findConditional
+     * @covers  PHPlater::evaluateOperation
+     * @covers  PHPlater::patternForConditional
+     * @covers  PHPlater::pattern
      */
     public function testConditionalWhitespaces() {
         $this->phplater->plates([
@@ -563,13 +482,11 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->renderConditional
-     * @covers  PHPlater->findConditional
-     * @covers  PHPlater->evaluateOperation
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::doOpreration
+     * @covers  PHPlater::findConditional
+     * @covers  PHPlater::evaluateOperation
+     * @covers  PHPlater::patternForConditional
+     * @covers  PHPlater::pattern
      */
     public function testConditionalOperators() {
         $this->phplater->plates([
@@ -598,13 +515,11 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->renderConditional
-     * @covers  PHPlater->findConditional
-     * @covers  PHPlater->evaluateOperation
-     * @uses    PHPlater->render
-     * @uses    PHPlater->getSet
-     * @uses    PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::doOpreration
+     * @covers  PHPlater::findConditional
+     * @covers  PHPlater::evaluateOperation
+     * @covers  PHPlater::patternForConditional
+     * @covers  PHPlater::pattern
      */
     public function testConditionalOperatorWhitespace() {
         $this->phplater->plates([
@@ -633,9 +548,10 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater->render
-     * @covers  PHPlater->find
-     * @uses    PHPlater->extract
+     * @covers  PHPlater::render
+     * @covers  PHPlater::find
+     * @covers  PHPlater::plate
+     * @covers  PHPlater::content
      */
     public function testSameTemplateMultipleTimesWithChangingPlates() {
         $list = [
