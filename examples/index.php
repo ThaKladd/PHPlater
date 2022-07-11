@@ -10,8 +10,12 @@ $return = [];
 $runs = 1;
 for ($y = 0; $y < $runs; $y++) {
 
+    try {
+        $phplater = new PHPlater();
+    } catch (Exception $ex) {
+        echo '<pre>' . print_r($ex, true) . '</pre>';
+    }
 
-    $phplater = new PHPlater();
     $phplater->plate('test_plate', new TestPlate());
     $phplater->plate('test', new Test());
     $phplater->plate('plain', 'This text is injected directly into PHPlater');

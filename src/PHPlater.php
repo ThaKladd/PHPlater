@@ -9,6 +9,8 @@
  * @author  John Larsen
  * @license MIT
  */
+use Error\RuleBrokenError;
+
 class PHPlater {
 
     const TAG_BEFORE = 0;
@@ -34,14 +36,14 @@ class PHPlater {
      *  @type string $content Content of the template, either from string or file\
      *  @type string $result Where the result of the render is stored\
      *  @type array $plates Array of key value pairs that is the structure for the variables in the template. Can be multidimensional\
+     *  @type array $tags Array all the tags set, mapped to the constant\
      * }
      */
     private array $data = [
         'content' => '',
         'result' => '',
         'plates' => [],
-        'tags' => [],
-        'cache' => []
+        'tags' => []
     ];
 
     public function __construct() {
@@ -64,7 +66,6 @@ class PHPlater {
      * @access private
      * @param  string $key The key where data is stored or gotten from
      * @param  mixed $value If value other than null, it is stored in the key
-     *
      * @return mixed Returns either the data stored in key or the current object
      */
     private function getSet(string $key, object|array|string|int|float|bool|null $value = null): mixed {
@@ -80,7 +81,6 @@ class PHPlater {
      *
      * @access public
      * @param  mixed $data Url to file or a text string, if null returns null
-     *
      * @return mixed Returns content as a string or null if no data
      */
     public function contentify(?string $data): string|null {
@@ -92,7 +92,6 @@ class PHPlater {
      *
      * @access public
      * @param  mixed $data If valid json, return array
-     *
      * @return mixed Returns valid content as an array if it is an json
      */
     public function ifJsonToArray(mixed $data): mixed {
@@ -108,7 +107,6 @@ class PHPlater {
      *
      * @access private
      * @param  mixed $data String if the aim is to store the result, null if it is to get the stored result
-     *
      * @return mixed Returns result as a string or this if result is set
      */
     private function result(?string $data = null): string|PHPlater {
@@ -121,7 +119,6 @@ class PHPlater {
      * @access public
      * @param  string $tag_constant The constant to set or get tag with
      * @param  string $tag The tag string, if you want to set the tag
-     *
      * @return mixed The current PHPlater object if a set, the string tag if it is get
      */
     public function tag(int $tag_constant, string|null $tag = null): string|PHPlater {
@@ -137,7 +134,6 @@ class PHPlater {
      *
      * @access public
      * @param  string $tags an array with constant as key, and tag as value
-     *
      * @return mixed The current PHPlater object or an array with all the tags
      */
     public function tags(null|array $tags = null): array|PHPlater {
@@ -159,13 +155,12 @@ class PHPlater {
      * @access public
      * @param  string $before Tag before variable in template
      * @param  string $after Tag after variable in template
-     *
      * @return this The current PHPlater object
      */
     public function tagsVariables(string $before, string $after): PHPlater {
         return $this->tags([
-            self::TAG_BEFORE => preg_quote($before),
-            self::TAG_AFTER => preg_quote($after)
+                    self::TAG_BEFORE => preg_quote($before),
+                    self::TAG_AFTER => preg_quote($after)
         ]);
     }
 
@@ -178,13 +173,12 @@ class PHPlater {
      * @access public
      * @param  string $before Tag before list template in template
      * @param  string $after Tag after list template in template
-     *
      * @return this The current PHPlater object
      */
     public function tagsList(string $before, string $after): PHPlater {
         return $this->tags([
-            self::TAG_LIST_BEFORE => preg_quote($before),
-            self::TAG_LIST_AFTER => preg_quote($after)
+                    self::TAG_LIST_BEFORE => preg_quote($before),
+                    self::TAG_LIST_AFTER => preg_quote($after)
         ]);
     }
 
@@ -197,13 +191,12 @@ class PHPlater {
      * @access public
      * @param  string $before Tag before conditional template in template
      * @param  string $after Tag after conditional template in template
-     *
      * @return this The current PHPlater object
      */
     public function tagsConditionals(string $before, string $after): PHPlater {
         return $this->tags([
-            self::TAG_CONDITIONAL_BEFORE => preg_quote($before),
-            self::TAG_CONDITIONAL_AFTER => preg_quote($after)
+                    self::TAG_CONDITIONAL_BEFORE => preg_quote($before),
+                    self::TAG_CONDITIONAL_AFTER => preg_quote($after)
         ]);
     }
 
@@ -324,7 +317,6 @@ class PHPlater {
      *
      * @access public
      * @param  $many true or false(default) according to whether or not there are many plates to iterate over
-     *
      * @return mixed Either bool value, or the current PHPlater object
      */
     public function many(?bool $many = null): bool|PHPlater {
@@ -338,7 +330,6 @@ class PHPlater {
      *
      * @access public
      * @param  mixed $plates Either array with plates, json as string, or null to get all plates
-     *
      * @return mixed The array of all the plates or the current object or current PHPlater if set
      */
     public function plates(null|string|array $plates = null): array|PHPlater {
@@ -350,7 +341,6 @@ class PHPlater {
      *
      * @access public
      * @param  mixed $data Url to file, a text string to set template, or null to return template
-     *
      * @return mixed Current template as string, or the current object if data is set
      */
     public function content(?string $data = null): string|PHPlater {
@@ -365,7 +355,6 @@ class PHPlater {
      * @access public
      * @param  string $name The key position for where the plate is stored
      * @param  mixed $plate Object, array or string to store in the key position, or null to get the data in the key position
-     *
      * @return mixed Plate asked for if it is a get operation, or the current object if data is set
      */
     public function plate(string $name, object|array|string|int|float|bool|null $plate = null): mixed {
@@ -385,8 +374,7 @@ class PHPlater {
      *
      * @access public
      * @param  mixed $template Optional. The template to act upon if it is not set earlier.
-     * @param  int $iterations To allow for nested plates, or variables that return variables, you can choose the amount of iterations that are to be done to the template
-     *
+     * @param  int $iterations To allow for variables that return variables, you can choose the amount of iterations
      * @return string The finished result after all plates are applied to the template
      */
     public function render(?string $template = null, int $iterations = 1): string {
@@ -402,7 +390,6 @@ class PHPlater {
         }
         return $this->content();
     }
-
 
     /**
      * Renders the content with a callback to a method
@@ -420,7 +407,6 @@ class PHPlater {
      * Get the pattern used to fetch all the variable tags in the template
      *
      * @access private
-     *
      * @return string The pattern for preg_replace_callback
      */
     private function patternForVariable(): string {
@@ -432,7 +418,6 @@ class PHPlater {
      * Get the pattern used to fetch all the variable tags in the template
      *
      * @access private
-     *
      * @return string The pattern for preg_replace_callback
      */
     private function pattern(int $before, string $pattern, int $after): string {
@@ -446,7 +431,6 @@ class PHPlater {
      * Get the pattern used to fetch all the keys in the template list
      *
      * @access private
-     *
      * @return string The pattern for preg_replace_callback
      */
     private function patternForKey(): string {
@@ -458,7 +442,6 @@ class PHPlater {
      * Get the pattern used for list
      *
      * @access private
-     *
      * @return string The pattern for preg_replace_callback
      */
     private function patternForList(): string {
@@ -470,7 +453,6 @@ class PHPlater {
      * Get the pattern used for conditional
      *
      * @access private
-     *
      * @return string The pattern for preg_replace_callback
      */
     private function patternForConditional(): string {
@@ -482,7 +464,6 @@ class PHPlater {
      *
      * @access private
      * @param  array $match The matched regular expression from renderList
-     *
      * @return string The result after rendering all elements in the list
      */
     private function findList(array $match): string {
@@ -494,15 +475,15 @@ class PHPlater {
         $tag_last = end($all_before_parts) == '' ? '' : $tag_chain;
         $tag_first = reset($all_before_parts) == '' ? '' : $tag_chain;
         $core_parts = explode($tag_chain, $all_before_parts[0]);
-        $elements = [];
+        $elements = '';
         $phplater = (new PHPlater())->plates($this->plates());
         $list = $this->getList($this->plates(), $core_parts);
         foreach ($list as $key => $item) {
-            $new_template = str_replace($tag_list, $tag_first . $key . $tag_last, $match['x']);
-            $new_template = $this->replaceKeys($new_template, $key, $key_pattern);
-            $elements[] = $phplater->render($new_template);
+            $replaced_template = str_replace($tag_list, $tag_first . $key . $tag_last, $match['x']);
+            $new_template = $this->replaceKeys($replaced_template, $key, $key_pattern);
+            $elements .= $phplater->render($new_template);
         }
-        return implode('', $elements);
+        return $elements;
     }
 
     /**
@@ -527,28 +508,35 @@ class PHPlater {
      *
      * @access private
      * @param  array $match The matched regular expression from renderConditional
-     *
      * @return string The result after rendering all conditionals
      */
     private function findConditional(array $match): string {
         $phplater = (new PHPlater())->plates($this->plates());
         $splitted_conditional = explode($this->tag(self::TAG_IF), $match['x']);
         $condition = trim($splitted_conditional[0]);
-        $operators = ['\={3}', '\={2}', '\!\={2}', '\!\={1}', '\<\=\>', '\>\=', '\<\=', '\<\>', '\>', '\<', '%', '&{2}', '\|{2}', 'xor', 'and', 'or'];
-        preg_match('/.+\s*(' . implode('|', $operators) . ')\s*.+/U', $condition, $matches);
-        $rendered_condition = false;
-        if (isset($matches[1]) && $matches[1]) {
-            $a_and_b = explode($matches[1], $condition);
-            $a = trim($phplater->render($a_and_b[0]));
-            $b = trim($phplater->render($a_and_b[1]));
-            $rendered_condition = $this->evaluateOperation($a, $matches[1], $b);
-        } else {
-            $rendered_condition = $phplater->render($condition);
-        }
+        $rendered_condition = $this->doOpreration($phplater, $condition);
         $splitted_if_else = explode($this->tag(self::TAG_ELSE), $splitted_conditional[1]);
         $ifTrue = trim($splitted_if_else[0] ?? '');
         $ifFalse = trim($splitted_if_else[1] ?? '');
         return $rendered_condition ? $phplater->render($ifTrue) : $phplater->render($ifFalse);
+    }
+
+    /**
+     * Does the render, renders operation if operand is found
+     *
+     * @param PHPLater $phplater PHPLater instance to render with
+     * @param string $condition The condition of the conditional
+     * @return bool|string
+     */
+    private function doOpreration(PHPLater $phplater, string $condition): bool|string {
+        $operators = ['\={3}', '\={2}', '\!\={2}', '\!\={1}', '\<\=\>', '\>\=', '\<\=', '\<\>', '\>', '\<', '%', '&{2}', '\|{2}', 'xor', 'and', 'or'];
+        if (preg_match('/.+\s*(' . implode('|', $operators) . ')\s*.+/U', $condition, $matches)) {
+            $a_and_b = explode($matches[1], $condition);
+            $a = trim($phplater->render($a_and_b[0]));
+            $b = trim($phplater->render($a_and_b[1]));
+            return $this->evaluateOperation($a, $matches[1], $b);
+        }
+        return $phplater->render($condition);
     }
 
     /**
@@ -558,13 +546,13 @@ class PHPlater {
      * @param  string $a The first value
      * @param  string $operator The operand to evaluate first and second value with
      * @param  string $b The second value
-     *
      * @return bool|int The result after evaluating the values with the given operand
      */
     private function evaluateOperation(string $a, string $operator, string $b): bool|int {
         $a = is_numeric($a) ? (int) $a : $a;
         $b = is_numeric($b) ? (int) $b : $b;
-        return match ($operator) {
+
+        $match = match ($operator) {
             '==' => $a == $b,
             '!==' => $a !== $b,
             '===' => $a === $b,
@@ -579,8 +567,9 @@ class PHPlater {
             '||', 'or' => $a || $b,
             'xor' => $a xor $b,
             '%' => $a % $b,
-            default => $a
+            default => throw new RuleBrokenError('Found no matching operator for "' . $operator . '".')
         };
+        return $match;
     }
 
     /**
@@ -589,7 +578,6 @@ class PHPlater {
      * @access private
      * @param array $plates The plates array
      * @param type $array List of values to iterate in plates
-     *
      * @return array
      */
     private function getList(array $plates, array $array = []): string|array {
@@ -608,7 +596,6 @@ class PHPlater {
      *
      * @access private
      * @param  array $match The matched regular expression from render
-     *
      * @return string The result after exchanging all the matched plates
      */
     private function find(array $match): string {
@@ -635,7 +622,6 @@ class PHPlater {
      * @access public
      * @param  mixed $filter The name of the filter, either when set or when called
      * @param  string $value The callable function, or the argument to call function with
-     *
      * @return mixed The result of the called function, the function itself, or the current PHPlater object
      */
     public function filter(string $filter, callable|string|null|array $value = null): int|string|callable|PHPlater {
@@ -659,7 +645,6 @@ class PHPlater {
      *
      * @access private
      * @param  string $plate The plate string
-     *
      * @return array Nesting parts and filters separated into array
      */
     private function getFiltersAndParts(string $plate): array {
@@ -673,7 +658,6 @@ class PHPlater {
      *
      * @access private
      * @param  string $plate The filter string
-     *
      * @return array Filter as first, arguments in second
      */
     private function getFunctionAndArguments(string $filter): array {
@@ -687,7 +671,6 @@ class PHPlater {
      * @access private
      * @param  mixed $plate The last plate to check action on
      * @param  string $part The key of the plate to extract value from
-     *
      * @return mixed The content of the plate, to be acted upon on the next variable depth
      */
     private function extract(object|array|string|int|float|bool|null $plate, string $part): mixed {

@@ -3,7 +3,7 @@ Search.appendIndex(
                 {
             "fqsen": "\\PHPlater",
             "name": "PHPlater",
-            "summary": "The\u0020PHPlater\u0020class,\u0020a\u0020simple\u0020template\u0020engine.",
+            "summary": "",
             "url": "classes/PHPlater.html"
         },                {
             "fqsen": "\\PHPlater\u003A\u003A__construct\u0028\u0029",
@@ -206,6 +206,11 @@ Search.appendIndex(
             "summary": "Finds\u0020the\u0020conditionals\u0020and\u0020exchanges\u0020the\u0020position\u0020with\u0020the\u0020rendering\u0020and\u0020subsequent\u0020evaluation\u0020of\u0020values\u0020and\u0020then\u0020renders\u0020the\u0020result",
             "url": "classes/PHPlater.html#method_findConditional"
         },                {
+            "fqsen": "\\PHPlater\u003A\u003AdoOpreration\u0028\u0029",
+            "name": "doOpreration",
+            "summary": "Does\u0020the\u0020render,\u0020renders\u0020operation\u0020if\u0020operand\u0020is\u0020found",
+            "url": "classes/PHPlater.html#method_doOpreration"
+        },                {
             "fqsen": "\\PHPlater\u003A\u003AevaluateOperation\u0028\u0029",
             "name": "evaluateOperation",
             "summary": "Method\u0020to\u0020return\u0020value\u0020of\u0020operation\u0020when\u0020done\u0020with\u0020a\u0020matched\u0020string\u0020operand",
@@ -321,9 +326,19 @@ Search.appendIndex(
             "summary": "All\u0020data\u0020is\u0020managed\u0020within\u0020this\u0020one\u0020property\u0020array.",
             "url": "classes/PHPlater.html#property_data"
         },                {
+            "fqsen": "\\Error\\RuleBrokenError",
+            "name": "RuleBrokenError",
+            "summary": "",
+            "url": "classes/Error-RuleBrokenError.html"
+        },                {
             "fqsen": "\\",
             "name": "\\",
             "summary": "",
             "url": "namespaces/default.html"
+        },                {
+            "fqsen": "\\Error",
+            "name": "Error",
+            "summary": "",
+            "url": "namespaces/error.html"
         }            ]
 );
