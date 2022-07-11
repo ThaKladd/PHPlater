@@ -8,6 +8,8 @@ As a backend developer, I want to do most of the logic in PHP, and when to seper
 - [Installation](#installation)
 - [Simple Usage](#simple-usage)
 - [Advanced Usage](#advanced-usage)
+- [Tags](#tags)
+- [Test](#test)
 - [Contributing](#contributing)
 - [Documentation](#documentation)
 - [License](#licence)
