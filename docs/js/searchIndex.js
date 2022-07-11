@@ -161,25 +161,45 @@ Search.appendIndex(
             "summary": "Run\u0020to\u0020render\u0020the\u0020template",
             "url": "classes/PHPlater.html#method_render"
         },                {
+            "fqsen": "\\PHPlater\u003A\u003ArenderCallback\u0028\u0029",
+            "name": "renderCallback",
+            "summary": "Renders\u0020the\u0020content\u0020with\u0020a\u0020callback\u0020to\u0020a\u0020method",
+            "url": "classes/PHPlater.html#method_renderCallback"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003ApatternForVariable\u0028\u0029",
+            "name": "patternForVariable",
+            "summary": "Get\u0020the\u0020pattern\u0020used\u0020to\u0020fetch\u0020all\u0020the\u0020variable\u0020tags\u0020in\u0020the\u0020template",
+            "url": "classes/PHPlater.html#method_patternForVariable"
+        },                {
             "fqsen": "\\PHPlater\u003A\u003Apattern\u0028\u0029",
             "name": "pattern",
-            "summary": "Get\u0020the\u0020pattern\u0020used\u0020to\u0020fetch\u0020all\u0020the\u0020tags\u0020in\u0020the\u0020template",
+            "summary": "Get\u0020the\u0020pattern\u0020used\u0020to\u0020fetch\u0020all\u0020the\u0020variable\u0020tags\u0020in\u0020the\u0020template",
             "url": "classes/PHPlater.html#method_pattern"
         },                {
-            "fqsen": "\\PHPlater\u003A\u003ArenderList\u0028\u0029",
-            "name": "renderList",
-            "summary": "Render\u0020the\u0020lists\u0020in\u0020template\u0020if\u0020they\u0020are\u0020there",
-            "url": "classes/PHPlater.html#method_renderList"
+            "fqsen": "\\PHPlater\u003A\u003ApatternForKey\u0028\u0029",
+            "name": "patternForKey",
+            "summary": "Get\u0020the\u0020pattern\u0020used\u0020to\u0020fetch\u0020all\u0020the\u0020keys\u0020in\u0020the\u0020template\u0020list",
+            "url": "classes/PHPlater.html#method_patternForKey"
         },                {
-            "fqsen": "\\PHPlater\u003A\u003ArenderConditional\u0028\u0029",
-            "name": "renderConditional",
-            "summary": "Render\u0020the\u0020conditional\u0020in\u0020template\u0020if\u0020they\u0020are\u0020there",
-            "url": "classes/PHPlater.html#method_renderConditional"
+            "fqsen": "\\PHPlater\u003A\u003ApatternForList\u0028\u0029",
+            "name": "patternForList",
+            "summary": "Get\u0020the\u0020pattern\u0020used\u0020for\u0020list",
+            "url": "classes/PHPlater.html#method_patternForList"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003ApatternForConditional\u0028\u0029",
+            "name": "patternForConditional",
+            "summary": "Get\u0020the\u0020pattern\u0020used\u0020for\u0020conditional",
+            "url": "classes/PHPlater.html#method_patternForConditional"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AfindList\u0028\u0029",
             "name": "findList",
             "summary": "Finds\u0020the\u0020list\u0020variable\u0020and\u0020exchanges\u0020the\u0020position\u0020with\u0020the\u0020keys,\u0020and\u0020then\u0020renders\u0020the\u0020result",
             "url": "classes/PHPlater.html#method_findList"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003AreplaceKeys\u0028\u0029",
+            "name": "replaceKeys",
+            "summary": "Replaces\u0020the\u0020key\u0020tags\u0020with\u0020the\u0020current\u0020key\u0020in\u0020list",
+            "url": "classes/PHPlater.html#method_replaceKeys"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AfindConditional\u0028\u0029",
             "name": "findConditional",
