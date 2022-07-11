@@ -4,7 +4,9 @@
     "keywords": [
         "PHP",
         "Template",
-        "Templating"
+        "Templating",
+        "Template engine",
+        "tpl"
     ],
     "homepage": "https://github.com/ThaKladd/PHPlater",
     "type": "library",
