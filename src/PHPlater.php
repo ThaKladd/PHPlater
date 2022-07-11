@@ -379,16 +379,16 @@ class PHPlater {
      */
     public function render(?string $template = null, int $iterations = 1): string {
         $this->content($template);
-        $this->content($this->renderCallback($this->patternForList(), 'findList', $this->content()));
-        $this->content($this->renderCallback($this->patternForConditional(), 'findConditional', $this->content()));
+        $this->result($this->renderCallback($this->patternForList(), 'findList', $this->content()));
+        $this->result($this->renderCallback($this->patternForConditional(), 'findConditional', $this->result()));
         $tag_before = stripslashes($this->tag(self::TAG_BEFORE));
         $tag_after = stripslashes($this->tag(self::TAG_AFTER));
-        $content = $this->many() ? $tag_before . '0' . $tag_after : $this->content();
-        $this->content($this->renderCallback($this->patternForVariable(), 'find', $content));
-        if ($iterations-- && strstr($this->content(), $tag_before) && strstr($this->content(), $tag_after)) {
-            return $this->render($this->content(), $iterations);
+        $content = $this->many() ? $tag_before . '0' . $tag_after : $this->result();
+        $this->result($this->renderCallback($this->patternForVariable(), 'find', $content));
+        if ($iterations-- && strstr($this->result(), $tag_before) && strstr($this->result(), $tag_after)) {
+            return $this->render($this->result(), $iterations);
         }
-        return $this->content();
+        return $this->result();
     }
 
     /**
@@ -602,7 +602,7 @@ class PHPlater {
         if ($this->many()) {
             $all_plates = '';
             foreach ($this->plates() as $plates) {
-                $all_plates .= (new PHPlater())->plates($plates)->render($this->content());
+                $all_plates .= (new PHPlater())->plates($plates)->render($this->result());
             }
             return $all_plates;
         }

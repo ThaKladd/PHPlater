@@ -632,4 +632,22 @@ class PHPlaterTest extends TestCase {
         $this->assertEquals('16. this is ok', $this->phplater->render('16. this is (( {{ list.0.value.2 }}xor{{ list.0.value.0 }} ?? ok :: not ok ))'));
     }
 
+    /**
+     * @covers  PHPlater->render
+     * @covers  PHPlater->find
+     * @uses    PHPlater->extract
+     */
+    public function testSameTemplateMultipleTimesWithChangingPlates() {
+        $list = [
+            ['this', 'is', 'ok'],
+            ['this', 'is', 'ok too']
+        ];
+        $this->phplater->content('{{item.0}} {{item.1}} {{item.2}}');
+        $result = [];
+        foreach ($list as $item) {
+            $result[] = $this->phplater->plate('item', $item)->render();
+        }
+        $this->assertEquals('this is ok and this is ok too', implode(' and ', $result));
+    }
+
 }
