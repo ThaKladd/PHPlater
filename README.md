@@ -187,7 +187,7 @@ Operator|Description
 and|And
 \|\||Or
 or|Or
-xor|Either one or the other but not both
+xor|Either, but not both
 
 ## Tags
 There are a minimal amount of tags to remeber in PHPlater, and almost all of them are changeable
