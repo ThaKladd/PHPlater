@@ -210,6 +210,7 @@ Tag|Description|Example
 (( and ))|Start and end tag for conditional expression|`(( {{var}} ?? true :: false ))`
 ??|Tag after condition, followed by true result|`(( {{var}} ?? true ))`
 ::|Tag after true result, followed by false result|`(( {{var}} ?? :: false ))`
+~|Default preg delimiter|
 
 ## Test
 

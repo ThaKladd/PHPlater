@@ -1,5 +1,6 @@
 <?php
 use PHPUnit\Framework\TestCase;
+use Error\RuleBrokenError;
 
 /**
  * @covers  PHPlater
@@ -564,6 +565,14 @@ class PHPlaterTest extends TestCase {
             $result[] = $this->phplater->plate('item', $item)->render();
         }
         $this->assertEquals('this is ok and this is ok too', implode(' and ', $result));
+    }
+
+    /**
+     * @covers  Error\RuleBrokenError
+     */
+    public function testOperationException() {
+        $this->expectException(RuleBrokenError::class);
+        $this->phplater->render('(( value % value ?? true :: false ))');
     }
 
 }

@@ -57,7 +57,7 @@ class PHPlater {
         $this->tag(self::TAG_ARGUMENT_LIST, ',');
         $this->tag(self::TAG_CHAIN, '.');
         $this->tag(self::TAG_FILTER, '|');
-        $this->tag(self::TAG_DELIMITER, '|');
+        $this->tag(self::TAG_DELIMITER, '~');
     }
 
     /**
@@ -124,6 +124,13 @@ class PHPlater {
     public function tag(int $tag_constant, string|null $tag = null): string|PHPlater {
         if ($tag === null) {
             return $this->data['tags'][$tag_constant] ?? '';
+        }
+        if ($tag_constant == self::TAG_DELIMITER) {
+            if (strlen($tag) > 1) {
+                throw new RuleBrokenError('Preg delimiter can not be over 1 in length.');
+            } else if (ctype_alnum($tag) || $tag == '\\') {
+                throw new RuleBrokenError('Preg Delimiter can not be alphanumeric or backslash.');
+            }
         }
         $this->data['tags'][$tag_constant] = $tag;
         return $this;
@@ -568,7 +575,7 @@ class PHPlater {
     private function evaluateOperation(string $a, string $operator, string $b): bool|int {
         $a = is_numeric($a) ? (int) $a : $a;
         $b = is_numeric($b) ? (int) $b : $b;
-
+        $either_is_string = is_string($a) || is_string($b);
         $match = match ($operator) {
             '==' => $a == $b,
             '!==' => $a !== $b,
@@ -583,7 +590,7 @@ class PHPlater {
             '&&', 'and' => $a && $b,
             '||', 'or' => $a || $b,
             'xor' => $a xor $b,
-            '%' => $a % $b,
+            '%' => ($either_is_string ? throw new RuleBrokenError('Modulo can only be used with numbers. Values are "' . $a . '" and "' . $b . '".') : $a % $b),
             default => throw new RuleBrokenError('Found no matching operator for "' . $operator . '".')
         };
         return $match;
