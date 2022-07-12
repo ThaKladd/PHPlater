@@ -4,6 +4,7 @@
 - Fixed a few major issues
 - Refactored lot of code
 - Updated phpUnit tests to use phar
+- Changed preg delimiter to ~
 # v0.7.0
 ## Key tag
 - Added key tag for getting key from lists
