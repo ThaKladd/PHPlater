@@ -18,9 +18,10 @@ class PHPlater extends PHPlaterBase {
      * @access public
      * @param  string $template Optional to put in template as argument to constructor
      */
-    public function __construct(?string $template = null) {
+    public function __construct(?string $template = null, string $root = '') {
         $this->core($this);
         $this->extension('.tpl');
+        $this->root($root);
         $this->plates([]);
         $phplater_tag = $this->get(self::CLASS_TAG);
         $phplater_tag->tagsConditionals('((', '))');
