@@ -8,18 +8,8 @@
  * @author  John Larsen
  * @license MIT
  */
-use Error\RuleBrokenError;
 
 class PHPlaterFilter extends PHPlaterBase {
-
-    /**
-     * Creates PHPlaterFilter object and initializes it
-     *
-     * @access public
-     */
-    public function __construct(PHPLater $phplater) {
-        $this->core($phplater);
-    }
 
      /**
      * Adds and gets the filter function, as well as calls it
@@ -55,18 +45,18 @@ class PHPlaterFilter extends PHPlaterBase {
      * @return array Filter as first, arguments in second
      */
     private function getFunctionAndArguments(string $filter): array {
-        $parts = explode(PHPlaterTag::tag(PHPlaterTag::TAG_ARGUMENT), $filter);
-        return [$this->filter($parts[0]), isset($parts[1]) ? explode(PHPlaterTag::tag(PHPlaterTag::TAG_ARGUMENT_LIST), $parts[1]) : []];
+        $parts = explode($this->tag(PHPlaterTag::TAG_ARGUMENT), $filter);
+        return [$this->filter($parts[0]), isset($parts[1]) ? explode($this->tag(PHPlaterTag::TAG_ARGUMENT_LIST), $parts[1]) : []];
     }
 
     /**
      * Checks if there are filters on the plate, and applies them
      *
-     * @access private
+     * @access public
      * @param mixed $plate The plate to check
      * @return mixed The plate, or if filters applied then the resulting string
      */
-    private function callFilters(object|array|string|int|float|bool|null $plate, array $filters = []): mixed {
+    public function callFilters(object|array|string|int|float|bool|null $plate, array $filters = []): mixed {
         foreach ($filters as $filter) {
             $plate = $this->filter($filter, $plate);
         }

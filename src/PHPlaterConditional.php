@@ -13,15 +13,6 @@ use Error\RuleBrokenError;
 class PHPlaterConditional extends PHPlaterBase {
     
     /**
-     * Creates PHPlaterConditional object and initializes it
-     *
-     * @access public
-     */
-    public function __construct(PHPLater $phplater) {
-        $this->core($phplater);
-    }
-
-    /**
      * Get the pattern used for conditional
      *
      * @access public

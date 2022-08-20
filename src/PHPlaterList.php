@@ -8,18 +8,8 @@
  * @author  John Larsen
  * @license MIT
  */
-use Error\RuleBrokenError;
 
 class PHPlaterList extends PHPlaterBase {
-
-    /**
-     * Creates PHPlaterList object and initializes it
-     *
-     * @access public
-     */
-    public function __construct(PHPLater $phplater) {
-        $this->core($phplater);
-    }
 
     /**
      * Finds and returns the list from the location ['one', 'two', 'three'] in plates
@@ -45,9 +35,9 @@ class PHPlaterList extends PHPlaterBase {
      * @return string The result after rendering all elements in the list
      */
     public function find(array $match): string {
-        preg_match_all($this->core()->get(PHPlater::CLASS_VARIABLE)->pattern(), $match['x'], $matches);
+        preg_match_all($this->core()->get(self::CLASS_VARIABLE)->pattern(), $match['x'], $matches);
         $tag_chain = $this->tag(PHPlaterTag::TAG_CHAIN);
-        $key_pattern = $this->core()->get(PHPlater::CLASS_KEY)->pattern();
+        $key_pattern = $this->core()->get(self::CLASS_KEY)->pattern();
         $tag_list = $tag_chain . $tag_chain;
         $all_before_parts = explode($tag_list, $matches['x'][0]);
         $tag_last = end($all_before_parts) == '' ? '' : $tag_chain;
@@ -56,16 +46,11 @@ class PHPlaterList extends PHPlaterBase {
         $elements = '';
         $phplater = (new PHPlater())->plates($this->core()->plates());
         $list = $this->getList($this->core()->plates(), $core_parts);
-        if(is_array($list)) {
-            foreach ($list as $key => $item) {
-                $replaced_template = str_replace($tag_list, $tag_first . $key . $tag_last, $match['x']);
-                $new_template = $this->replaceKeys($replaced_template, $key, $key_pattern);
-                $elements .= $phplater->render($new_template);
-            }
-        } else {
-            $elements .= $list;
+        foreach ($list as $key => $item) {
+            $replaced_template = str_replace($tag_list, $tag_first . $key . $tag_last, $match['x']);
+            $new_template = $this->replaceKeys($replaced_template, $key, $key_pattern);
+            $elements .= $phplater->render($new_template);
         }
-        
         return $elements;
     }
 
@@ -76,8 +61,8 @@ class PHPlaterList extends PHPlaterBase {
      * @return string The pattern for preg_replace_callback
      */
     public function pattern(): string {
-        $tags = preg_quote($this->tag(PHPlaterTag::TAG_FILTER) . $this->tag(PHPlaterTag::TAG_ARGUMENT) . $this->tag(PHPlaterTag::TAG_CHAIN));
-        return $this->buildPattern(PHPlaterTag::TAG_BEFORE, '\s*(?P<x>[\w,\-' . $tags . ']+?)\s*', PHPlaterTag::TAG_AFTER);
+        $tag_chain = preg_quote($this->tag(PHPlaterTag::TAG_CHAIN));
+        return $this->buildPattern(PHPlaterTag::TAG_LIST_BEFORE, '(?P<x>.+' . $tag_chain . $tag_chain . '.+?)', PHPlaterTag::TAG_LIST_AFTER);
     }
 
     /**

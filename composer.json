@@ -1,12 +1,14 @@
 {
     "name": "phplater/phplater",
-    "description": "A simple PHP template engine that lets PHP do all the logic and then append it to the HTML in the template file.",
+    "description": "A simple PHP template engine that lets PHP do most the logic and then append it to the HTML in the template file.",
     "keywords": [
         "PHP",
         "Template",
         "Templating",
         "Template engine",
-        "tpl"
+        "tpl",
+        "PHP templates",
+        "Templates"
     ],
     "homepage": "https://github.com/ThaKladd/PHPlater",
     "type": "library",
@@ -14,7 +16,8 @@
     "autoload": {
         "psr-4": {
             "": "src/"
-        }
+        },
+        "files": ["src/functions.php"]
     },
     "authors": [
         {

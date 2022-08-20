@@ -13,26 +13,43 @@ use Error\RuleBrokenError;
 
 class PHPlaterBase {
 
-    public static $root = '';
-    public static $extension = '.tpl';
+    const CLASS_VARIABLE = 'PHPlaterVariable';
+    const CLASS_LIST = 'PHPlaterList';
+    const CLASS_CONDITIONAL = 'PHPlaterConditional';
+    const CLASS_FILTER = 'PHPlaterFilter';
+    const CLASS_TAG = 'PHPlaterTag';
+    const CLASS_KEY = 'PHPlaterKey';
+
     protected $core = null;
 
     /**
-     * All data is managed within this one property array.
-     * Defaults are set in constructor, and they can be hidden inside array.
+     * Creates the object and initializes it
      *
-     * @var array $data {\
-     *  @type string $content Content of the template, either from string or file\
-     *  @type string $result Where the result of the render is stored\
-     *  @type array $plates Array of key value pairs that is the structure for the variables in the template. Can be multidimensional\
-     *  @type array $tags Array all the tags set, mapped to the constant\
-     * }
+     * @access public
      */
-    protected array $data = [
-        'content' => '',
-        'result' => '',
-        'plates' => []
-    ];
+    public function __construct(PHPLater $phplater) {
+        $this->core($phplater);
+    }
+
+    /**
+     * All data is managed within this one property array.
+     * Defaults are set in constructors
+     */
+    protected $data = [];
+    protected $instances = [];
+
+    /**
+     * Get the instance of the object on demand
+     *
+     * @access public
+     * @param  string $const get the current instance of the corresponding class
+     */
+    public function get(string $const){
+        if(!isset($this->instances[$const])){
+            $this->instances[$const] = new $const($this);
+        }
+        return $this->instances[$const];
+    }
     
     /**
      * Quick shortcut for getting and setting data inside current object
@@ -65,35 +82,6 @@ class PHPlaterBase {
     }
 
     /**
-     * Get and set the root folder of templates
-     *
-     * @access public
-     * @param  string $location Location to root folder of templates
-     * @return string Returns location to templates
-     */
-    public static function root(?string $location = null): string {
-        if(is_null($location)){
-            return self::$root;
-        }
-        return self::$root = $location;
-    }
-
-    /**
-     * Get and set the template extension, if set, the extension is not needed to be used
-     * Default: .tpl
-     *
-     * @access public
-     * @param  string $extension of the template file
-     * @return string Returns extension of the template file
-     */
-    public static function extension(?string $extension = null): string {
-        if(is_null($extension)){
-            return self::$extension;
-        }
-        return self::$extension = $extension;
-    }
-
-    /**
      * Will manage the input so that if it is json it converted to an array, otherwise input is returned
      *
      * @access public
@@ -120,28 +108,6 @@ class PHPlaterBase {
         $delimiter = $this->tag(PHPlaterTag::TAG_DELIMITER);
         return $delimiter . $tag_before . $pattern . $tag_after . $delimiter;
     }
-
-    /**
-     * Stub for pattern implementation
-     *
-     * @access public
-     * @return string
-     */
-    public function pattern(): string {
-        return '';
-    }
-
-    /**
-     * Stub for find implementation
-     *
-     * @access public
-     * @param  array
-     * @return string
-     */
-    public function find(array $match): string {
-        return '';
-    }
-
     
     /**
      * Set or get tag by a constant
@@ -152,7 +118,7 @@ class PHPlaterBase {
      * @return mixed The current object if a set, the string tag if it is get
      */
     public function tag(int $tag_constant, string|null $tag = null): string|PHPlaterTag {
-        return $this->core()->get(PHPlater::CLASS_TAG)->tag($tag_constant, $tag);
+        return $this->core()->get(self::CLASS_TAG)->tag($tag_constant, $tag);
     }
 
     /**
@@ -167,7 +133,7 @@ class PHPlaterBase {
      * @return self The current object
      */
     public function tagsVariables(string $before, string $after): PHPlaterTag {
-        return $this->core()->get(PHPlater::CLASS_TAG)->tagsVariables($before, $after);
+        return $this->core()->get(self::CLASS_TAG)->tagsVariables($before, $after);
     }
    
     /**
@@ -182,7 +148,7 @@ class PHPlaterBase {
      * @return self The current object
      */
     public function tagsConditionals(string $before, string $after): PHPlaterTag {
-        return $this->core()->get(PHPlater::CLASS_TAG)->tagsConditionals($before, $after);
+        return $this->core()->get(self::CLASS_TAG)->tagsConditionals($before, $after);
     }
 
     /**
@@ -197,10 +163,17 @@ class PHPlaterBase {
      * @return self The current object
      */
     public function tagsList(string $before, string $after): PHPlaterTag {
-        return $this->core()->get(PHPlater::CLASS_TAG)->tagsList($before, $after);
+        return $this->core()->get(self::CLASS_TAG)->tagsList($before, $after);
     }
 
-    public function debug($value){
+    /**
+     * Quick debugging
+     *
+     * @access public
+     * @param  mixed $value Whatever value to debug
+     * @return void
+     */
+    public function debug(mixed $value): void {
         echo PHP_EOL.'DEBUG > '.print_r($value, true).' < DEBUG'.PHP_EOL;
     }
 }

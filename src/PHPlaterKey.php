@@ -8,19 +8,9 @@
  * @author  John Larsen
  * @license MIT
  */
-use Error\RuleBrokenError;
 
 class PHPlaterKey extends PHPlaterBase {
     
-    /**
-     * Creates PHPlaterKey object and initializes it
-     *
-     * @access public
-     */
-    public function __construct(PHPLater $phplater) {
-        $this->core($phplater);
-    }
-
     /**
      * Get the pattern used to fetch all the keys in the template list
      *

@@ -298,7 +298,8 @@ class PHPlaterTest extends TestCase {
      * @covers  PHPlater::many
      */
     public function testMany() {
-        $this->phplater->many(true)->plates([
+        $this->phplater->many(true);
+        $this->phplater->plates([
             ['value' => ['this']],
             ['value' => ['test']],
             ['value' => ['is']],

@@ -8,29 +8,8 @@
  * @author  John Larsen
  * @license MIT
  */
-use Error\RuleBrokenError;
 
 class PHPlaterVariable extends PHPlaterBase {
-
-    /**
-     * Creates PHPlaterVariable object and initializes it
-     *
-     * @access public
-     */
-    public function __construct(PHPLater $phplater) {
-        $this->core($phplater);
-    }
-    
-    /**
-     * If the template is to be iterated over a collection of plates, then this method has to be called with true
-     *
-     * @access public
-     * @param  $many true or false(default) according to whether or not there are many plates to iterate over
-     * @return mixed Either bool value, or the current object
-     */
-    public function many(?bool $many = null): bool|object {
-        return $this->getSet('many', $many);
-    }
 
     /**
      * Get the pattern used to fetch all the variable tags in the template
@@ -54,7 +33,7 @@ class PHPlaterVariable extends PHPlaterBase {
      * @return string The result after exchanging all the matched plates
      */
     public function find(array $match): string {
-        if ($this->many()) {
+        if ($this->core()->many()) {
             $all_plates = '';
             foreach ($this->core()->plates() as $plates) {
                 $all_plates .= (new PHPlater())->plates($plates)->render($this->core()->result());
@@ -66,7 +45,7 @@ class PHPlaterVariable extends PHPlaterBase {
         foreach ($parts as $part) {
             $plate = $this->extract($this->ifJsonToArray($plate), $part);
         }
-        return $this->core()->get(PHPlater::CLASS_FILTER)->callFilters($plate, $filters);
+        return $this->core()->get(self::CLASS_FILTER)->callFilters($plate, $filters);
     }
 
     /**

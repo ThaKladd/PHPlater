@@ -9,17 +9,8 @@
  * @author  John Larsen
  * @license MIT
  */
-use Error\RuleBrokenError;
 
 class PHPlater extends PHPlaterBase {
-    const CLASS_VARIABLE = 'PHPlaterVariable';
-    const CLASS_LIST = 'PHPlaterList';
-    const CLASS_CONDITIONAL = 'PHPlaterConditional';
-    const CLASS_FILTER = 'PHPlaterFilter';
-    const CLASS_TAG = 'PHPlaterTag';
-    const CLASS_KEY = 'PHPlaterKey';
-
-    private $instances = [];
 
     /**
      * Creates PHPLater object and initializes it
@@ -29,6 +20,8 @@ class PHPlater extends PHPlaterBase {
      */
     public function __construct(?string $template = null) {
         $this->core($this);
+        $this->extension('.tpl');
+        $this->plates([]);
         $phplater_tag = $this->get(self::CLASS_TAG);
         $phplater_tag->tagsConditionals('((', '))');
         $phplater_tag->tagsVariables('{{', '}}');
@@ -47,16 +40,26 @@ class PHPlater extends PHPlaterBase {
     }
 
     /**
-     * Get the instance of the object on demand
+     * Get and set the root folder of templates
      *
      * @access public
-     * @param  string $const get the current instance of the corresponding class
+     * @param  string $location Location to root folder of templates
+     * @return string Returns location to templates
      */
-    public function get(string $const){
-        if(!isset($this->instances[$const])){
-            $this->instances[$const] = new $const($this);
-        }
-        return $this->instances[$const];
+    public function root(?string $location = null): string|PHPLater {
+        return $this->getSet('location', $location);
+    }
+
+    /**
+     * Get and set the template extension, if set, the extension is not needed to be used
+     * Default: .tpl
+     *
+     * @access public
+     * @param  string $extension of the template file
+     * @return string Returns extension of the template file
+     */
+    public function extension(?string $extension = null): string|PHPLater {
+        return $this->getSet('extension', $extension);
     }
 
     /**
@@ -94,6 +97,17 @@ class PHPlater extends PHPlaterBase {
         }
         return $data;
     }
+    
+    /**
+     * If the template is to be iterated over a collection of plates, then this method has to be called with true
+     *
+     * @access public
+     * @param  $many true or false(default) according to whether or not there are many plates to iterate over
+     * @return mixed Either bool value, or the current object
+     */
+    public function many(?bool $many = null): bool|object {
+        return $this->getSet('many', $many);
+    }
 
     /**
      * Stores the result of the variable to value change in template for each run
@@ -104,18 +118,6 @@ class PHPlater extends PHPlaterBase {
      */
     public function result(?string $data = null): string|PHPlater {
         return $this->getSet('result', $data);
-    }
-
-    /**
-     * Calls the many method on the correct class
-     *
-     * @access public
-     * @param  $many true or false(default) according to whether or not there are many plates to iterate over
-     * @return mixed Either bool value, or the current PHPlater object
-     */
-    public function many(?bool $many = null): bool|PHPlater {
-        $this->get(self::CLASS_VARIABLE)->many($many);
-        return $this;
     }
 
     /**
@@ -180,12 +182,11 @@ class PHPlater extends PHPlaterBase {
         $this->result($this->renderCallback($this->get(self::CLASS_LIST), $this->content()));
         $this->result($this->renderCallback($this->get(self::CLASS_CONDITIONAL), $this->result()));
         
-        $phplater_variable = $this->get(self::CLASS_VARIABLE);
         $tag_before = stripslashes($this->tag(PHPlaterTag::TAG_BEFORE));
         $tag_after = stripslashes($this->tag(PHPlaterTag::TAG_AFTER));
-        $content = $phplater_variable->many() ? $tag_before . '0' . $tag_after : $this->result();
+        $content = $this->many() ? $tag_before . '0' . $tag_after : $this->result();
 
-        $this->result($this->renderCallback($phplater_variable, $content));
+        $this->result($this->renderCallback($this->get(self::CLASS_VARIABLE), $content));
         if ($iterations-- && strstr($this->result(), $tag_before) && strstr($this->result(), $tag_after)) {
             return $this->render($this->result(), $iterations);
         }
@@ -200,9 +201,6 @@ class PHPlater extends PHPlaterBase {
      * @return string The resulting content
      */
     private function renderCallback(object $class, string $content): string {
-        //[$class, 'find']
-        //function($matches) use ($class) { return $class->find($matches); }
-        //echo $class->pattern().'-----'.PHP_EOL.PHP_EOL;
         return preg_replace_callback($class->pattern(), [$class, 'find'], $content);
     }
 }
