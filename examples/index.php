@@ -3,6 +3,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 $start_time = microtime(true);
 require '../vendor/autoload.php';
+require '../src/PHPLater.php';
 include 'classes/TestPlate.php';
 include 'classes/Test.php';
 
