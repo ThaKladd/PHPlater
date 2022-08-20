@@ -9,10 +9,11 @@
  * @author  John Larsen
  * @license MIT
  */
-use Error\RuleBrokenError;
 
 class PHPlaterBase {
 
+    const CLASS_BASE = 'PHPlaterBase';
+    const CLASS_CORE = 'PHPlater';
     const CLASS_VARIABLE = 'PHPlaterVariable';
     const CLASS_LIST = 'PHPlaterList';
     const CLASS_CONDITIONAL = 'PHPlaterConditional';
@@ -23,6 +24,13 @@ class PHPlaterBase {
     protected $core = null;
 
     /**
+     * All data is managed within this one property array.
+     * Defaults are set in constructors
+     */
+    protected $data = [];
+    protected $instances = [];
+
+    /**
      * Creates the object and initializes it
      *
      * @access public
@@ -30,13 +38,6 @@ class PHPlaterBase {
     public function __construct(PHPLater $phplater) {
         $this->core($phplater);
     }
-
-    /**
-     * All data is managed within this one property array.
-     * Defaults are set in constructors
-     */
-    protected $data = [];
-    protected $instances = [];
 
     /**
      * Get the instance of the object on demand
@@ -78,7 +79,7 @@ class PHPlaterBase {
         if(!is_null($phplater)){
             $this->core = $phplater;
         }
-        return $this->core;
+        return $this->core ?? $this;
     }
 
     /**
@@ -174,6 +175,6 @@ class PHPlaterBase {
      * @return void
      */
     public function debug(mixed $value): void {
-        echo PHP_EOL.'DEBUG > '.print_r($value, true).' < DEBUG'.PHP_EOL;
+        echo PHP_EOL.'DEBUG > <pre>'.print_r($value, true).'</pre> < DEBUG'.PHP_EOL;
     }
 }

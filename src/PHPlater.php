@@ -9,6 +9,7 @@
  * @author  John Larsen
  * @license MIT
  */
+use Error\RuleBrokenError;
 
 class PHPlater extends PHPlaterBase {
 
@@ -82,21 +83,33 @@ class PHPlater extends PHPlaterBase {
      * @return mixed Returns content as a string or null if no data
      */
     public function contentify(?string $data): string|null {
-        if($data === null){
+        if($data === null || trim($data) === ''){
             return null;
         }
-        $is_tpl = substr($data, -strlen($this->extension())) == $this->extension();
-        if(strlen($data) > 200 && !$is_tpl){
+
+        $contain_tag = str_contains($data, $this->tag(PHPlaterTag::TAG_BEFORE));
+        $contain_conditional = str_contains($data, $this->tag(PHPlaterTag::TAG_CONDITIONAL_BEFORE));
+        $contain_list = str_contains($data, $this->tag(PHPlaterTag::TAG_LIST_BEFORE));
+        if(str_contains($data, ' ') || $contain_tag || $contain_conditional || $contain_list){
             return $data;
         }
+
+        $is_tpl_file = substr($data, -strlen($this->extension())) == $this->extension();
+        $is_tpl_file = $is_tpl_file ? $is_tpl_file : strpos($data, $this->extension()) > 1;
+        if(!$is_tpl_file){
+            return $data;
+        }
+
         $location = $this->root() . $data;
-        if($is_tpl && is_file($location)){
-            return file_get_contents($location);
+        $file_contents = null;
+        if($is_tpl_file){
+            $file_contents = is_file($location) ? file_get_contents($location) : '';
         }
-        if(!$is_tpl && is_file($location . $this->extension())){
-            return file_get_contents($location . $this->extension());
+        if(!$is_tpl_file && !$file_contents){
+            $location = $location . $this->extension();
+            $file_contents = is_file($location) ? file_get_contents($location) : '';
         }
-        return $data;
+        return $file_contents !== null ? $file_contents : $data;
     }
     
     /**
@@ -180,14 +193,19 @@ class PHPlater extends PHPlaterBase {
      */
     public function render(?string $template = null, int $iterations = 1): string {
         $this->content($template);
-        $this->result($this->renderCallback($this->get(self::CLASS_LIST), $this->content()));
-        $this->result($this->renderCallback($this->get(self::CLASS_CONDITIONAL), $this->result()));
-        
+        $this->result($this->content());
+        if(str_contains($this->result(), stripslashes($this->tag(PHPlaterTag::TAG_LIST_BEFORE)))){
+            $this->result($this->renderCallback($this->get(self::CLASS_LIST), $this->result()));
+        }
+        if(str_contains($this->result(), stripslashes($this->tag(PHPlaterTag::TAG_CONDITIONAL_BEFORE)))){
+            $this->result($this->renderCallback($this->get(self::CLASS_CONDITIONAL), $this->result()));
+        }
         $tag_before = stripslashes($this->tag(PHPlaterTag::TAG_BEFORE));
         $tag_after = stripslashes($this->tag(PHPlaterTag::TAG_AFTER));
         $content = $this->many() ? $tag_before . '0' . $tag_after : $this->result();
-
-        $this->result($this->renderCallback($this->get(self::CLASS_VARIABLE), $content));
+        if(str_contains($content, stripslashes($this->tag(PHPlaterTag::TAG_BEFORE)))){
+            $this->result($this->renderCallback($this->get(self::CLASS_VARIABLE), $content));
+        }
         if ($iterations-- && strstr($this->result(), $tag_before) && strstr($this->result(), $tag_after)) {
             return $this->render($this->result(), $iterations);
         }

@@ -8,7 +8,7 @@ include 'classes/TestPlate.php';
 include 'classes/Test.php';
 
 $return = [];
-$runs = 1;
+$runs = 100;
 for ($y = 0; $y < $runs; $y++) {
 
     try {
@@ -29,7 +29,6 @@ for ($y = 0; $y < $runs; $y++) {
     $phplater->plate('no_file', $phplater_from_text->render());
     $phpplater_json = new PHPlater();
     $phpplater_json->plates('{"eight": "Kahdeksan"}');
-
     $phplater_array = new PHPlater();
     $phplater_array->plates([
         'one' => 'Yksi',

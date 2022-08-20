@@ -10,6 +10,8 @@
 - Templates can be used without extension
 - Refactored the code into multiple classes
 - Reworked tests for the new syntaxes
+- Added more error handling
+- Added quick access function
 
 ## v0.8.0
 
