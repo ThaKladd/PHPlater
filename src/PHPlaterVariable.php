@@ -36,8 +36,9 @@ class PHPlaterVariable extends PHPlaterBase {
         $phplater = $this->core();
         if ($phplater->many()) {
             $all_plates = '';
+            $phplater_new = new PHPlater();
             foreach ($phplater->plates() as $plates) {
-                $all_plates .= (new PHPlater())->plates($plates)->render($phplater->result());
+                $all_plates .= $phplater_new->plates($plates)->render($phplater->result());
             }
             return $all_plates;
         }

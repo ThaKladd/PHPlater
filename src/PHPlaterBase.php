@@ -43,7 +43,8 @@ class PHPlaterBase {
      */
     protected $data = [];
     protected $instances = [];
-
+    public static $tags = [];
+    
     /**
      * Creates the object and initializes it
      *
@@ -124,7 +125,6 @@ class PHPlaterBase {
         return $delimiter . $tag_before . $pattern . $tag_after . $delimiter;
     }
     
-    public static $tags = [];
     /**
      * Set or get tag by a constant
      *
