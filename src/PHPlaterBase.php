@@ -1,14 +1,14 @@
 <?php
 
 /**
- * The PHPlater class, a simple template engine.
- *
- * This class can either be used as is or extended by another object.
- * The musts is to add a template, and to map the variables there to the plates in this object, and then run render to return the result.
+ * The PHPlaterBase class
+ * 
+ * PHPlater objects extends this class to get access to its features
  *
  * @author  John Larsen
  * @license MIT
  */
+use Error\RuleBrokenError;
 
 class PHPlaterBase {
 
@@ -18,8 +18,22 @@ class PHPlaterBase {
     const CLASS_LIST = 'PHPlaterList';
     const CLASS_CONDITIONAL = 'PHPlaterConditional';
     const CLASS_FILTER = 'PHPlaterFilter';
-    const CLASS_TAG = 'PHPlaterTag';
     const CLASS_KEY = 'PHPlaterKey';
+
+    const TAG_BEFORE = 0;
+    const TAG_AFTER = 1;
+    const TAG_LIST_BEFORE = 2;
+    const TAG_LIST_AFTER = 3;
+    const TAG_LIST_KEY = 4;
+    const TAG_CONDITIONAL_BEFORE = 5;
+    const TAG_CONDITIONAL_AFTER = 6;
+    const TAG_IF = 7;
+    const TAG_ELSE = 8;
+    const TAG_ARGUMENT = 9;
+    const TAG_ARGUMENT_LIST = 10;
+    const TAG_CHAIN = 11;
+    const TAG_FILTER = 12;
+    const TAG_DELIMITER = 13;
 
     protected $core = null;
 
@@ -79,7 +93,7 @@ class PHPlaterBase {
         if(!is_null($phplater)){
             $this->core = $phplater;
         }
-        return $this->core ?? $this;
+        return $this->core ? $this->core : $this;
     }
 
     /**
@@ -106,10 +120,11 @@ class PHPlaterBase {
     protected function buildPattern(int $before, string $pattern, int $after): string {
         $tag_before = $this->tag($before);
         $tag_after = $this->tag($after);
-        $delimiter = $this->tag(PHPlaterTag::TAG_DELIMITER);
+        $delimiter = $this->tag(self::TAG_DELIMITER);
         return $delimiter . $tag_before . $pattern . $tag_after . $delimiter;
     }
     
+    public static $tags = [];
     /**
      * Set or get tag by a constant
      *
@@ -118,8 +133,20 @@ class PHPlaterBase {
      * @param  string $tag The tag string, if you want to set the tag
      * @return mixed The current object if a set, the string tag if it is get
      */
-    public function tag(int $tag_constant, string|null $tag = null): string|PHPlaterTag {
-        return $this->core()->get(self::CLASS_TAG)->tag($tag_constant, $tag);
+    public function tag(int $tag_constant, string|null $tag = null): string|null {
+        if($tag === null){
+            return self::$tags[$tag_constant];
+        } else {
+            if ($tag_constant === self::TAG_DELIMITER) {
+                if (strlen($tag) > 1) {
+                    throw new RuleBrokenError('Preg delimiter can not be over 1 in length.');
+                } else if (ctype_alnum($tag) || $tag == '\\') {
+                    throw new RuleBrokenError('Preg Delimiter can not be alphanumeric or backslash.');
+                }
+            }
+            self::$tags[$tag_constant] = $tag;
+        }
+        return null;
     }
 
     /**
@@ -131,10 +158,13 @@ class PHPlaterBase {
      * @access public
      * @param  string $before Tag before variable in template
      * @param  string $after Tag after variable in template
-     * @return self The current object
+     * @return void
      */
-    public function tagsVariables(string $before, string $after): PHPlaterTag {
-        return $this->core()->get(self::CLASS_TAG)->tagsVariables($before, $after);
+    public function tagsVariables(string $before, string $after): void {
+        $this->tags([
+            self::TAG_BEFORE => preg_quote($before),
+            self::TAG_AFTER => preg_quote($after)
+        ]);
     }
    
     /**
@@ -146,10 +176,13 @@ class PHPlaterBase {
      * @access public
      * @param  string $before Tag before conditional template in template
      * @param  string $after Tag after conditional template in template
-     * @return self The current object
+     * @return void
      */
-    public function tagsConditionals(string $before, string $after): PHPlaterTag {
-        return $this->core()->get(self::CLASS_TAG)->tagsConditionals($before, $after);
+    public function tagsConditionals(string $before, string $after): void {
+        $this->tags([
+            self::TAG_CONDITIONAL_BEFORE => preg_quote($before),
+            self::TAG_CONDITIONAL_AFTER => preg_quote($after)
+        ]);
     }
 
     /**
@@ -161,10 +194,30 @@ class PHPlaterBase {
      * @access public
      * @param  string $before Tag before list template in template
      * @param  string $after Tag after list template in template
-     * @return self The current object
+     * @return void
      */
-    public function tagsList(string $before, string $after): PHPlaterTag {
-        return $this->core()->get(self::CLASS_TAG)->tagsList($before, $after);
+    public function tagsList(string $before, string $after): void {
+        $this->tags([
+            self::TAG_LIST_BEFORE => preg_quote($before),
+            self::TAG_LIST_AFTER => preg_quote($after)
+        ]);
+    }
+
+    /**
+     * Set all tags you want in one method or get all tags that are set
+     *
+     * @access public
+     * @param  array $tags an array with constant as key, and tag as value
+     * @return mixed The current object or an array with all the tags
+     */
+    public function tags(null|array $tags = null): array|null {
+        if ($tags === null) {
+            return $this->tags;
+        }
+        foreach ($tags as $const => $tag) {
+            $this->tag($const, $tag);
+        }
+        return null;
     }
 
     /**

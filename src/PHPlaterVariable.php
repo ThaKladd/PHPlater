@@ -1,9 +1,9 @@
 <?php
 
 /**
- * The PHPlaterConditional class
+ * The PHPlaterVariable class
  *
- * This class manages the conditionals within PHPlater.
+ * This class manages the variables within PHPlater.
  *
  * @author  John Larsen
  * @license MIT
@@ -18,8 +18,8 @@ class PHPlaterVariable extends PHPlaterBase {
      * @return string The pattern for preg_replace_callback
      */
     public function pattern(): string {
-        $tags = preg_quote($this->tag(PHPlaterTag::TAG_FILTER) . $this->tag(PHPlaterTag::TAG_ARGUMENT) . $this->tag(PHPlaterTag::TAG_CHAIN));
-        return $this->buildPattern(PHPlaterTag::TAG_BEFORE, '\s*(?P<x>[\w,\-' . $tags . ']+?)\s*', PHPlaterTag::TAG_AFTER);
+        $tags = preg_quote($this->tag(self::TAG_FILTER) . $this->tag(self::TAG_ARGUMENT) . $this->tag(self::TAG_CHAIN));
+        return $this->buildPattern(self::TAG_BEFORE, '\s*(?P<x>[\w,\-' . $tags . ']+?)\s*', self::TAG_AFTER);
     }
 
     /**
@@ -33,19 +33,20 @@ class PHPlaterVariable extends PHPlaterBase {
      * @return string The result after exchanging all the matched plates
      */
     public function find(array $match): string {
-        if ($this->core()->many()) {
+        $phplater = $this->core();
+        if ($phplater->many()) {
             $all_plates = '';
-            foreach ($this->core()->plates() as $plates) {
-                $all_plates .= (new PHPlater())->plates($plates)->render($this->core()->result());
+            foreach ($phplater->plates() as $plates) {
+                $all_plates .= (new PHPlater())->plates($plates)->render($phplater->result());
             }
             return $all_plates;
         }
         [$parts, $filters] = $this->getFiltersAndParts($match['x']);
-        $plate = $this->core()->plate(array_shift($parts));
+        $plate = $phplater->plate(array_shift($parts));
         foreach ($parts as $part) {
             $plate = $this->extract($this->ifJsonToArray($plate), $part);
         }
-        return $this->core()->get(self::CLASS_FILTER)->callFilters($plate, $filters);
+        return $phplater->get(self::CLASS_FILTER)->callFilters($plate, $filters);
     }
 
     /**
@@ -56,9 +57,9 @@ class PHPlaterVariable extends PHPlaterBase {
      * @return array Nesting parts and filters separated into array
      */
     private function getFiltersAndParts(string $plate): array {
-        $parts = explode($this->tag(PHPlaterTag::TAG_FILTER), $plate);
+        $parts = explode($this->tag(self::TAG_FILTER), $plate);
         $first_part = array_shift($parts);
-        return [explode($this->tag(PHPlaterTag::TAG_CHAIN), $first_part), $parts];
+        return [explode($this->tag(self::TAG_CHAIN), $first_part), $parts];
     }
 
     /**

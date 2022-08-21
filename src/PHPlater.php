@@ -9,7 +9,6 @@
  * @author  John Larsen
  * @license MIT
  */
-use Error\RuleBrokenError;
 
 class PHPlater extends PHPlaterBase {
 
@@ -24,19 +23,18 @@ class PHPlater extends PHPlaterBase {
         $this->extension('.tpl');
         $this->root($root);
         $this->plates([]);
-        $phplater_tag = $this->get(self::CLASS_TAG);
-        $phplater_tag->tagsConditionals('((', '))');
-        $phplater_tag->tagsVariables('{{', '}}');
-        $phplater_tag->tagsList('[[', ']]');
-        $phplater_tag->tags([
-            PHPlaterTag::TAG_ARGUMENT => ':',
-            PHPlaterTag::TAG_ARGUMENT_LIST => ',',
-            PHPlaterTag::TAG_CHAIN => '.',
-            PHPlaterTag::TAG_FILTER => '|',
-            PHPlaterTag::TAG_IF => '??',
-            PHPlaterTag::TAG_ELSE => '::',
-            PHPlaterTag::TAG_LIST_KEY => '#',
-            PHPlaterTag::TAG_DELIMITER => '~'
+        $this->tagsConditionals('((', '))');
+        $this->tagsVariables('{{', '}}');
+        $this->tagsList('[[', ']]');
+        $this->tags([
+            self::TAG_ARGUMENT => ':',
+            self::TAG_ARGUMENT_LIST => ',',
+            self::TAG_CHAIN => '.',
+            self::TAG_FILTER => '|',
+            self::TAG_IF => '??',
+            self::TAG_ELSE => '::',
+            self::TAG_LIST_KEY => '#',
+            self::TAG_DELIMITER => '~'
         ]);
         $this->content($template);
     }
@@ -87,9 +85,9 @@ class PHPlater extends PHPlaterBase {
             return null;
         }
 
-        $contain_tag = str_contains($data, $this->tag(PHPlaterTag::TAG_BEFORE));
-        $contain_conditional = str_contains($data, $this->tag(PHPlaterTag::TAG_CONDITIONAL_BEFORE));
-        $contain_list = str_contains($data, $this->tag(PHPlaterTag::TAG_LIST_BEFORE));
+        $contain_tag = str_contains($data, $this->tag(self::TAG_BEFORE));
+        $contain_conditional = str_contains($data, $this->tag(self::TAG_CONDITIONAL_BEFORE));
+        $contain_list = str_contains($data, $this->tag(self::TAG_LIST_BEFORE));
         if(str_contains($data, ' ') || $contain_tag || $contain_conditional || $contain_list){
             return $data;
         }
@@ -173,8 +171,8 @@ class PHPlater extends PHPlaterBase {
      */
     public function plate(string $name, object|array|string|int|float|bool|null $plate = null): mixed {
         if ($plate === null) {
-            $tag_before = stripslashes($this->tag(PHPlaterTag::TAG_BEFORE));
-            $tag_after = stripslashes($this->tag(PHPlaterTag::TAG_AFTER));
+            $tag_before = stripslashes($this->tag(self::TAG_BEFORE));
+            $tag_after = stripslashes($this->tag(self::TAG_AFTER));
             return $this->data['plates'][$name] ?? $tag_before . $name . $tag_after;
         }
         $this->data['plates'][$name] = $this->ifJsonToArray($plate);
@@ -194,16 +192,16 @@ class PHPlater extends PHPlaterBase {
     public function render(?string $template = null, int $iterations = 1): string {
         $this->content($template);
         $this->result($this->content());
-        if(str_contains($this->result(), stripslashes($this->tag(PHPlaterTag::TAG_LIST_BEFORE)))){
+        if(str_contains($this->result(), stripslashes($this->tag(self::TAG_LIST_BEFORE)))){
             $this->result($this->renderCallback($this->get(self::CLASS_LIST), $this->result()));
         }
-        if(str_contains($this->result(), stripslashes($this->tag(PHPlaterTag::TAG_CONDITIONAL_BEFORE)))){
+        if(str_contains($this->result(), stripslashes($this->tag(self::TAG_CONDITIONAL_BEFORE)))){
             $this->result($this->renderCallback($this->get(self::CLASS_CONDITIONAL), $this->result()));
         }
-        $tag_before = stripslashes($this->tag(PHPlaterTag::TAG_BEFORE));
-        $tag_after = stripslashes($this->tag(PHPlaterTag::TAG_AFTER));
+        $tag_before = stripslashes($this->tag(self::TAG_BEFORE));
+        $tag_after = stripslashes($this->tag(self::TAG_AFTER));
         $content = $this->many() ? $tag_before . '0' . $tag_after : $this->result();
-        if(str_contains($content, stripslashes($this->tag(PHPlaterTag::TAG_BEFORE)))){
+        if(str_contains($content, $tag_before)) {
             $this->result($this->renderCallback($this->get(self::CLASS_VARIABLE), $content));
         }
         if ($iterations-- && strstr($this->result(), $tag_before) && strstr($this->result(), $tag_after)) {

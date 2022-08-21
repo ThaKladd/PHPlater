@@ -1,9 +1,9 @@
 <?php
 
 /**
- * The PHPlaterConditional class
+ * The PHPlaterList class
  *
- * This class manages the conditionals within PHPlater.
+ * This class manages the lists within PHPlater.
  *
  * @author  John Larsen
  * @license MIT
@@ -36,7 +36,7 @@ class PHPlaterList extends PHPlaterBase {
      */
     public function find(array $match): string {
         preg_match_all($this->core()->get(self::CLASS_VARIABLE)->pattern(), $match['x'], $matches);
-        $tag_chain = $this->tag(PHPlaterTag::TAG_CHAIN);
+        $tag_chain = $this->tag(self::TAG_CHAIN);
         $key_pattern = $this->core()->get(self::CLASS_KEY)->pattern();
         $tag_list = $tag_chain . $tag_chain;
         $all_before_parts = explode($tag_list, $matches['x'][0]);
@@ -44,12 +44,11 @@ class PHPlaterList extends PHPlaterBase {
         $tag_first = reset($all_before_parts) == '' ? '' : $tag_chain;
         $core_parts = explode($tag_chain, $all_before_parts[0]);
         $elements = '';
-        $phplater = (new PHPlater())->plates($this->core()->plates());
         $list = $this->getList($this->core()->plates(), $core_parts);
         foreach ($list as $key => $item) {
             $replaced_template = str_replace($tag_list, $tag_first . $key . $tag_last, $match['x']);
             $new_template = $this->replaceKeys($replaced_template, $key, $key_pattern);
-            $elements .= $phplater->render($new_template);
+            $elements .= $this->core()->render($new_template);
         }
         return $elements;
     }
@@ -61,8 +60,8 @@ class PHPlaterList extends PHPlaterBase {
      * @return string The pattern for preg_replace_callback
      */
     public function pattern(): string {
-        $tag_chain = preg_quote($this->tag(PHPlaterTag::TAG_CHAIN));
-        return $this->buildPattern(PHPlaterTag::TAG_LIST_BEFORE, '(?P<x>.+' . $tag_chain . $tag_chain . '.+?)', PHPlaterTag::TAG_LIST_AFTER);
+        $tag_chain = preg_quote($this->tag(self::TAG_CHAIN));
+        return $this->buildPattern(self::TAG_LIST_BEFORE, '(?P<x>.+' . $tag_chain . $tag_chain . '.+?)', self::TAG_LIST_AFTER);
     }
 
     /**

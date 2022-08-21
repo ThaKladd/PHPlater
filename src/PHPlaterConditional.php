@@ -19,7 +19,7 @@ class PHPlaterConditional extends PHPlaterBase {
      * @return string The pattern for preg_replace_callback
      */
     public function pattern(): string {
-        return $this->buildPattern(PHPlaterTag::TAG_CONDITIONAL_BEFORE, '(?P<x>.+?)', PHPlaterTag::TAG_CONDITIONAL_AFTER);
+        return $this->buildPattern(self::TAG_CONDITIONAL_BEFORE, '(?P<x>.+?)', self::TAG_CONDITIONAL_AFTER);
     }
 
     /**
@@ -30,32 +30,30 @@ class PHPlaterConditional extends PHPlaterBase {
      * @return string The result after rendering all conditionals
      */
     public function find(array $match): string {
-        $phplater = (new PHPlater())->plates($this->core()->plates());
-        $splitted_conditional = explode($this->tag(PHPlaterTag::TAG_IF), $match['x']);
+        $splitted_conditional = explode($this->tag(self::TAG_IF), $match['x']);
         $condition = trim($splitted_conditional[0]);
-        $rendered_condition = $this->doOpreration($phplater, $condition);
-        $splitted_if_else = explode($this->tag(PHPlaterTag::TAG_ELSE), $splitted_conditional[1]);
+        $rendered_condition = $this->doOpreration($condition);
+        $splitted_if_else = explode($this->tag(self::TAG_ELSE), $splitted_conditional[1]);
         $ifTrue = trim($splitted_if_else[0] ?? '');
         $ifFalse = trim($splitted_if_else[1] ?? '');
-        return $rendered_condition ? $phplater->render($ifTrue) : $phplater->render($ifFalse);
+        return $this->core()->render($rendered_condition ? $ifTrue : $ifFalse);
     }
 
     /**
      * Does the render, renders operation if operand is found
      *
-     * @param PHPLater $phplater PHPLater instance to render with
      * @param string $condition The condition of the conditional
      * @return bool|string
      */
-    private function doOpreration(PHPLater $phplater, string $condition): bool|string {
+    private function doOpreration(string $condition): bool|string {
         $operators = ['\={3}', '\={2}', '\!\={2}', '\!\={1}', '\<\=\>', '\>\=', '\<\=', '\<\>', '\>', '\<', '%', '&{2}', '\|{2}', 'xor', 'and', 'or'];
         if (preg_match('/.+\s*(' . implode('|', $operators) . ')\s*.+/U', $condition, $matches)) {
             $a_and_b = explode($matches[1], $condition);
-            $a = trim($phplater->render($a_and_b[0]));
-            $b = trim($phplater->render($a_and_b[1]));
+            $a = trim($this->core()->render($a_and_b[0]));
+            $b = trim($this->core()->render($a_and_b[1]));
             return $this->evaluateOperation($a, $matches[1], $b);
         }
-        return $phplater->render($condition);
+        return $this->core()->render($condition);
     }
 
     /**

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * The PHPlaterTag class
+ * The PHPlaterFilter class
  *
- * This class manages the tags within PHPlater.
+ * This class manages the filters within PHPlater.
  *
  * @author  John Larsen
  * @license MIT
@@ -45,8 +45,8 @@ class PHPlaterFilter extends PHPlaterBase {
      * @return array Filter as first, arguments in second
      */
     private function getFunctionAndArguments(string $filter): array {
-        $parts = explode($this->tag(PHPlaterTag::TAG_ARGUMENT), $filter);
-        return [$this->filter($parts[0]), isset($parts[1]) ? explode($this->tag(PHPlaterTag::TAG_ARGUMENT_LIST), $parts[1]) : []];
+        $parts = explode($this->tag(self::TAG_ARGUMENT), $filter);
+        return [$this->filter($parts[0]), isset($parts[1]) ? explode($this->tag(self::TAG_ARGUMENT_LIST), $parts[1]) : []];
     }
 
     /**

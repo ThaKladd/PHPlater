@@ -18,8 +18,8 @@ class PHPlaterKey extends PHPlaterBase {
      * @return string The pattern for preg_replace_callback
      */
     public function pattern(): string {
-        $tag_list_key = preg_quote($this->tag(PHPlaterTag::TAG_LIST_KEY));
-        return $this->buildPattern(PHPlaterTag::TAG_BEFORE, '\s*' . $tag_list_key . '\s*', PHPlaterTag::TAG_AFTER);
+        $tag_list_key = preg_quote($this->tag(self::TAG_LIST_KEY));
+        return $this->buildPattern(self::TAG_BEFORE, '\s*' . $tag_list_key . '\s*', self::TAG_AFTER);
     }
 
 }
