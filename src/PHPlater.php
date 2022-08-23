@@ -20,6 +20,9 @@ class PHPlater extends PHPlaterBase {
      * @param  string $template Optional to put in template as argument to constructor
      */
     public function __construct(?string $template = null, string $root = '') {
+        if (version_compare(phpversion(), '8.0.0', '<')) {
+            throw new RuleBrokenError('PHPlater requires PHP version to be > 8.0');
+        }
         $this->core($this);
         $this->extension('.tpl');
         $this->root($root);
