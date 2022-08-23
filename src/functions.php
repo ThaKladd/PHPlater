@@ -10,5 +10,7 @@ function phplater(?string $template = null, ?array $plates = null, ?int $instanc
         }
         return PHPlaterBase::$function_instances[$instance];
     }
-    return (new PHPlater($template))->plates($plates);
+    $phplater = (new PHPlater($template));
+    $phplater->plates($plates);
+    return $phplater;
 }

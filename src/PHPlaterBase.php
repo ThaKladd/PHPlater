@@ -35,7 +35,7 @@ class PHPlaterBase {
     const TAG_FILTER = 12;
     const TAG_DELIMITER = 13;
 
-    protected ?PHPLater $core = null;
+    protected ?PHPlater $core = null;
 
     /**
      * All data is managed within this one property array.
@@ -51,7 +51,7 @@ class PHPlaterBase {
      *
      * @access public
      */
-    public function __construct(PHPLater $phplater) {
+    public function __construct(PHPlater $phplater) {
         $this->core($phplater);
     }
 
@@ -73,7 +73,7 @@ class PHPlaterBase {
      *
      * @access protected
      * @param  string $key The key where data is stored or gotten from
-     * @param  mixed $value If value other than null, it is stored in the key
+     * @param  object|array|string|int|float|bool|null $value If value other than null, it is stored in the key
      * @return mixed Returns either the data stored in key or the current object
      */
     protected function getSet(string $key, object|array|string|int|float|bool|null $value = null): mixed {
@@ -88,10 +88,10 @@ class PHPlaterBase {
      * Get and set the core object
      *
      * @access protected
-     * @param  PHPLater $phplater the core phplater object
+     * @param  PHPlater $phplater the core phplater object
      * @return PHPlater Returns core object
      */
-    protected function core(?PHPLater $phplater = null): PHPlater {
+    protected function core(?PHPlater $phplater = null): PHPlater {
         if(!is_null($phplater)){
             $this->core = $phplater;
         }
@@ -131,10 +131,10 @@ class PHPlaterBase {
      *
      * @access public
      * @param  int $tag_constant The constant to set or get tag with
-     * @param  string $tag The tag string, if you want to set the tag
-     * @return mixed The current object if a set, the string tag if it is get
+     * @param  ?string $tag The tag string, if you want to set the tag
+     * @return ?string The current object if a set, the string tag if it is get
      */
-    public static function tag(int $tag_constant, string|null $tag = null): string|null {
+    public static function tag(int $tag_constant, ?string $tag = null): ?string {
         if($tag === null){
             return self::$tags[$tag_constant];
         } else {
@@ -208,10 +208,10 @@ class PHPlaterBase {
      * Set all tags you want in one method or get all tags that are set
      *
      * @access public
-     * @param  array $tags an array with constant as key, and tag as value
-     * @return mixed The current object or an array with all the tags
+     * @param  ?array $tags an array with constant as key, and tag as value
+     * @return ?array The current object or an array with all the tags
      */
-    public static function tags(null|array $tags = null): array|null {
+    public static function tags(?array $tags = null): ?array {
         if ($tags === null) {
             return self::$tags;
         }

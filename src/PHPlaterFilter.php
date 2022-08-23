@@ -17,9 +17,9 @@ class PHPlaterFilter extends PHPlaterBase {
      * Otherwise the filter function is called with $value as argument
      *
      * @access public
-     * @param  mixed $filter The name of the filter, either when set or when called
-     * @param  string $value The callable function, or the argument to call function with
-     * @return mixed The result of the called function, the function itself, or the current object
+     * @param  string $filter The name of the filter, either when set or when called
+     * @param  callable|string|null|array $value The callable function, or the argument to call function with
+     * @return int|string|callable|object The result of the called function, the function itself, or the current object
      */
     public function filter(string $filter, callable|string|null|array $value = null): int|string|callable|object {
         if ($filter && is_callable($value)) {
@@ -41,7 +41,7 @@ class PHPlaterFilter extends PHPlaterBase {
      * Helper method to separate filter and arguments
      *
      * @access private
-     * @param  string $plate The filter string
+     * @param  string $filter The filter string
      * @return array Filter as first, arguments in second
      */
     private function getFunctionAndArguments(string $filter): array {
@@ -53,7 +53,8 @@ class PHPlaterFilter extends PHPlaterBase {
      * Checks if there are filters on the plate, and applies them
      *
      * @access public
-     * @param mixed $plate The plate to check
+     * @param object|array|string|int|float|bool|null $plate The plate to check
+     * @param array $filters List of filters
      * @return mixed The plate, or if filters applied then the resulting string
      */
     public function callFilters(object|array|string|int|float|bool|null $plate, array $filters = []): mixed {

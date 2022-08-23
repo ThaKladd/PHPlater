@@ -83,7 +83,7 @@ class PHPlaterConditional extends PHPlaterBase {
             '&&', 'and' => $a && $b,
             '||', 'or' => $a || $b,
             'xor' => $a xor $b,
-            '%' => ($either_is_string ? throw new RuleBrokenError('Modulo can only be used with numbers. Values are "' . $a . '" and "' . $b . '".') : $a % $b),
+            '%' => ($either_is_string ? throw new RuleBrokenError('Modulo can only be used with numbers. Values are "' . $a . '" and "' . $b . '".') : (int) $a % (int) $b),
             default => throw new RuleBrokenError('Found no matching operator for "' . $operator . '".')
         };
         return $match;
