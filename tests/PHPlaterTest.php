@@ -13,6 +13,7 @@ class PHPlaterTest extends TestCase {
 
     static function setUpBeforeClass(): void {
         include_once 'src/PHPlater.php';
+        include_once 'src/functions.php';
     }
 
     function setUp(): void {
@@ -573,6 +574,31 @@ class PHPlaterTest extends TestCase {
     public function testOperationException() {
         $this->expectException(RuleBrokenError::class);
         $this->phplater->render('(( value % value ?? true :: false ))');
+    }
+
+    /**
+     * @covers  render
+     */
+    public function testNoExtension() {
+        file_put_contents($this->tpl_file, 'value ok');
+        $this->assertEquals('value ok', $this->phplater->render(str_replace('.tpl', '', $this->tpl_file)));
+    }
+
+    /**
+     * @covers  render
+     */
+    public function testRootNoExtension() {
+        file_put_contents($this->tpl_file, 'value ok');
+        $this->phplater->root('tests');
+        $this->assertEquals('value ok', $this->phplater->render('/template'));
+    }
+
+    /**
+     * @covers  render
+     */
+    public function testQuickAccess() {
+        file_put_contents($this->tpl_file, 'value {{ ok }}');
+        $this->assertEquals('value ok', phplater($this->tpl_file, ['ok' => 'ok'])->render());
     }
 
 }

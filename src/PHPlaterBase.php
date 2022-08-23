@@ -140,7 +140,7 @@ class PHPlaterBase {
             if ($tag_constant === self::TAG_DELIMITER) {
                 if (strlen($tag) > 1) {
                     throw new RuleBrokenError('Preg delimiter can not be over 1 in length.');
-                } else if (ctype_alnum($tag) || $tag == '\\') {
+                } else if (ctype_alnum($tag) || $tag === '\\') {
                     throw new RuleBrokenError('Preg Delimiter can not be alphanumeric or backslash.');
                 }
             }

@@ -24,7 +24,7 @@ class PHPlaterList extends PHPlaterBase {
         if ($array) {
             return self::getList($plates[$key], $array);
         }
-        return $key == '' ? $plates : $plates[$key];
+        return $key === '' ? $plates : $plates[$key];
     }
 
     /**
@@ -40,8 +40,8 @@ class PHPlaterList extends PHPlaterBase {
         $key_pattern = $this->core()->get(self::CLASS_KEY)->pattern();
         $tag_list = $tag_chain . $tag_chain;
         $all_before_parts = explode($tag_list, $matches['x'][0]);
-        $tag_last = end($all_before_parts) == '' ? '' : $tag_chain;
-        $tag_first = reset($all_before_parts) == '' ? '' : $tag_chain;
+        $tag_last = end($all_before_parts) === '' ? '' : $tag_chain;
+        $tag_first = reset($all_before_parts) === '' ? '' : $tag_chain;
         $core_parts = explode($tag_chain, $all_before_parts[0]);
         $elements = '';
         $list = self::getList($this->core()->plates(), $core_parts);

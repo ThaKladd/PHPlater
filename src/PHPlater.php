@@ -9,6 +9,7 @@
  * @author  John Larsen
  * @license MIT
  */
+use Error\RuleBrokenError;
 
 class PHPlater extends PHPlaterBase {
 
@@ -47,6 +48,9 @@ class PHPlater extends PHPlaterBase {
      * @return string Returns location to templates
      */
     public function root(?string $location = null): string|PHPLater {
+        if ($location && substr($location, -1) == '/') {
+            throw new RuleBrokenError('Root must not end with slash. The template file should begin with it.');
+        }
         return $this->getSet('location', $location);
     }
 
@@ -85,28 +89,30 @@ class PHPlater extends PHPlaterBase {
             return null;
         }
 
-        $contain_tag = str_contains($data, self::tag(self::TAG_BEFORE));
-        $contain_conditional = str_contains($data, self::tag(self::TAG_CONDITIONAL_BEFORE));
-        $contain_list = str_contains($data, self::tag(self::TAG_LIST_BEFORE));
-        if(str_contains($data, ' ') || $contain_tag || $contain_conditional || $contain_list){
+        $have_slash = str_contains($data, '/');
+        $have_tag = str_contains($data, self::tag(self::TAG_BEFORE));
+        $have_conditional = str_contains($data, self::tag(self::TAG_CONDITIONAL_BEFORE));
+        $have_list = str_contains($data, self::tag(self::TAG_LIST_BEFORE));
+        $have_space = str_contains($data, ' ');
+        if (!$have_slash && ($have_space || $have_list || $have_conditional || $have_tag)) {
             return $data;
         }
 
-        $is_tpl_file = substr($data, -strlen($this->extension())) == $this->extension();
-        $is_tpl_file = $is_tpl_file ? $is_tpl_file : strpos($data, $this->extension()) > 1;
-        if(!$is_tpl_file){
-            return $data;
-        }
+        $is_tpl_file = substr($data, -strlen($this->extension())) === $this->extension() && str_contains($data, $this->extension());
 
         $location = $this->root() . $data;
         $file_contents = null;
-        if($is_tpl_file){
+        if ($is_tpl_file) {
             $file_contents = is_file($location) ? file_get_contents($location) : '';
         }
-        if(!$is_tpl_file && !$file_contents){
+
+        if (!$is_tpl_file && !$file_contents && $have_slash && !$have_space) {
             $location = $location . $this->extension();
             $file_contents = is_file($location) ? file_get_contents($location) : '';
+        } else if (!$is_tpl_file) {
+            return $data;
         }
+
         return $file_contents !== null ? $file_contents : $data;
     }
 
