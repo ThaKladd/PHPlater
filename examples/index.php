@@ -8,7 +8,7 @@ include 'classes/TestPlate.php';
 include 'classes/Test.php';
 
 $return = [];
-$runs = 100;
+$runs = 1000;
 for ($y = 0; $y < $runs; $y++) {
 
     try {

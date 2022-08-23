@@ -45,8 +45,8 @@ class PHPlaterFilter extends PHPlaterBase {
      * @return array Filter as first, arguments in second
      */
     private function getFunctionAndArguments(string $filter): array {
-        $parts = explode($this->tag(self::TAG_ARGUMENT), $filter);
-        return [$this->filter($parts[0]), isset($parts[1]) ? explode($this->tag(self::TAG_ARGUMENT_LIST), $parts[1]) : []];
+        $parts = explode(self::tag(self::TAG_ARGUMENT), $filter);
+        return [$this->filter($parts[0]), isset($parts[1]) ? explode(self::tag(self::TAG_ARGUMENT_LIST), $parts[1]) : []];
     }
 
     /**

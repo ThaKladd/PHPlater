@@ -17,9 +17,9 @@ class PHPlaterVariable extends PHPlaterBase {
      * @access public
      * @return string The pattern for preg_replace_callback
      */
-    public function pattern(): string {
-        $tags = preg_quote($this->tag(self::TAG_FILTER) . $this->tag(self::TAG_ARGUMENT) . $this->tag(self::TAG_CHAIN));
-        return $this->buildPattern(self::TAG_BEFORE, '\s*(?P<x>[\w,\-' . $tags . ']+?)\s*', self::TAG_AFTER);
+    public static function pattern(): string {
+        $tags = preg_quote(self::tag(self::TAG_FILTER) . self::tag(self::TAG_ARGUMENT) . self::tag(self::TAG_CHAIN));
+        return self::buildPattern(self::TAG_BEFORE, '\s*(?P<x>[\w,\-' . $tags . ']+?)\s*', self::TAG_AFTER);
     }
 
     /**
@@ -41,10 +41,10 @@ class PHPlaterVariable extends PHPlaterBase {
             }
             return $all_plates;
         }
-        [$parts, $filters] = $this->getFiltersAndParts($match['x']);
+        [$parts, $filters] = self::getFiltersAndParts($match['x']);
         $plate = $phplater->plate(array_shift($parts));
         foreach ($parts as $part) {
-            $plate = $this->extract($this->ifJsonToArray($plate), $part);
+            $plate = self::extract(self::ifJsonToArray($plate), $part);
         }
         return $phplater->get(self::CLASS_FILTER)->callFilters($plate, $filters);
     }
@@ -56,10 +56,10 @@ class PHPlaterVariable extends PHPlaterBase {
      * @param  string $plate The plate string
      * @return array Nesting parts and filters separated into array
      */
-    private function getFiltersAndParts(string $plate): array {
-        $parts = explode($this->tag(self::TAG_FILTER), $plate);
+    private static function getFiltersAndParts(string $plate): array {
+        $parts = explode(self::tag(self::TAG_FILTER), $plate);
         $first_part = array_shift($parts);
-        return [explode($this->tag(self::TAG_CHAIN), $first_part), $parts];
+        return [explode(self::tag(self::TAG_CHAIN), $first_part), $parts];
     }
 
     /**
@@ -70,7 +70,7 @@ class PHPlaterVariable extends PHPlaterBase {
      * @param  string $part The key of the plate to extract value from
      * @return mixed The content of the plate, to be acted upon on the next variable depth
      */
-    private function extract(object|array|string|int|float|bool|null $plate, string $part): mixed {
+    private static function extract(object|array|string|int|float|bool|null $plate, string $part): mixed {
         $return = '';
         if (is_object($plate)) {
             if (method_exists($plate, $part)) {

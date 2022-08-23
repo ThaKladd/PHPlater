@@ -50,7 +50,6 @@ class PHPlaterTest extends TestCase {
      * @covers  PHPlater::tagsConditionals
      */
     public function testConstruct() {
-        $phplater = new PHPlater();
         $this->assertEquals('::', $this->phplater->tag(PHPlater::TAG_ELSE));
         $this->assertEquals(preg_quote('(('), $this->phplater->tag(PHPlater::TAG_CONDITIONAL_BEFORE));
         $this->assertEquals(preg_quote('[['), $this->phplater->tag(PHPlater::TAG_LIST_BEFORE));

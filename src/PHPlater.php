@@ -23,10 +23,10 @@ class PHPlater extends PHPlaterBase {
         $this->extension('.tpl');
         $this->root($root);
         $this->plates([]);
-        $this->tagsConditionals('((', '))');
-        $this->tagsVariables('{{', '}}');
-        $this->tagsList('[[', ']]');
-        $this->tags([
+        self::tagsConditionals('((', '))');
+        self::tagsVariables('{{', '}}');
+        self::tagsList('[[', ']]');
+        self::tags([
             self::TAG_ARGUMENT => ':',
             self::TAG_ARGUMENT_LIST => ',',
             self::TAG_CHAIN => '.',
@@ -85,9 +85,9 @@ class PHPlater extends PHPlaterBase {
             return null;
         }
 
-        $contain_tag = str_contains($data, $this->tag(self::TAG_BEFORE));
-        $contain_conditional = str_contains($data, $this->tag(self::TAG_CONDITIONAL_BEFORE));
-        $contain_list = str_contains($data, $this->tag(self::TAG_LIST_BEFORE));
+        $contain_tag = str_contains($data, self::tag(self::TAG_BEFORE));
+        $contain_conditional = str_contains($data, self::tag(self::TAG_CONDITIONAL_BEFORE));
+        $contain_list = str_contains($data, self::tag(self::TAG_LIST_BEFORE));
         if(str_contains($data, ' ') || $contain_tag || $contain_conditional || $contain_list){
             return $data;
         }
@@ -109,7 +109,7 @@ class PHPlater extends PHPlaterBase {
         }
         return $file_contents !== null ? $file_contents : $data;
     }
-    
+
     /**
      * If the template is to be iterated over a collection of plates, then this method has to be called with true
      *
@@ -156,7 +156,7 @@ class PHPlater extends PHPlaterBase {
      * @return mixed The array of all the plates or the current object or current PHPlater if set
      */
     public function plates(null|string|array $plates = null): array|PHPlater {
-        return $this->getSet('plates', $this->ifJsonToArray($plates));
+        return $this->getSet('plates', self::ifJsonToArray($plates));
     }
 
     /**
@@ -171,11 +171,11 @@ class PHPlater extends PHPlaterBase {
      */
     public function plate(string $name, object|array|string|int|float|bool|null $plate = null): mixed {
         if ($plate === null) {
-            $tag_before = stripslashes($this->tag(self::TAG_BEFORE));
-            $tag_after = stripslashes($this->tag(self::TAG_AFTER));
+            $tag_before = stripslashes(self::tag(self::TAG_BEFORE));
+            $tag_after = stripslashes(self::tag(self::TAG_AFTER));
             return $this->data['plates'][$name] ?? $tag_before . $name . $tag_after;
         }
-        $this->data['plates'][$name] = $this->ifJsonToArray($plate);
+        $this->data['plates'][$name] = self::ifJsonToArray($plate);
         return $this;
     }
 
@@ -192,17 +192,17 @@ class PHPlater extends PHPlaterBase {
     public function render(?string $template = null, int $iterations = 1): string {
         $this->content($template);
         $this->result($this->content());
-        if(str_contains($this->result(), stripslashes($this->tag(self::TAG_LIST_BEFORE)))){
-            $this->result($this->renderCallback($this->get(self::CLASS_LIST), $this->result()));
+        if (str_contains($this->result(), stripslashes(self::tag(self::TAG_LIST_BEFORE)))) {
+            $this->result(self::renderCallback($this->get(self::CLASS_LIST), $this->result()));
         }
-        if(str_contains($this->result(), stripslashes($this->tag(self::TAG_CONDITIONAL_BEFORE)))){
-            $this->result($this->renderCallback($this->get(self::CLASS_CONDITIONAL), $this->result()));
+        if (str_contains($this->result(), stripslashes(self::tag(self::TAG_CONDITIONAL_BEFORE)))) {
+            $this->result(self::renderCallback($this->get(self::CLASS_CONDITIONAL), $this->result()));
         }
-        $tag_before = stripslashes($this->tag(self::TAG_BEFORE));
-        $tag_after = stripslashes($this->tag(self::TAG_AFTER));
+        $tag_before = stripslashes(self::tag(self::TAG_BEFORE));
+        $tag_after = stripslashes(self::tag(self::TAG_AFTER));
         $content = $this->many() ? $tag_before . '0' . $tag_after : $this->result();
         if(str_contains($content, $tag_before)) {
-            $this->result($this->renderCallback($this->get(self::CLASS_VARIABLE), $content));
+            $this->result(self::renderCallback($this->get(self::CLASS_VARIABLE), $content));
         }
         if ($iterations-- && strstr($this->result(), $tag_before) && strstr($this->result(), $tag_after)) {
             return $this->render($this->result(), $iterations);
@@ -217,7 +217,7 @@ class PHPlater extends PHPlaterBase {
      * @param string $content The content to render
      * @return string The resulting content
      */
-    private function renderCallback(object $class, string $content): string {
-        return preg_replace_callback($class->pattern(), [$class, 'find'], $content);
+    private static function renderCallback(object $class, string $content): string {
+        return preg_replace_callback($class::pattern(), [$class, 'find'], $content);
     }
 }

@@ -2,7 +2,7 @@
 
 /**
  * The PHPlaterBase class
- * 
+ *
  * PHPlater objects extends this class to get access to its features
  *
  * @author  John Larsen
@@ -43,6 +43,7 @@ class PHPlaterBase {
      */
     protected $data = [];
     protected $instances = [];
+    public static $tags = [];
 
     /**
      * Creates the object and initializes it
@@ -65,7 +66,7 @@ class PHPlaterBase {
         }
         return $this->instances[$const];
     }
-    
+
     /**
      * Quick shortcut for getting and setting data inside current object
      *
@@ -103,7 +104,7 @@ class PHPlaterBase {
      * @param  mixed $data If valid json, return array
      * @return mixed Returns valid content as an array if it is an json
      */
-    public function ifJsonToArray(mixed $data): mixed {
+    public static function ifJsonToArray(mixed $data): mixed {
         if (is_string($data)) {
             $array = json_decode($data, true);
             $data = is_array($array) && $array ? $array : $data;
@@ -117,14 +118,13 @@ class PHPlaterBase {
      * @access protected
      * @return string The pattern for preg_replace_callback
      */
-    protected function buildPattern(int $before, string $pattern, int $after): string {
-        $tag_before = $this->tag($before);
-        $tag_after = $this->tag($after);
-        $delimiter = $this->tag(self::TAG_DELIMITER);
+    protected static function buildPattern(int $before, string $pattern, int $after): string {
+        $tag_before = self::tag($before);
+        $tag_after = self::tag($after);
+        $delimiter = self::tag(self::TAG_DELIMITER);
         return $delimiter . $tag_before . $pattern . $tag_after . $delimiter;
     }
-    
-    public static $tags = [];
+
     /**
      * Set or get tag by a constant
      *
@@ -133,7 +133,7 @@ class PHPlaterBase {
      * @param  string $tag The tag string, if you want to set the tag
      * @return mixed The current object if a set, the string tag if it is get
      */
-    public function tag(int $tag_constant, string|null $tag = null): string|null {
+    public static function tag(int $tag_constant, string|null $tag = null): string|null {
         if($tag === null){
             return self::$tags[$tag_constant];
         } else {
@@ -160,13 +160,13 @@ class PHPlaterBase {
      * @param  string $after Tag after variable in template
      * @return void
      */
-    public function tagsVariables(string $before, string $after): void {
-        $this->tags([
+    public static function tagsVariables(string $before, string $after): void {
+        self::tags([
             self::TAG_BEFORE => preg_quote($before),
             self::TAG_AFTER => preg_quote($after)
         ]);
     }
-   
+
     /**
      * Set both conditional tags in one method
      *
@@ -178,8 +178,8 @@ class PHPlaterBase {
      * @param  string $after Tag after conditional template in template
      * @return void
      */
-    public function tagsConditionals(string $before, string $after): void {
-        $this->tags([
+    public static function tagsConditionals(string $before, string $after): void {
+        self::tags([
             self::TAG_CONDITIONAL_BEFORE => preg_quote($before),
             self::TAG_CONDITIONAL_AFTER => preg_quote($after)
         ]);
@@ -196,8 +196,8 @@ class PHPlaterBase {
      * @param  string $after Tag after list template in template
      * @return void
      */
-    public function tagsList(string $before, string $after): void {
-        $this->tags([
+    public static function tagsList(string $before, string $after): void {
+        self::tags([
             self::TAG_LIST_BEFORE => preg_quote($before),
             self::TAG_LIST_AFTER => preg_quote($after)
         ]);
@@ -210,12 +210,12 @@ class PHPlaterBase {
      * @param  array $tags an array with constant as key, and tag as value
      * @return mixed The current object or an array with all the tags
      */
-    public function tags(null|array $tags = null): array|null {
+    public static function tags(null|array $tags = null): array|null {
         if ($tags === null) {
-            return $this->tags;
+            return self::$tags;
         }
         foreach ($tags as $const => $tag) {
-            $this->tag($const, $tag);
+            self::tag($const, $tag);
         }
         return null;
     }
@@ -227,7 +227,7 @@ class PHPlaterBase {
      * @param  mixed $value Whatever value to debug
      * @return void
      */
-    public function debug(mixed $value): void {
+    public static function debug(mixed $value): void {
         echo PHP_EOL.'DEBUG > <pre>'.print_r($value, true).'</pre> < DEBUG'.PHP_EOL;
     }
 }
