@@ -35,15 +35,16 @@ class PHPlaterBase {
     const TAG_FILTER = 12;
     const TAG_DELIMITER = 13;
 
-    protected $core = null;
+    protected ?PHPLater $core = null;
 
     /**
      * All data is managed within this one property array.
      * Defaults are set in constructors
      */
-    protected $data = [];
-    protected $instances = [];
-    public static $tags = [];
+    protected array $data = [];
+    protected array $instances = [];
+    public static array $tags = [];
+    public static array $function_instances = [];
 
     /**
      * Creates the object and initializes it
@@ -60,7 +61,7 @@ class PHPlaterBase {
      * @access public
      * @param  string $const get the current instance of the corresponding class
      */
-    public function get(string $const){
+    public function get(string $const): object {
         if(!isset($this->instances[$const])){
             $this->instances[$const] = new $const($this);
         }
@@ -88,13 +89,13 @@ class PHPlaterBase {
      *
      * @access protected
      * @param  PHPLater $phplater the core phplater object
-     * @return PHPLater Returns core object
+     * @return PHPlater Returns core object
      */
-    protected function core(?PHPLater $phplater = null): PHPLater {
+    protected function core(?PHPLater $phplater = null): PHPlater {
         if(!is_null($phplater)){
             $this->core = $phplater;
         }
-        return $this->core ? $this->core : $this;
+        return $this->core ?? new PHPlater();
     }
 
     /**
@@ -129,7 +130,7 @@ class PHPlaterBase {
      * Set or get tag by a constant
      *
      * @access public
-     * @param  string $tag_constant The constant to set or get tag with
+     * @param  int $tag_constant The constant to set or get tag with
      * @param  string $tag The tag string, if you want to set the tag
      * @return mixed The current object if a set, the string tag if it is get
      */

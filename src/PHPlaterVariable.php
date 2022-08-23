@@ -75,7 +75,7 @@ class PHPlaterVariable extends PHPlaterBase {
         if (is_object($plate)) {
             if (method_exists($plate, $part)) {
                 $return = call_user_func([$plate, $part]);
-            } else if (is_a($plate, self::CLASS_BASE)) {
+            } else if ($plate instanceof PHPlaterBase) {
                 $return = $plate->plate($part);
             } else if (property_exists($plate, $part) && isset($plate->$part)) {
                 $return = $plate->$part;

@@ -43,9 +43,9 @@ class PHPlaterConditional extends PHPlaterBase {
      * Does the render, renders operation if operand is found
      *
      * @param string $condition The condition of the conditional
-     * @return bool|string
+     * @return bool|string|int
      */
-    private function doOpreration(string $condition): bool|string {
+    private function doOpreration(string $condition): bool|string|int {
         $operators = ['\={3}', '\={2}', '\!\={2}', '\!\={1}', '\<\=\>', '\>\=', '\<\=', '\<\>', '\>', '\<', '%', '&{2}', '\|{2}', 'xor', 'and', 'or'];
         if (preg_match('/.+\s*(' . implode('|', $operators) . ')\s*.+/U', $condition, $matches)) {
             $a_and_b = explode($matches[1], $condition);

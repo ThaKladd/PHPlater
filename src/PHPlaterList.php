@@ -16,7 +16,7 @@ class PHPlaterList extends PHPlaterBase {
      *
      * @access private
      * @param array $plates The plates array
-     * @param type $array List of values to iterate in plates
+     * @param array $array List of values to iterate in plates
      * @return array
      */
     private static function getList(array $plates, array $array = []): string|array {

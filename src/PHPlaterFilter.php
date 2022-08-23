@@ -27,7 +27,7 @@ class PHPlaterFilter extends PHPlaterBase {
         } else if ($value === null) {
             return $this->getSet($filter);
         } else if ($filter) {
-            [$filter_function, $filter_arguments] = $this->getFunctionAndArguments($filter, $value);
+            [$filter_function, $filter_arguments] = $this->getFunctionAndArguments($filter);
             if ($filter_arguments) {
                 array_unshift($filter_arguments, $value);
                 return call_user_func_array($filter_function, $filter_arguments);
