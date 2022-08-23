@@ -26,7 +26,7 @@ PHP 8.0 or higher is needed for this class to work.
 Use the package manager [composer](https://getcomposer.org/) to install PHPlater.
 
 ```bash
-composer install phplater/phplater
+composer require phplater/phplater
 ```
 
 ## Simple Usage
@@ -233,6 +233,8 @@ Tag|Description|Example
 
 ## Test
 
+### PHPUnit
+
 PHPUnit 9.5.21 is used. Download [phpunit.phar](https://phar.phpunit.de/) and, in the root folder of the project, run tests with
 
 ```bash
@@ -240,6 +242,20 @@ php c:/path/to/phpunit.phar
 ```
 
 For code coverage, add " --coverage-text" to the command, and use [xDebug](https://xdebug.org/download) or similar of your choice.
+
+Other tools like [psalm](https://github.com/vimeo/psalm) and [PHPStan](https://github.com/phpstan/phpstan/) are used as well for testing to find errors.
+
+### Psalm
+
+```bash
+c:/path/to/vendor/bin/psalm --show-info=true
+```
+
+### PHPStan
+
+```bash
+c:/path/to/vendor/bin/phpstan analyse src --level=9
+```
 
 ## Contributing
 

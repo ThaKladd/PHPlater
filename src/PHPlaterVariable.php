@@ -18,7 +18,7 @@ class PHPlaterVariable extends PHPlaterBase {
      * @return string The pattern for preg_replace_callback
      */
     public static function pattern(): string {
-        $tags = preg_quote(self::tag(self::TAG_FILTER) . self::tag(self::TAG_ARGUMENT) . self::tag(self::TAG_CHAIN));
+        $tags = preg_quote(self::getTag(self::TAG_FILTER) . self::getTag(self::TAG_ARGUMENT) . self::getTag(self::TAG_CHAIN));
         return self::buildPattern(self::TAG_BEFORE, '\s*(?P<x>[\w,\-' . $tags . ']+?)\s*', self::TAG_AFTER);
     }
 
@@ -33,20 +33,20 @@ class PHPlaterVariable extends PHPlaterBase {
      * @return string The result after exchanging all the matched plates
      */
     public function find(array $match): string {
-        $phplater = $this->core();
-        if ($phplater->many()) {
+        $phplater = $this->getCore();
+        if ($phplater->getMany()) {
             $all_plates = '';
-            foreach ($phplater->plates() as $plates) {
-                $all_plates .= (new PHPlater())->plates($plates)->render($phplater->result());
+            foreach ($phplater->getPlates() as $plates) {
+                $all_plates .= (new PHPlater())->setPlates($plates)->render($phplater->getResult());
             }
             return $all_plates;
         }
         [$parts, $filters] = self::getFiltersAndParts($match['x']);
-        $plate = $phplater->plate(array_shift($parts));
+        $plate = $phplater->getPlate(array_shift($parts));
         foreach ($parts as $part) {
             $plate = self::extract(self::ifJsonToArray($plate), $part);
         }
-        return $phplater->get(self::CLASS_FILTER)->callFilters($plate, $filters);
+        return $phplater->getPHPlaterObject(self::CLASS_FILTER)->callFilters($plate, $filters);
     }
 
     /**
@@ -57,9 +57,9 @@ class PHPlaterVariable extends PHPlaterBase {
      * @return array Nesting parts and filters separated into array
      */
     private static function getFiltersAndParts(string $plate): array {
-        $parts = explode(self::tag(self::TAG_FILTER), $plate);
+        $parts = explode(self::getTag(self::TAG_FILTER), $plate);
         $first_part = array_shift($parts);
-        return [explode(self::tag(self::TAG_CHAIN), $first_part), $parts];
+        return [explode(self::getTag(self::TAG_CHAIN), $first_part), $parts];
     }
 
     /**
@@ -76,7 +76,7 @@ class PHPlaterVariable extends PHPlaterBase {
             if (method_exists($plate, $part)) {
                 $return = call_user_func([$plate, $part]);
             } else if ($plate instanceof PHPlater) {
-                $return = $plate->plate($part);
+                $return = $plate->setPlate($part);
             } else if (property_exists($plate, $part) && isset($plate->$part)) {
                 $return = $plate->$part;
             }
