@@ -29,7 +29,7 @@ class PHPlaterVariable extends PHPlaterBase {
      * Example: key.value_as_array.value_as_object.method_to_call
      *
      * @access public
-     * @param  array $match The matched regular expression from render
+     * @param  array<int|string, string> $match The matched regular expression from render
      * @return string The result after exchanging all the matched plates
      */
     public function find(array $match): string {
@@ -54,7 +54,7 @@ class PHPlaterVariable extends PHPlaterBase {
      *
      * @access private
      * @param  string $plate The plate string
-     * @return array Nesting parts and filters separated into array
+     * @return array<mixed> Nesting parts and filters separated into array
      */
     private static function getFiltersAndParts(string $plate): array {
         $parts = explode(self::getTag(self::TAG_FILTER), $plate);
@@ -66,7 +66,7 @@ class PHPlaterVariable extends PHPlaterBase {
      * Will manage the content so that it is a string when stored into data
      *
      * @access private
-     * @param  object|array|string|int|float|bool|null $plate The last plate to check action on
+     * @param  object|array<string|int, mixed>|string|int|float|bool|null $plate The last plate to check action on
      * @param  string $part The key of the plate to extract value from
      * @return mixed The content of the plate, to be acted upon on the next variable depth
      */
@@ -76,7 +76,7 @@ class PHPlaterVariable extends PHPlaterBase {
             if (method_exists($plate, $part)) {
                 $return = call_user_func([$plate, $part]);
             } else if ($plate instanceof PHPlater) {
-                $return = $plate->setPlate($part);
+                $return = $plate->getPlate($part);
             } else if (property_exists($plate, $part) && isset($plate->$part)) {
                 $return = $plate->$part;
             }

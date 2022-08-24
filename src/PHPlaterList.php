@@ -15,11 +15,11 @@ class PHPlaterList extends PHPlaterBase {
      * Finds and returns the list from the location ['one', 'two', 'three'] in plates
      *
      * @access private
-     * @param array $plates The plates array
-     * @param array $array List of values to iterate in plates
-     * @return array
+     * @param array<mixed> $plates The plates array
+     * @param array<mixed> $array List of values to iterate in plates
+     * @return array<string, mixed>
      */
-    private static function getList(array $plates, array $array = []): string|array {
+    private static function getList(array $plates, array $array = []): array {
         $key = array_shift($array);
         if ($array) {
             return self::getList($plates[$key], $array);
@@ -31,7 +31,7 @@ class PHPlaterList extends PHPlaterBase {
      * Finds the list variable and exchanges the position with the keys, and then renders the result
      *
      * @access public
-     * @param  array $match The matched regular expression from renderList
+     * @param  array<int|string, string> $match The matched regular expression from renderList
      * @return string The result after rendering all elements in the list
      */
     public function find(array $match): string {

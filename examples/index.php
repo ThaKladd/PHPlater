@@ -10,7 +10,6 @@ include 'classes/Test.php';
 $return = [];
 $runs = 1000;
 for ($y = 0; $y < $runs; $y++) {
-
     try {
         $phplater = new PHPlater();
     } catch (Exception $ex) {

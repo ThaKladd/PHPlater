@@ -26,7 +26,7 @@ class PHPlaterConditional extends PHPlaterBase {
      * Finds the conditionals and exchanges the position with the rendering and subsequent evaluation of values and then renders the result
      *
      * @access public
-     * @param  array $match The matched regular expression from renderConditional
+     * @param  array<int|string, string> $match The matched regular expression from renderConditional
      * @return string The result after rendering all conditionals
      */
     public function find(array $match): string {

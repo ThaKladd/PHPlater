@@ -39,7 +39,7 @@ class PHPlaterFilter extends PHPlaterBase {
      *
      * @access public
      * @param string $filter The name of the filter
-     * @param string|array $arguments The argument to call function with
+     * @param string|array<string> $arguments The argument to call function with
      * @return mixed The result of the called function
      */
     public function doFilter(string $filter, string|array $arguments): mixed {
@@ -56,7 +56,7 @@ class PHPlaterFilter extends PHPlaterBase {
      *
      * @access private
      * @param  string $filter The filter string
-     * @return array Filter as first, arguments in second
+     * @return array<mixed> Filter as first, arguments in second
      */
     private function getFunctionAndArguments(string $filter): array {
         $parts = explode(self::getTag(self::TAG_ARGUMENT), $filter);
@@ -68,7 +68,7 @@ class PHPlaterFilter extends PHPlaterBase {
      *
      * @access public
      * @param mixed $plate The plate to check
-     * @param array $filters List of filters
+     * @param array<string> $filters List of filters
      * @return mixed The plate, or if filters applied then the resulting string
      */
     public function callFilters(mixed $plate, array $filters = []): mixed {

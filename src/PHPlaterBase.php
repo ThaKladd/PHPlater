@@ -41,15 +41,35 @@ class PHPlaterBase {
      * All data is managed within this one property array.
      * Defaults are set in constructors
      */
+
+    /**
+     * @var array<string|int, mixed>
+     */
     public array $plates = [];
     public string $content = '';
     public string $result = '';
     public string $root = '';
     public string $extension = '';
     public bool $many = false;
+
+    /**
+     * @var array<string, callable>
+     */
     public array $filters = [];
+
+    /**
+     * @var array<string, object>
+     */
     public array $instances = [];
+
+    /**
+     * @var array<int, string>
+     */
     public static array $tags = [];
+
+    /**
+     * @var array<string|int, PHPlater>
+     */
     public static array $function_instances = [];
 
     /**
@@ -89,9 +109,9 @@ class PHPlaterBase {
      *
      * @access protected
      * @param  PHPlater $phplater the core PHPlater object
-     * @return PHPlater Returns core PHPlater object
+     * @return void
      */
-    protected function setCore(PHPlater $phplater = null): void {
+    protected function setCore(PHPlater $phplater): void {
         $this->core = $phplater;
     }
 
@@ -100,9 +120,9 @@ class PHPlaterBase {
      *
      * @access public
      * @param  mixed $data If valid json, return array
-     * @return mixed Returns valid content as an array if it is an json
+     * @return array Returns valid content as an array if it is an json
      */
-    public static function ifJsonToArray(mixed $data): mixed {
+    public static function ifJsonToArray(mixed $data): array {
         if (is_string($data)) {
             $array = json_decode($data, true);
             $data = is_array($array) && $array ? $array : $data;
@@ -150,7 +170,7 @@ class PHPlaterBase {
                 throw new RuleBrokenError('Preg Delimiter can not be alphanumeric or backslash.');
             }
         }
-        self::$tags[$tag_constant] = (string) $tag;
+        self::$tags[$tag_constant] = $tag;
     }
 
     /**
@@ -211,7 +231,7 @@ class PHPlaterBase {
      * Set all tags you want in one method
      *
      * @access public
-     * @param array $tags The array of all the tags to set
+     * @param array<int, string> $tags The array of all the tags to set
      * @return void
      */
     public static function setTags(array $tags): void {

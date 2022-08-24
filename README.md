@@ -248,7 +248,7 @@ Other tools like [psalm](https://github.com/vimeo/psalm) and [PHPStan](https://g
 ### Psalm
 
 ```bash
-c:/path/to/vendor/bin/psalm --show-info=true
+c:/path/to/vendor/bin/psalm --show-info=true --no-cache
 ```
 
 ### PHPStan

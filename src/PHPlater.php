@@ -105,8 +105,8 @@ class PHPlater extends PHPlaterBase {
      * Set the template to act upon
      *
      * @access public
-     * @param  ?string $data Url to file, a text string to set template, or null to return template
-     * @return string|PHPlater Current template as string, or the current object if data is set
+     * @param  string $data Url to file, a text string to set template, or null to return template
+     * @return PHPlater Current template as string, or the current object if data is set
      */
     public function setContent(string $data = ''): PHPlater {
         $this->content = $this->contentify($data);
@@ -121,8 +121,8 @@ class PHPlater extends PHPlaterBase {
      * @return string Returns content as a string or null if no data
      */
     public function contentify(string $data): string {
-        if($data === null || trim($data) === ''){
-            return '';
+        if (trim($data) === '') {
+            return $this->getContent();
         }
 
         $have_slash = str_contains($data, '/');
@@ -131,7 +131,7 @@ class PHPlater extends PHPlaterBase {
         $have_list = str_contains($data, self::getTag(self::TAG_LIST_BEFORE));
         $have_space = str_contains($data, ' ');
         if (!$have_slash && ($have_space || $have_list || $have_conditional || $have_tag)) {
-            return (string) $data;
+            return $data;
         }
 
         $ext = $this->getExtension();
@@ -148,11 +148,11 @@ class PHPlater extends PHPlaterBase {
             $file_contents = is_file($location) ? file_get_contents($location) : '';
         }
 
-        return $file_contents !== null ? $file_contents : (string) $data;
+        return $file_contents !== null ? $file_contents : $data;
     }
 
     /**
-     * If the template is to be iterated over a collection of plates, then this method has to be called with true
+     * Set true if template is to be iterated over a collection of plates
      *
      * @access public
      * @param bool $many true or false(default) according to whether or not there are many plates to iterate over
@@ -164,11 +164,10 @@ class PHPlater extends PHPlaterBase {
     }
 
     /**
-     * If the template is to be iterated over a collection of plates, then this method has to be called with true
+     * Returns if the template is to be iterated over a collection of plates or not
      *
      * @access public
-     * @param ?bool $many true or false(default) according to whether or not there are many plates to iterate over
-     * @return bool|object Either bool value, or the current object
+     * @return bool Value if it is many or not
      */
     public function getMany(): bool {
         return $this->many;
@@ -181,7 +180,7 @@ class PHPlater extends PHPlaterBase {
      * @param  string $data String to store as the result
      * @return PHPlater Returns current object
      */
-    private function setResult(string $data = null): PHPlater {
+    private function setResult(string $data): PHPlater {
         $this->result = $data;
         return $this;
     }
@@ -190,8 +189,7 @@ class PHPlater extends PHPlaterBase {
      * Stores the result of the variable to value change in template for each run
      *
      * @access public
-     * @param  ?string $data String if the aim is to store the result, null if it is to get the stored result
-     * @return string|PHPlater Returns result as a string or this if result is set
+     * @return string Returns result as a string or this if result is set
      */
     public function getResult(): string {
         return $this->result;
@@ -215,22 +213,19 @@ class PHPlater extends PHPlaterBase {
      * The plates array is a key value store from which it is accessed from within the template
      *
      * @access public
-     * @param  null|string|array $plates Either array with plates, json as string, or null to get all plates
-     * @return array|PHPlater The array of all the plates or the current object or current PHPlater if set
+     * @param  string|array<string|int, mixed> $plates Either array with plates or json as string
+     * @return PHPlater The array of all the plates or the current object or current PHPlater if set
      */
-    public function setPlates(string|array $plates = null): PHPlater {
+    public function setPlates(string|array $plates = []): PHPlater {
         $this->plates = self::ifJsonToArray($plates);
         return $this;
     }
 
     /**
-     * Set or get all plates at once
-     *
-     * The plates array is a key value store from which it is accessed from within the template
+     * Get all plates at once
      *
      * @access public
-     * @param  null|string|array $plates Either array with plates, json as string, or null to get all plates
-     * @return array|PHPlater The array of all the plates or the current object or current PHPlater if set
+     * @return array<string|int, mixed> The array of all the plates or the current object
      */
     public function getPlates(): array {
         return $this->plates;
@@ -272,13 +267,12 @@ class PHPlater extends PHPlaterBase {
      * Replaces the template variables in the template, distinguished by tags, with the values from the plates
      *
      * @access public
-     * @param  ?string $template Optional. The template to act upon if it is not set earlier.
+     * @param  string $template Optional. The template to act upon if it is not set earlier.
      * @param  int $iterations To allow for variables that return variables, you can choose the amount of iterations
      * @return string The finished result after all plates are applied to the template
      */
     public function render(string $template = '', int $iterations = 1): string {
-        $this->setContent($template);
-        $this->setResult($this->getContent());
+        $this->setResult($this->setContent($template)->getContent());
         if (str_contains($this->getResult(), stripslashes(self::getTag(self::TAG_LIST_BEFORE)))) {
             $this->setResult(self::renderCallback($this->getPHPlaterObject(self::CLASS_LIST), $this->getResult()));
         }
@@ -305,6 +299,6 @@ class PHPlater extends PHPlaterBase {
      * @return string The resulting content
      */
     private static function renderCallback(object $class, string $content): string {
-        return preg_replace_callback($class::pattern(), [$class, 'find'], $content);
+        return (string) preg_replace_callback($class::pattern(), [$class, 'find'], $content);
     }
 }
