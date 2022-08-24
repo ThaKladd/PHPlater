@@ -6,6 +6,8 @@
 ### Revamped
 
 - Removed deprecated methods
+- Back to getters and setters
+- More robust and correct type hinting
 - Template file extension and root folder can be defined
 - Templates can be used without extension
 - Refactored the code into multiple classes

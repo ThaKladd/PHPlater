@@ -122,7 +122,7 @@ class PHPlaterBase {
      * @param  mixed $data If valid json, return array
      * @return array Returns valid content as an array if it is an json
      */
-    public static function ifJsonToArray(mixed $data): array {
+    public static function ifJsonToArray(mixed $data): string|object|array {
         if (is_string($data)) {
             $array = json_decode($data, true);
             $data = is_array($array) && $array ? $array : $data;
