@@ -35,7 +35,7 @@ composer require phplater/phplater
 
 ```php
 $phplater = new PHPlater();
-$phplater->plate('hello', 'world!');
+$phplater->setPlate('hello', 'world!');
 echo $phplater->render('Hello {{hello}}');
 ```
 
@@ -76,7 +76,7 @@ class Test {
 }
 
 $phplater = new PHPlater();
-$phplater->plates([
+$phplater->setPlates([
     'one' => 'Yksi',
     'two' => new Test(),
     'assoc' => [
@@ -113,7 +113,7 @@ In order to ease the looping a array of similar values, it can be sent inn and i
 
 ```php
 $phplater = new PHPlater();
-$phplater->many(true)->plates([
+$phplater->setMany(true)->setPlates([
     ['value' => ['this']],
     ['value' => ['is']],
     ['value' => ['ok']]
@@ -133,7 +133,7 @@ There is also a syntax for doing a foreach inside the template using tags and a 
 
 ```php
 $phplater = new PHPlater();
-$phplater->plates([
+$phplater->setPlates([
     'list' => [
         ['value' => ['this']],
         ['value' => ['is']],
@@ -157,12 +157,12 @@ Filters gets inspiration from [Twig](https://github.com/twigphp/Twig) and and co
 
 ```php
 $phplater = new PHPlater();
-$phplater->filter('uppercase', 'mb_strtoupper');
-$phplater->filter('add_ok', function (string $data, string $ok = '') {
+$phplater->setFilter('uppercase', 'mb_strtoupper');
+$phplater->setFilter('add_ok', function (string $data, string $ok = '') {
     return $data . ' is '.$ok;
 });
 
-$phplater->plate('string', 'test');
+$phplater->setPlate('string', 'test');
 
 echo $phplater->render('<b>This {{string|add_ok:ok|uppercase}}</b>');
 ```
@@ -179,7 +179,7 @@ The conditional evaluates one or two variables, and return either a true value o
 
 ```php
 $phplater = new PHPlater();
-$phplater->plates([
+$phplater->setPlates([
     'arr' => ['check', 'check', 'true', 'false']
 ]);
 echo $phplater->render('(( {{ arr.0 }} == {{ arr.1 }} ?? <b>{{ arr.2 }}</b> :: {{ arr.3 }} ))');
