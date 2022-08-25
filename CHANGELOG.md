@@ -12,7 +12,7 @@
 - Templates can be used without extension
 - Refactored the code into multiple classes
 - Reworked tests for the new syntaxes
-- Added more error handling
+- Added more error handling, but more so, made typesafe
 - Added quick access function
 
 ## v0.8.0
