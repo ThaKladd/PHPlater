@@ -126,11 +126,12 @@ class PHPlater extends PHPlaterBase {
         }
 
         $have_slash = str_contains($data, '/');
-        $have_tag = str_contains($data, self::getTag(self::TAG_BEFORE));
-        $have_conditional = str_contains($data, self::getTag(self::TAG_CONDITIONAL_BEFORE));
-        $have_list = str_contains($data, self::getTag(self::TAG_LIST_BEFORE));
+        $have_tag = str_contains($data, stripslashes(self::getTag(self::TAG_BEFORE)));
+        $have_conditional = str_contains($data, stripslashes(self::getTag(self::TAG_CONDITIONAL_BEFORE)));
+        $have_list = str_contains($data, stripslashes(self::getTag(self::TAG_LIST_BEFORE)));
         $have_space = str_contains($data, ' ');
-        if (!$have_slash && ($have_space || $have_list || $have_conditional || $have_tag)) {
+
+        if (!$have_slash || ($have_space || $have_list || $have_conditional || $have_tag)) {
             return $data;
         }
 

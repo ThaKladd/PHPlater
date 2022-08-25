@@ -14,6 +14,7 @@
 - Reworked tests for the new syntaxes
 - Added more error handling, but more so, made typesafe
 - Added quick access function
+- Speeds up to about 400% faster
 
 ## v0.8.0
 
