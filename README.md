@@ -265,8 +265,7 @@ Please make sure to update tests as appropriate.
 
 ## Issues to fix and features to add
 
-- Error handling
-- Benchmarking
+At the moment, very few - although more rewriting is needed.
 
 ## Documentation
 
