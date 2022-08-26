@@ -55,13 +55,14 @@ class PHPlaterList extends PHPlaterBase {
 
     /**
      * Get the pattern used to fetch all the variable tags in the template
+     * \[\[\s*(?P<x>[\w\W]+?\.\.[\w\W]+?)\s*\]\]
      *
      * @access public
      * @return string The pattern for preg_replace_callback
      */
     public static function pattern(): string {
         $tag_chain = preg_quote(self::getTag(self::TAG_CHAIN));
-        return self::buildPattern(self::TAG_LIST_BEFORE, '(?P<x>.+' . $tag_chain . $tag_chain . '.+?)', self::TAG_LIST_AFTER);
+        return self::buildPattern(self::TAG_LIST_BEFORE, '\s*(?P<x>[\w\W]+?' . $tag_chain . $tag_chain . '[\w\W]+?)\s*', self::TAG_LIST_AFTER);
     }
 
     /**

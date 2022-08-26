@@ -6,6 +6,7 @@ require '../vendor/autoload.php';
 require '../src/PHPLater.php';
 include 'classes/TestPlate.php';
 include 'classes/Test.php';
+include 'classes/Data.php';
 
 $return = [];
 $runs = 1000;
@@ -162,6 +163,85 @@ for ($y = 0; $y < $runs; $y++) {
         Value is (( 1 == 1 ?? true :: false )) <br>
         Value is (( 1 == 2 ?? true :: false )) <br>
         Value is (( {{assoc.value.1.fi}} == Kaksikymmentäseitsemän ?? true :: false )) <br>
+    ');
+
+    $number = 10;
+    $scalarValues = [];
+    for ($i = 0; $i < $number; $i++) {
+        $scalarValues[] = 'val ' . $i;
+    }
+
+    $arrayValues = [];
+    for ($i = 0; $i < $number; $i++) {
+        $arrayValues[] = [
+            'id' => $i,
+            'name' => 'name',
+        ];
+    }
+
+    $objectValues = [];
+    for ($i = 0; $i < $number; $i++) {
+        $object = new Data('name');
+        $object->id = $i;
+
+        $objectValues[] = $object;
+    }
+
+    $combinedValues = [];
+    for ($i = 0; $i < $number; $i++) {
+        $name = 'name';
+
+        $object = new Data($name);
+        $object->id = $i;
+
+        $combinedValues[] = [
+            'id' => $i,
+            'name' => $name,
+            'object' => $object,
+        ];
+    }
+
+    $variables = [
+        'scalarValues' => $scalarValues,
+        'arrayValues' => $arrayValues,
+        'objectValues' => $objectValues,
+        'combinedValues' => $combinedValues,
+    ];
+    $phplater = new PHPlater();
+    $phplater->setPlates($variables);
+    $return['sixth'] = $phplater->render('
+        <ul>
+            [[ <li>{{ scalarValues.. }}</li> ]]
+        </ul>
+
+        <table>
+        [[
+            <tr>
+                <td>{{ arrayValues..id }}</td>
+                <td>{{ arrayValues..name }}</td>
+            </tr>
+        ]]
+        </table>
+
+        <table>
+        [[
+            <tr>
+                <td>{{ objectValues..id }}</td>
+                <td>{{ objectValues..getName }}</td>
+            </tr>
+        ]]
+        </table>
+
+        <table>
+        [[
+            <tr>
+                <td>{{ combinedValues..id }}</td>
+                <td>{{ combinedValues..name }}</td>
+                <td>{{ combinedValues..object.id }}</td>
+                <td>{{ combinedValues..object.getName }}</td>
+            </tr>
+        ]]
+        </table>
     ');
 }
 echo implode('', $return);

@@ -13,7 +13,8 @@ class PHPlaterVariable extends PHPlaterBase {
 
     /**
      * Get the pattern used to fetch all the variable tags in the template
-     *
+     * \{\{\s*(?P<x>[\w,\-\|\.\:]+?)\s*\}\}
+     * 
      * @access public
      * @return string The pattern for preg_replace_callback
      */

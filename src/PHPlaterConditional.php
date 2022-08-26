@@ -14,12 +14,13 @@ class PHPlaterConditional extends PHPlaterBase {
 
     /**
      * Get the pattern used for conditional
+     * \(\(\s*(?P<x>.+?)\s*\)\)
      *
      * @access public
      * @return string The pattern for preg_replace_callback
      */
     public static function pattern(): string {
-        return self::buildPattern(self::TAG_CONDITIONAL_BEFORE, '(?P<x>.+?)', self::TAG_CONDITIONAL_AFTER);
+        return self::buildPattern(self::TAG_CONDITIONAL_BEFORE, '\s*(?P<x>.+?)\s*', self::TAG_CONDITIONAL_AFTER);
     }
 
     /**
