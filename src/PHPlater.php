@@ -137,19 +137,13 @@ class PHPlater extends PHPlaterBase {
 
         $ext = $this->getExtension();
         $is_tpl_file = substr($data, -strlen($ext)) === $ext && str_contains($data, $ext);
-
         $location = $this->getRoot() . $data;
-        $file_contents = null;
         if ($is_tpl_file) {
-            $file_contents = is_file($location) ? file_get_contents($location) : '';
+            return is_file($location) ? file_get_contents($location) : '';
         }
 
-        if (!$file_contents && $have_slash && !$have_space) {
-            $location = $location . $this->getExtension();
-            $file_contents = is_file($location) ? file_get_contents($location) : '';
-        }
-
-        return $file_contents !== null ? $file_contents : $data;
+        $location = $location . $this->getExtension();
+        return is_file($location) ? file_get_contents($location) : '';
     }
 
     /**
