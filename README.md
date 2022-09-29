@@ -1,6 +1,6 @@
 # PHPlater
 
-A simple PHP template engine that lets PHP do all the logic(even if some logic is supported in the engine) and then append it to the HTML in the template file. It is set to solve the problem of mixing too much logic into the template file itself and by that loosing some control over where the logic happens. Some of the syntax is also unique, and the engine itself is very lightweight. You also get a bit more control over the data that is passed down to the template, and the code is easier to manage and to track.
+A simple PHP template engine that aims for PHP do most of the logic(even if some logic is supported in the engine) and then append it to the HTML in the template file. It is set to solve the problem of mixing too much logic into the template file itself and by that loosing some control over where the logic happens. Some of the syntax is also unique, and the engine itself is very lightweight. You also get a bit more control over the data that is passed down to the template, and the code is easier to manage and to track.
 
 ## Why?
 
@@ -26,7 +26,7 @@ PHP 8.0 or higher is needed for this class to work.
 Use the package manager [composer](https://getcomposer.org/) to install PHPlater.
 
 ```bash
-composer install phplater/phplater
+composer require phplater/phplater
 ```
 
 ## Simple Usage
@@ -35,7 +35,7 @@ composer install phplater/phplater
 
 ```php
 $phplater = new PHPlater();
-$phplater->plate('hello', 'world!');
+$phplater->setPlate('hello', 'world!');
 echo $phplater->render('Hello {{hello}}');
 ```
 
@@ -76,7 +76,7 @@ class Test {
 }
 
 $phplater = new PHPlater();
-$phplater->plates([
+$phplater->setPlates([
     'one' => 'Yksi',
     'two' => new Test(),
     'assoc' => [
@@ -113,7 +113,7 @@ In order to ease the looping a array of similar values, it can be sent inn and i
 
 ```php
 $phplater = new PHPlater();
-$phplater->many(true)->plates([
+$phplater->setMany(true)->setPlates([
     ['value' => ['this']],
     ['value' => ['is']],
     ['value' => ['ok']]
@@ -133,7 +133,7 @@ There is also a syntax for doing a foreach inside the template using tags and a 
 
 ```php
 $phplater = new PHPlater();
-$phplater->plates([
+$phplater->setPlates([
     'list' => [
         ['value' => ['this']],
         ['value' => ['is']],
@@ -157,12 +157,12 @@ Filters gets inspiration from [Twig](https://github.com/twigphp/Twig) and and co
 
 ```php
 $phplater = new PHPlater();
-$phplater->filter('uppercase', 'mb_strtoupper');
-$phplater->filter('add_ok', function (string $data, string $ok = '') {
+$phplater->setFilter('uppercase', 'mb_strtoupper');
+$phplater->setFilter('add_ok', function (string $data, string $ok = '') {
     return $data . ' is '.$ok;
 });
 
-$phplater->plate('string', 'test');
+$phplater->setPlate('string', 'test');
 
 echo $phplater->render('<b>This {{string|add_ok:ok|uppercase}}</b>');
 ```
@@ -179,7 +179,7 @@ The conditional evaluates one or two variables, and return either a true value o
 
 ```php
 $phplater = new PHPlater();
-$phplater->plates([
+$phplater->setPlates([
     'arr' => ['check', 'check', 'true', 'false']
 ]);
 echo $phplater->render('(( {{ arr.0 }} == {{ arr.1 }} ?? <b>{{ arr.2 }}</b> :: {{ arr.3 }} ))');
@@ -233,6 +233,8 @@ Tag|Description|Example
 
 ## Test
 
+### PHPUnit
+
 PHPUnit 9.5.21 is used. Download [phpunit.phar](https://phar.phpunit.de/) and, in the root folder of the project, run tests with
 
 ```bash
@@ -240,6 +242,20 @@ php c:/path/to/phpunit.phar
 ```
 
 For code coverage, add " --coverage-text" to the command, and use [xDebug](https://xdebug.org/download) or similar of your choice.
+
+Other tools like [psalm](https://github.com/vimeo/psalm) and [PHPStan](https://github.com/phpstan/phpstan/) are used as well for testing to find errors.
+
+### Psalm
+
+```bash
+c:/path/to/vendor/bin/psalm --show-info=true --no-cache
+```
+
+### PHPStan
+
+```bash
+c:/path/to/vendor/bin/phpstan analyse src --level=9
+```
 
 ## Contributing
 
@@ -249,8 +265,7 @@ Please make sure to update tests as appropriate.
 
 ## Issues to fix and features to add
 
-- Error handling
-- Benchmarking
+At the moment, very few - although more rewriting is needed.
 
 ## Documentation
 

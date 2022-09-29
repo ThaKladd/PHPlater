@@ -10,16 +10,16 @@
  */
 
 class PHPlaterKey extends PHPlaterBase {
-    
+
     /**
      * Get the pattern used to fetch all the keys in the template list
      *
      * @access public
      * @return string The pattern for preg_replace_callback
      */
-    public function pattern(): string {
-        $tag_list_key = preg_quote($this->tag(self::TAG_LIST_KEY));
-        return $this->buildPattern(self::TAG_BEFORE, '\s*' . $tag_list_key . '\s*', self::TAG_AFTER);
+    public static function pattern(): string {
+        $tag_list_key = preg_quote(self::getTag(self::TAG_LIST_KEY));
+        return self::buildPattern(self::TAG_BEFORE, '\s*' . $tag_list_key . '\s*', self::TAG_AFTER);
     }
 
 }

@@ -2,14 +2,19 @@
 
 /**
  * This function gives quick access to the phplater class
+ * @param string $template The template to use
+ * @param array<mixed> $plates All the plates
+ * @param ?int $instance To have a reference point to your instance
+ * @return PHPlater The PHPlater object
  */
-$phplater_instances = [];
-function phplater(?string $template = null, ?array $plates = null, ?int $instance = null): PHPlater {
+function phplater(string $template = '', array $plates = [], ?int $instance = null): PHPlater {
     if($instance !== null){
-        if(!isset($phplater_instances[$instance])){
-            $phplater_instances[$instance] = phplater($template, $plates);
+        if (!isset(PHPlaterBase::$function_instances[$instance])) {
+            PHPlaterBase::$function_instances[$instance] = phplater($template, $plates);
         }
-        return $phplater_instances[$instance];
+        return PHPlaterBase::$function_instances[$instance];
     }
-    return (new PHPlater($template))->plates($plates);
+    $phplater = (new PHPlater($template));
+    $phplater->setPlates($plates);
+    return $phplater;
 }

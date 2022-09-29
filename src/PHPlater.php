@@ -9,24 +9,27 @@
  * @author  John Larsen
  * @license MIT
  */
+use Error\RuleBrokenError;
 
 class PHPlater extends PHPlaterBase {
 
     /**
-     * Creates PHPLater object and initializes it
+     * Creates PHPlater object and initializes it
      *
      * @access public
      * @param  string $template Optional to put in template as argument to constructor
      */
-    public function __construct(?string $template = null, string $root = '') {
-        $this->core($this);
-        $this->extension('.tpl');
-        $this->root($root);
-        $this->plates([]);
-        $this->tagsConditionals('((', '))');
-        $this->tagsVariables('{{', '}}');
-        $this->tagsList('[[', ']]');
-        $this->tags([
+    public function __construct(string $template = '', string $root = '') {
+        if (version_compare(phpversion(), '8.0.0', '<')) {
+            throw new RuleBrokenError('PHPlater requires PHP version to be > 8.0');
+        }
+        $this->setCore($this);
+        $this->setExtension('.tpl');
+        $this->setRoot($root);
+        self::setTagsConditionals('((', '))');
+        self::setTagsVariables('{{', '}}');
+        self::setTagsList('[[', ']]');
+        self::setTags([
             self::TAG_ARGUMENT => ':',
             self::TAG_ARGUMENT_LIST => ',',
             self::TAG_CHAIN => '.',
@@ -36,114 +39,167 @@ class PHPlater extends PHPlaterBase {
             self::TAG_LIST_KEY => '#',
             self::TAG_DELIMITER => '~'
         ]);
-        $this->content($template);
+        $this->setContent($template);
     }
 
     /**
-     * Get and set the root folder of templates
+     * Get root folder of templates
+     *
+     * @access public
+     * @return string Returns root location to templates
+     */
+    public function getRoot(): string {
+        return $this->root;
+    }
+
+    /**
+     * Set the root folder of templates
      *
      * @access public
      * @param  string $location Location to root folder of templates
-     * @return string Returns location to templates
+     * @return PHPlater Returns current object
      */
-    public function root(?string $location = null): string|PHPLater {
-        return $this->getSet('location', $location);
+    public function setRoot(string $location = ''): PHPlater {
+        if ($location && substr($location, -1) == '/') {
+            throw new RuleBrokenError('Root must not end with slash. The template file should begin with it.');
+        }
+        $this->root = $location;
+        return $this;
     }
 
     /**
-     * Get and set the template extension, if set, the extension is not needed to be used
+     * Get the template extension
+     * Default: .tpl
+     *
+     * @access public
+     * @return string Returns extension of the template file
+     */
+    public function getExtension(): string {
+        return $this->extension;
+    }
+
+    /**
+     * Set the template extension, when set it does not need to be part of template file name
      * Default: .tpl
      *
      * @access public
      * @param  string $extension of the template file
-     * @return string Returns extension of the template file
+     * @return PHPlater Returns current object
      */
-    public function extension(?string $extension = null): string|PHPLater {
-        return $this->getSet('extension', $extension);
+    public function setExtension(string $extension = ''): PHPlater {
+        $this->extension = $extension;
+        return $this;
+    }
+
+    /**
+     * Get the template as string
+     *
+     * @access public
+     * @return string Current template as string
+     */
+    public function getContent(): string {
+        return $this->content;
     }
 
     /**
      * Set the template to act upon
      *
      * @access public
-     * @param  mixed $data Url to file, a text string to set template, or null to return template
-     * @return mixed Current template as string, or the current object if data is set
+     * @param  string $data Url to file, a text string to set template, or null to return template
+     * @return PHPlater Current template as string, or the current object if data is set
      */
-    public function content(?string $data = null): string|PHPlater {
-        return $this->getSet('content', $this->contentify($data));
+    public function setContent(string $data = ''): PHPlater {
+        $this->content = $this->contentify($data);
+        return $this;
     }
 
     /**
      * Will manage the content so that it is a string when stored into data
      *
      * @access public
-     * @param  mixed $data Url to file or a text string, if null returns null
-     * @return mixed Returns content as a string or null if no data
+     * @param  string $data Url to file or a text string
+     * @return string Returns content as a string or null if no data
      */
-    public function contentify(?string $data): string|null {
-        if($data === null || trim($data) === ''){
-            return null;
+    public function contentify(string $data): string {
+        if (trim($data) === '') {
+            return $this->getContent();
         }
 
-        $contain_tag = str_contains($data, $this->tag(self::TAG_BEFORE));
-        $contain_conditional = str_contains($data, $this->tag(self::TAG_CONDITIONAL_BEFORE));
-        $contain_list = str_contains($data, $this->tag(self::TAG_LIST_BEFORE));
-        if(str_contains($data, ' ') || $contain_tag || $contain_conditional || $contain_list){
+        $have_slash = str_contains($data, '/');
+        $have_tag = str_contains($data, stripslashes(self::getTag(self::TAG_BEFORE)));
+        $have_conditional = str_contains($data, stripslashes(self::getTag(self::TAG_CONDITIONAL_BEFORE)));
+        $have_list = str_contains($data, stripslashes(self::getTag(self::TAG_LIST_BEFORE)));
+        $have_space = str_contains($data, ' ');
+
+        if (!$have_slash || ($have_space || $have_list || $have_conditional || $have_tag)) {
             return $data;
         }
 
-        $is_tpl_file = substr($data, -strlen($this->extension())) == $this->extension();
-        $is_tpl_file = $is_tpl_file ? $is_tpl_file : strpos($data, $this->extension()) > 1;
-        if(!$is_tpl_file){
-            return $data;
+        $ext = $this->getExtension();
+        $is_tpl_file = substr($data, -strlen($ext)) === $ext && str_contains($data, $ext);
+        $location = $this->getRoot() . $data;
+        if ($is_tpl_file) {
+            return is_file($location) ? file_get_contents($location) : '';
         }
 
-        $location = $this->root() . $data;
-        $file_contents = null;
-        if($is_tpl_file){
-            $file_contents = is_file($location) ? file_get_contents($location) : '';
-        }
-        if(!$is_tpl_file && !$file_contents){
-            $location = $location . $this->extension();
-            $file_contents = is_file($location) ? file_get_contents($location) : '';
-        }
-        return $file_contents !== null ? $file_contents : $data;
+        $location = $location . $this->getExtension();
+        return is_file($location) ? file_get_contents($location) : '';
     }
-    
+
     /**
-     * If the template is to be iterated over a collection of plates, then this method has to be called with true
+     * Set true if template is to be iterated over a collection of plates
      *
      * @access public
-     * @param  $many true or false(default) according to whether or not there are many plates to iterate over
-     * @return mixed Either bool value, or the current object
+     * @param bool $many true or false(default) according to whether or not there are many plates to iterate over
+     * @return PHPlater The current object
      */
-    public function many(?bool $many = null): bool|object {
-        return $this->getSet('many', $many);
+    public function setMany(bool $many = false): PHPlater {
+        $this->many = $many;
+        return $this;
+    }
+
+    /**
+     * Returns if the template is to be iterated over a collection of plates or not
+     *
+     * @access public
+     * @return bool Value if it is many or not
+     */
+    public function getMany(): bool {
+        return $this->many;
+    }
+
+    /**
+     * Stores the result of the variable to value change in template for each run
+     *
+     * @access private
+     * @param  string $data String to store as the result
+     * @return PHPlater Returns current object
+     */
+    private function setResult(string $data): PHPlater {
+        $this->result = $data;
+        return $this;
     }
 
     /**
      * Stores the result of the variable to value change in template for each run
      *
      * @access public
-     * @param  mixed $data String if the aim is to store the result, null if it is to get the stored result
-     * @return mixed Returns result as a string or this if result is set
+     * @return string Returns result as a string or this if result is set
      */
-    public function result(?string $data = null): string|PHPlater {
-        return $this->getSet('result', $data);
+    public function getResult(): string {
+        return $this->result;
     }
 
     /**
-     * Adds and gets the filter function, as well as calls it
-     * Note that if $value is a string of a callable function it will be considered a set of the function
-     * Otherwise the filter function is called with $value as argument
+     * Adds the callable filter function to class
      *
      * @access public
-     * @param  mixed $filter The name of the filter, either when set or when called
-     * @param  string $value The callable function, or the argument to call function with
-     * @return mixed The result of the called function, the function itself, or the current object
+     * @param string $filter The name of the filter
+     * @param callable $function The callable function
+     * @return void
      */
-    public function filter(string $filter, callable|string|null|array $value = null): int|string|callable|object {
-        return $this->get(self::CLASS_FILTER)->filter($filter, $value);
+    public function setFilter(string $filter, callable $function): void {
+        $this->getPHPlaterObject(self::CLASS_FILTER)->setFilter($filter, $function);
     }
 
     /**
@@ -152,30 +208,51 @@ class PHPlater extends PHPlaterBase {
      * The plates array is a key value store from which it is accessed from within the template
      *
      * @access public
-     * @param  mixed $plates Either array with plates, json as string, or null to get all plates
-     * @return mixed The array of all the plates or the current object or current PHPlater if set
+     * @param  string|array<string|int, mixed> $plates Either array with plates or json as string
+     * @return PHPlater The array of all the plates or the current object or current PHPlater if set
      */
-    public function plates(null|string|array $plates = null): array|PHPlater {
-        return $this->getSet('plates', $this->ifJsonToArray($plates));
+    public function setPlates(string|array $plates = []): PHPlater {
+        $this->plates = self::ifJsonToArray($plates);
+        return $this;
     }
 
     /**
-     * Set or get the a plate (template variable)
+     * Get all plates at once
+     *
+     * @access public
+     * @return array<string|int, mixed> The array of all the plates or the current object
+     */
+    public function getPlates(): array {
+        return $this->plates;
+    }
+
+    /**
+     * Get the a plate (template variable)
      *
      * A plate is the value stored at the name position and is accessed from within the template
      *
      * @access public
      * @param  string $name The key position for where the plate is stored
-     * @param  mixed $plate Object, array or string to store in the key position, or null to get the data in the key position
-     * @return mixed Plate asked for if it is a get operation, or the current object if data is set
+     * @return mixed Plate asked for if it is a get operation
      */
-    public function plate(string $name, object|array|string|int|float|bool|null $plate = null): mixed {
-        if ($plate === null) {
-            $tag_before = stripslashes($this->tag(self::TAG_BEFORE));
-            $tag_after = stripslashes($this->tag(self::TAG_AFTER));
-            return $this->data['plates'][$name] ?? $tag_before . $name . $tag_after;
-        }
-        $this->data['plates'][$name] = $this->ifJsonToArray($plate);
+    public function getPlate(string $name): mixed {
+        $tag_before = stripslashes(self::getTag(self::TAG_BEFORE));
+        $tag_after = stripslashes(self::getTag(self::TAG_AFTER));
+        return $this->plates[$name] ?? $tag_before . $name . $tag_after;
+    }
+
+    /**
+     * Set a plate (template variable)
+     *
+     * A plate is the value stored at the name position and is accessed from within the template
+     *
+     * @access public
+     * @param  string $name The key position for where the plate is stored
+     * @param  mixed $plate Object, array or string to store in the key position
+     * @return PHPlater The current object
+     */
+    public function setPlate(string $name, mixed $plate = null): PHPlater {
+        $this->plates[$name] = self::ifJsonToArray($plate);
         return $this;
     }
 
@@ -185,29 +262,28 @@ class PHPlater extends PHPlaterBase {
      * Replaces the template variables in the template, distinguished by tags, with the values from the plates
      *
      * @access public
-     * @param  mixed $template Optional. The template to act upon if it is not set earlier.
+     * @param  string $template Optional. The template to act upon if it is not set earlier.
      * @param  int $iterations To allow for variables that return variables, you can choose the amount of iterations
      * @return string The finished result after all plates are applied to the template
      */
-    public function render(?string $template = null, int $iterations = 1): string {
-        $this->content($template);
-        $this->result($this->content());
-        if(str_contains($this->result(), stripslashes($this->tag(self::TAG_LIST_BEFORE)))){
-            $this->result($this->renderCallback($this->get(self::CLASS_LIST), $this->result()));
+    public function render(string $template = '', int $iterations = 1): string {
+        $this->setResult($this->setContent($template)->getContent());
+        if (str_contains($this->getResult(), stripslashes(self::getTag(self::TAG_LIST_BEFORE)))) {
+            $this->setResult(self::renderCallback($this->getPHPlaterObject(self::CLASS_LIST), $this->getResult()));
         }
-        if(str_contains($this->result(), stripslashes($this->tag(self::TAG_CONDITIONAL_BEFORE)))){
-            $this->result($this->renderCallback($this->get(self::CLASS_CONDITIONAL), $this->result()));
+        if (str_contains($this->getResult(), stripslashes(self::getTag(self::TAG_CONDITIONAL_BEFORE)))) {
+            $this->setResult(self::renderCallback($this->getPHPlaterObject(self::CLASS_CONDITIONAL), $this->getResult()));
         }
-        $tag_before = stripslashes($this->tag(self::TAG_BEFORE));
-        $tag_after = stripslashes($this->tag(self::TAG_AFTER));
-        $content = $this->many() ? $tag_before . '0' . $tag_after : $this->result();
+        $tag_before = stripslashes(self::getTag(self::TAG_BEFORE));
+        $tag_after = stripslashes(self::getTag(self::TAG_AFTER));
+        $content = $this->getMany() ? $tag_before . '0' . $tag_after : $this->getResult();
         if(str_contains($content, $tag_before)) {
-            $this->result($this->renderCallback($this->get(self::CLASS_VARIABLE), $content));
+            $this->setResult(self::renderCallback($this->getPHPlaterObject(self::CLASS_VARIABLE), $content));
         }
-        if ($iterations-- && strstr($this->result(), $tag_before) && strstr($this->result(), $tag_after)) {
-            return $this->render($this->result(), $iterations);
+        if ($iterations-- && strstr($this->getResult(), $tag_before) && strstr($this->getResult(), $tag_after)) {
+            return $this->render($this->getResult(), $iterations);
         }
-        return $this->result();
+        return $this->getResult();
     }
 
     /**
@@ -217,7 +293,7 @@ class PHPlater extends PHPlaterBase {
      * @param string $content The content to render
      * @return string The resulting content
      */
-    private function renderCallback(object $class, string $content): string {
-        return preg_replace_callback($class->pattern(), [$class, 'find'], $content);
+    private static function renderCallback(object $class, string $content): string {
+        return (string) preg_replace_callback($class::pattern(), [$class, 'find'], $content);
     }
 }

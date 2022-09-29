@@ -4,8 +4,8 @@ class TestPlate extends PHPlater {
     private $title = 'Test';
 
     public function __construct() {
-        $this->Plate('number_list', $this->numberList());
-        $this->Plate('select', '<select>' . $this->option('Test', 1) . $this->option('Test 2', 2) . '</select>');
+        $this->setPlate('number_list', $this->numberList());
+        $this->setPlate('select', '<select>' . $this->option('Test', 1) . $this->option('Test 2', 2) . '</select>');
     }
 
     public function option($name, $value) {

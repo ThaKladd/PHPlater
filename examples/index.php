@@ -8,29 +8,28 @@ include 'classes/TestPlate.php';
 include 'classes/Test.php';
 
 $return = [];
-$runs = 100;
+$runs = 1000;
 for ($y = 0; $y < $runs; $y++) {
-
     try {
         $phplater = new PHPlater();
     } catch (Exception $ex) {
         echo '<pre>' . print_r($ex, true) . '</pre>';
     }
 
-    $phplater->plate('test_plate', new TestPlate());
-    $phplater->plate('test', new Test());
-    $phplater->plate('plain', 'This text is injected directly into PHPlater');
-    $phplater->plate('nested', 'Hello from the nest');
+    $phplater->setPlate('test_plate', new TestPlate());
+    $phplater->setPlate('test', new Test());
+    $phplater->setPlate('plain', 'This text is injected directly into PHPlater');
+    $phplater->setPlate('nested', 'Hello from the nest');
 
     $phplater_from_text = new PHPlater();
-    $phplater_from_text->content('<b>{{ text }}</b> {{ text_two }}');
-    $phplater_from_text->plate('text', 'This text is put into teplate string before adding to file.<br />Also, nesting the template: <b>{{ nested }}</b>');
-    $phplater_from_text->plate('text_two', ', This however is <i>not nested</i>');
-    $phplater->plate('no_file', $phplater_from_text->render());
+    $phplater_from_text->setContent('<b>{{ text }}</b> {{ text_two }}');
+    $phplater_from_text->setPlate('text', 'This text is put into teplate string before adding to file.<br />Also, nesting the template: <b>{{ nested }}</b>');
+    $phplater_from_text->setPlate('text_two', ', This however is <i>not nested</i>');
+    $phplater->setPlate('no_file', $phplater_from_text->render());
     $phpplater_json = new PHPlater();
-    $phpplater_json->plates('{"eight": "Kahdeksan"}');
+    $phpplater_json->setPlates('{"eight": "Kahdeksan"}');
     $phplater_array = new PHPlater();
-    $phplater_array->plates([
+    $phplater_array->setPlates([
         'one' => 'Yksi',
         'two' => new Test(),
         'assoc' => [
@@ -42,17 +41,17 @@ for ($y = 0; $y < $runs; $y++) {
         'seven_obj' => new Test(),
         'from_json' => $phpplater_json
     ]);
-    $phplater_array->filter('nineFunc', function (string $nine): ?string {
+    $phplater_array->setFilter('nineFunc', function (string $nine): ?string {
         return $nine == 'nine' ? 'Yhdeksän' : 'Undefined';
     });
-    $phplater_array->filter('strtoupper', 'mb_strtoupper');
-    $phplater_array->filter('lowercase', 'mb_strtolower');
-    $phplater_array->filter('implode', function (array $data) {
+    $phplater_array->setFilter('strtoupper', 'mb_strtoupper');
+    $phplater_array->setFilter('lowercase', 'mb_strtolower');
+    $phplater_array->setFilter('implode', function (array $data) {
         return implode('', $data);
     });
-    $phplater_array->plate('tens', [['K', 'y', 'm', 'm', 'e', 'n', 'e', 'n']]);
-    $phplater_array->plate('nine', 'nine');
-    $phplater->plate('from_array', $phplater_array->render('
+    $phplater_array->setPlate('tens', [['K', 'y', 'm', 'm', 'e', 'n', 'e', 'n']]);
+    $phplater_array->setPlate('nine', 'nine');
+    $phplater->setPlate('from_array', $phplater_array->render('
         <div>
             One: {{ one }}<br />
             Two: {{ two.getTwo }}<br />
@@ -70,7 +69,7 @@ for ($y = 0; $y < $runs; $y++) {
     $return['first'] = $phplater->render('./templates/test_page.tpl');
 
     $phplater = new PHPlater();
-    $phplater->many(true)->plates([
+    $phplater->setMany(true)->setPlates([
         ['assoc' => ['Yksitoista']],
         ['assoc' => ['Kaksitoista']],
         ['assoc' => ['Kolmetoista']]
@@ -79,7 +78,7 @@ for ($y = 0; $y < $runs; $y++) {
     $return['second'] = '<ul>' . $phplater->render('<li>{{ assoc.0 }}</li>') . '</ul>';
 
     $phplater = new PHPlater();
-    $phplater->plates([
+    $phplater->setPlates([
         'list' => [
             ['assoc' => [
                     'english' => 'Fourteen',
@@ -115,7 +114,7 @@ for ($y = 0; $y < $runs; $y++) {
     ');
 
     $phplater = new PHPlater();
-    $phplater->plates([
+    $phplater->setPlates([
         ['assoc' => [
                 'english' => 'Twentythree',
                 'finnish' => 'Kaksikymmentäkolme'
@@ -137,7 +136,7 @@ for ($y = 0; $y < $runs; $y++) {
     ');
 
     $phplater = new PHPlater();
-    $phplater->plates([
+    $phplater->setPlates([
         'assoc' => [
             'value' => [
                 [
@@ -150,13 +149,14 @@ for ($y = 0; $y < $runs; $y++) {
             ]
         ]
     ]);
+
     $return['fifth'] = $phplater->render('
         Value 0 is (( {{assoc.value.0.fi}} ?? {{assoc.value.0.fi}} :: {{assoc.value.0.uk}} )) <br>
         Value 1 is (( {{assoc.value.1.fi}} ?? {{assoc.value.1.fi}} :: {{assoc.value.1.uk}} )) <br>
         Value 0 is (( {{assoc.value.0.fi}} ?? :: {{assoc.value.0.uk}} )) <br>
         Value 1 is (( {{assoc.value.1.fi}} ?? :: {{assoc.value.1.uk}} )) <br>
         Value 0 is (( {{assoc.value.0.fi}} ?? {{assoc.value.0.fi}} )) <br>
-        Value 1 is (( {{assoc.value.1.fi}} ?? {{assoc.value.1.fi}} )) <br>
+        Value 1 is (( {{assoc.value.1.fi}} ?? {{assoc.value.1.fi}} should not appear )) <br>
         Value 0 is (( {{assoc.value.0.fi}} ?? <b>{{assoc.value.0.fi}}</b> :: {{assoc.value.0.uk}} )) <br>
         Value 1 is (( {{assoc.value.1.fi}} ?? {{assoc.value.1.fi}} :: Kaksikymmentäseitsemän )) <br>
         Value is (( 1 == 1 ?? true :: false )) <br>

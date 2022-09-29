@@ -1,7 +1,7 @@
 <?php
 
 /**
- * RuleBrokenError is thrown when a rule within PHPLater is broken
+ * RuleBrokenError is thrown when a rule within PHPlater is broken
  *
  * @author John Larsen
  */

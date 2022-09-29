@@ -6,13 +6,15 @@
 ### Revamped
 
 - Removed deprecated methods
+- Back to getters and setters
+- More robust and correct type hinting
 - Template file extension and root folder can be defined
 - Templates can be used without extension
 - Refactored the code into multiple classes
 - Reworked tests for the new syntaxes
-- Optimized speed
-- Added more error handling
+- Added more error handling, but more so, made typesafe
 - Added quick access function
+- Speeds up to about 400% faster
 
 ## v0.8.0
 

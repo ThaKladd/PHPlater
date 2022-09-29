@@ -2,7 +2,7 @@
 
 /**
  * The PHPlaterBase class
- * 
+ *
  * PHPlater objects extends this class to get access to its features
  *
  * @author  John Larsen
@@ -35,23 +35,50 @@ class PHPlaterBase {
     const TAG_FILTER = 12;
     const TAG_DELIMITER = 13;
 
-    protected $core = null;
+    protected ?PHPlater $core = null;
 
     /**
      * All data is managed within this one property array.
      * Defaults are set in constructors
      */
-    protected $data = [];
-    protected $instances = [];
-    public static $tags = [];
-    
+
+    /**
+     * @var array<string|int, mixed>
+     */
+    public array $plates = [];
+    public string $content = '';
+    public string $result = '';
+    public string $root = '';
+    public string $extension = '';
+    public bool $many = false;
+
+    /**
+     * @var array<string, callable>
+     */
+    public array $filters = [];
+
+    /**
+     * @var array<string, object>
+     */
+    public array $instances = [];
+
+    /**
+     * @var array<int, string>
+     */
+    public static array $tags = [];
+
+    /**
+     * @var array<string|int, PHPlater>
+     */
+    public static array $function_instances = [];
+
     /**
      * Creates the object and initializes it
      *
      * @access public
      */
-    public function __construct(PHPLater $phplater) {
-        $this->core($phplater);
+    public function __construct(PHPlater $phplater) {
+        $this->setCore($phplater);
     }
 
     /**
@@ -60,41 +87,32 @@ class PHPlaterBase {
      * @access public
      * @param  string $const get the current instance of the corresponding class
      */
-    public function get(string $const){
+    public function getPHPlaterObject(string $const): object {
         if(!isset($this->instances[$const])){
             $this->instances[$const] = new $const($this);
         }
         return $this->instances[$const];
     }
-    
+
     /**
-     * Quick shortcut for getting and setting data inside current object
+     * Get the core object
      *
      * @access protected
-     * @param  string $key The key where data is stored or gotten from
-     * @param  mixed $value If value other than null, it is stored in the key
-     * @return mixed Returns either the data stored in key or the current object
+     * @return PHPlater Returns core object
      */
-    protected function getSet(string $key, object|array|string|int|float|bool|null $value = null): mixed {
-        if ($value === null) {
-            return $this->data[$key] ?? '';
-        }
-        $this->data[$key] = $value;
-        return $this;
+    protected function getCore(): PHPlater {
+        return $this->core ?? new PHPlater();
     }
 
     /**
-     * Get and set the core object
+     * Set the core object
      *
      * @access protected
-     * @param  PHPLater $phplater the core phplater object
-     * @return PHPLater Returns core object
+     * @param  PHPlater $phplater the core PHPlater object
+     * @return void
      */
-    protected function core(?PHPLater $phplater = null): PHPLater {
-        if(!is_null($phplater)){
-            $this->core = $phplater;
-        }
-        return $this->core ? $this->core : $this;
+    protected function setCore(PHPlater $phplater): void {
+        $this->core = $phplater;
     }
 
     /**
@@ -102,9 +120,9 @@ class PHPlaterBase {
      *
      * @access public
      * @param  mixed $data If valid json, return array
-     * @return mixed Returns valid content as an array if it is an json
+     * @return array Returns valid content as an array if it is an json
      */
-    public function ifJsonToArray(mixed $data): mixed {
+    public static function ifJsonToArray(mixed $data): string|object|array {
         if (is_string($data)) {
             $array = json_decode($data, true);
             $data = is_array($array) && $array ? $array : $data;
@@ -118,35 +136,41 @@ class PHPlaterBase {
      * @access protected
      * @return string The pattern for preg_replace_callback
      */
-    protected function buildPattern(int $before, string $pattern, int $after): string {
-        $tag_before = $this->tag($before);
-        $tag_after = $this->tag($after);
-        $delimiter = $this->tag(self::TAG_DELIMITER);
+    protected static function buildPattern(int $before, string $pattern, int $after): string {
+        $tag_before = self::getTag($before);
+        $tag_after = self::getTag($after);
+        $delimiter = self::getTag(self::TAG_DELIMITER);
         return $delimiter . $tag_before . $pattern . $tag_after . $delimiter;
     }
-    
+
     /**
-     * Set or get tag by a constant
+     * Get tag by tag constant
      *
      * @access public
-     * @param  string $tag_constant The constant to set or get tag with
-     * @param  string $tag The tag string, if you want to set the tag
-     * @return mixed The current object if a set, the string tag if it is get
+     * @param  int $tag_constant The constant to get tag from
+     * @return string The tag
      */
-    public function tag(int $tag_constant, string|null $tag = null): string|null {
-        if($tag === null){
-            return self::$tags[$tag_constant];
-        } else {
-            if ($tag_constant === self::TAG_DELIMITER) {
-                if (strlen($tag) > 1) {
-                    throw new RuleBrokenError('Preg delimiter can not be over 1 in length.');
-                } else if (ctype_alnum($tag) || $tag == '\\') {
-                    throw new RuleBrokenError('Preg Delimiter can not be alphanumeric or backslash.');
-                }
+    public static function getTag(int $tag_constant): string {
+        return self::$tags[$tag_constant] ?? '';
+    }
+
+    /**
+     * Set tag by a constant
+     *
+     * @access public
+     * @param  int $tag_constant The constant to set tag with
+     * @param  string $tag The tag string
+     * @return void
+     */
+    public static function setTag(int $tag_constant, string $tag): void {
+        if ($tag_constant === self::TAG_DELIMITER) {
+            if (strlen($tag) > 1) {
+                throw new RuleBrokenError('Preg delimiter can not be over 1 in length.');
+            } else if (ctype_alnum($tag) || $tag === '\\') {
+                throw new RuleBrokenError('Preg Delimiter can not be alphanumeric or backslash.');
             }
-            self::$tags[$tag_constant] = $tag;
         }
-        return null;
+        self::$tags[$tag_constant] = $tag;
     }
 
     /**
@@ -160,13 +184,13 @@ class PHPlaterBase {
      * @param  string $after Tag after variable in template
      * @return void
      */
-    public function tagsVariables(string $before, string $after): void {
-        $this->tags([
+    public static function setTagsVariables(string $before, string $after): void {
+        self::setTags([
             self::TAG_BEFORE => preg_quote($before),
             self::TAG_AFTER => preg_quote($after)
         ]);
     }
-   
+
     /**
      * Set both conditional tags in one method
      *
@@ -178,8 +202,8 @@ class PHPlaterBase {
      * @param  string $after Tag after conditional template in template
      * @return void
      */
-    public function tagsConditionals(string $before, string $after): void {
-        $this->tags([
+    public static function setTagsConditionals(string $before, string $after): void {
+        self::setTags([
             self::TAG_CONDITIONAL_BEFORE => preg_quote($before),
             self::TAG_CONDITIONAL_AFTER => preg_quote($after)
         ]);
@@ -196,28 +220,34 @@ class PHPlaterBase {
      * @param  string $after Tag after list template in template
      * @return void
      */
-    public function tagsList(string $before, string $after): void {
-        $this->tags([
+    public static function setTagsList(string $before, string $after): void {
+        self::setTags([
             self::TAG_LIST_BEFORE => preg_quote($before),
             self::TAG_LIST_AFTER => preg_quote($after)
         ]);
     }
 
     /**
-     * Set all tags you want in one method or get all tags that are set
+     * Set all tags you want in one method
      *
      * @access public
-     * @param  array $tags an array with constant as key, and tag as value
-     * @return mixed The current object or an array with all the tags
+     * @param array<int, string> $tags The array of all the tags to set
+     * @return void
      */
-    public function tags(null|array $tags = null): array|null {
-        if ($tags === null) {
-            return $this->tags;
-        }
+    public static function setTags(array $tags): void {
         foreach ($tags as $const => $tag) {
-            $this->tag($const, $tag);
+            self::setTag($const, $tag);
         }
-        return null;
+    }
+
+    /**
+     * Get all tags
+     *
+     * @access public
+     * @return array<string> All the tags
+     */
+    public static function getTags(): array {
+        return self::$tags;
     }
 
     /**
@@ -227,7 +257,7 @@ class PHPlaterBase {
      * @param  mixed $value Whatever value to debug
      * @return void
      */
-    public function debug(mixed $value): void {
+    public static function debug(mixed $value): void {
         echo PHP_EOL.'DEBUG > <pre>'.print_r($value, true).'</pre> < DEBUG'.PHP_EOL;
     }
 }
