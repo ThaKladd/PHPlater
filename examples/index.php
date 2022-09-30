@@ -9,7 +9,7 @@ include 'classes/Test.php';
 include 'classes/Data.php';
 
 $return = [];
-$runs = 1000;
+$runs = 10000;
 for ($y = 0; $y < $runs; $y++) {
     try {
         $phplater = new PHPlater();
@@ -17,19 +17,23 @@ for ($y = 0; $y < $runs; $y++) {
         echo '<pre>' . print_r($ex, true) . '</pre>';
     }
 
+    $phplater->setCache(true);
     $phplater->setPlate('test_plate', new TestPlate());
     $phplater->setPlate('test', new Test());
     $phplater->setPlate('plain', 'This text is injected directly into PHPlater');
     $phplater->setPlate('nested', 'Hello from the nest');
 
     $phplater_from_text = new PHPlater();
+    //$phplater_from_text->setCache(true);
     $phplater_from_text->setContent('<b>{{ text }}</b> {{ text_two }}');
     $phplater_from_text->setPlate('text', 'This text is put into teplate string before adding to file.<br />Also, nesting the template: <b>{{ nested }}</b>');
     $phplater_from_text->setPlate('text_two', ', This however is <i>not nested</i>');
     $phplater->setPlate('no_file', $phplater_from_text->render());
     $phpplater_json = new PHPlater();
+    //$phpplater_json->setCache(true);
     $phpplater_json->setPlates('{"eight": "Kahdeksan"}');
     $phplater_array = new PHPlater();
+    //$phplater_array->setCache(true);
     $phplater_array->setPlates([
         'one' => 'Yksi',
         'two' => new Test(),
@@ -70,6 +74,7 @@ for ($y = 0; $y < $runs; $y++) {
     $return['first'] = $phplater->render('./templates/test_page.tpl');
 
     $phplater = new PHPlater();
+    //$phplater->setCache(true);
     $phplater->setMany(true)->setPlates([
         ['assoc' => ['Yksitoista']],
         ['assoc' => ['Kaksitoista']],
@@ -79,6 +84,7 @@ for ($y = 0; $y < $runs; $y++) {
     $return['second'] = '<ul>' . $phplater->render('<li>{{ assoc.0 }}</li>') . '</ul>';
 
     $phplater = new PHPlater();
+    //$phplater->setCache(true);
     $phplater->setPlates([
         'list' => [
             ['assoc' => [
@@ -115,6 +121,7 @@ for ($y = 0; $y < $runs; $y++) {
     ');
 
     $phplater = new PHPlater();
+    //$phplater->setCache(true);
     $phplater->setPlates([
         ['assoc' => [
                 'english' => 'Twentythree',
@@ -137,6 +144,7 @@ for ($y = 0; $y < $runs; $y++) {
     ');
 
     $phplater = new PHPlater();
+    //$phplater->setCache(true);
     $phplater->setPlates([
         'assoc' => [
             'value' => [
@@ -208,6 +216,7 @@ for ($y = 0; $y < $runs; $y++) {
         'combinedValues' => $combinedValues,
     ];
     $phplater = new PHPlater();
+    //$phplater->setCache(true);
     $phplater->setPlates($variables);
     $return['sixth'] = $phplater->render('
         <ul>
@@ -250,4 +259,5 @@ echo implode('', $return);
  * (( {{ test }} | {{ true }} | {{ false }} ))
  * (( {{ test }} ?? {{ true }} :: {{ false }} ))
  */
+echo round(PHPlaterBase::$total_time, 4) . ' seconds.<br><br>';
 echo 'Page generated in ' . round(microtime(true) - $start_time, 3) . ' seconds with ' . $runs . ' runs.';

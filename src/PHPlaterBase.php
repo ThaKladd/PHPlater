@@ -46,11 +46,14 @@ class PHPlaterBase {
      * @var array<string|int, mixed>
      */
     public array $plates = [];
+    protected static array $content_cache = [];
+    protected static array $hash_cache = [];
     public string $content = '';
     public string $result = '';
     public string $root = '';
     public string $extension = '';
     public bool $many = false;
+    public static $total_time = 0;
 
     /**
      * @var array<string, callable>
@@ -148,10 +151,14 @@ class PHPlaterBase {
      *
      * @access public
      * @param  int $tag_constant The constant to get tag from
+     * @param  bool $stripslashes If the stripped version
      * @return string The tag
      */
-    public static function getTag(int $tag_constant): string {
-        return self::$tags[$tag_constant] ?? '';
+    public static function getTag(int $tag_constant, bool $stripslashes = false): string {
+        if ($stripslashes) {
+            return self::$tags[1][$tag_constant] ?? '';
+        }
+        return self::$tags[0][$tag_constant] ?? '';
     }
 
     /**
@@ -170,7 +177,8 @@ class PHPlaterBase {
                 throw new RuleBrokenError('Preg Delimiter can not be alphanumeric or backslash.');
             }
         }
-        self::$tags[$tag_constant] = $tag;
+        self::$tags[0][$tag_constant] = $tag;
+        self::$tags[1][$tag_constant] = stripslashes($tag);
     }
 
     /**
@@ -247,7 +255,7 @@ class PHPlaterBase {
      * @return array<string> All the tags
      */
     public static function getTags(): array {
-        return self::$tags;
+        return self::$tags[0] ?? [];
     }
 
     /**
@@ -258,6 +266,6 @@ class PHPlaterBase {
      * @return void
      */
     public static function debug(mixed $value): void {
-        echo PHP_EOL.'DEBUG > <pre>'.print_r($value, true).'</pre> < DEBUG'.PHP_EOL;
+        echo PHP_EOL . 'DEBUG &gt; <pre>' . print_r($value, true) . '</pre> &lt; DEBUG' . PHP_EOL;
     }
 }

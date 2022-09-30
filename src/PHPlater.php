@@ -13,6 +13,8 @@ use Error\RuleBrokenError;
 
 class PHPlater extends PHPlaterBase {
 
+    private static bool $cache = false;
+
     /**
      * Creates PHPlater object and initializes it
      *
@@ -68,6 +70,18 @@ class PHPlater extends PHPlaterBase {
     }
 
     /**
+     * Set cache true of false. Default: false
+     *
+     * @access public
+     * @param bool $toggle Toggle cache true or false
+     * @return PHPLater
+     */
+    public function setCache(bool $toggle): PHPlater {
+        self::$cache = $toggle;
+        return $this;
+    }
+
+    /**
      * Get the template extension
      * Default: .tpl
      *
@@ -114,36 +128,85 @@ class PHPlater extends PHPlaterBase {
     }
 
     /**
+     * Cache data into hash
+     *
+     * @access private
+     * @param  string $key Key or hash of the data
+     * @param  string $data Data to store
+     * @return string The stored data or data that is set
+     */
+    private function cache(string $key, string $data = ''): string {
+        if (self::$cache) {
+            if ($data) {
+                self::$content_cache[$key] = $data;
+            } else if (isset(self::$content_cache[$key])) {
+                $data = self::$content_cache[$key];
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * Cache hash of data
+     *
+     * @access private
+     * @param  string $data Data to hash
+     * @return string The stored hash
+     */
+    private function hashCache(string $data = ''): string {
+        $content_hash = '';
+        if (isset(self::$hash_cache[$data])) {
+            $content_hash = self::$hash_cache[$data];
+        } else {
+            $content_hash = hash('xxh64', $data);
+            self::$hash_cache[$data] = $content_hash;
+        }
+        return $content_hash;
+    }
+
+    /**
      * Will manage the content so that it is a string when stored into data
      *
-     * @access public
+     * @access private
      * @param  string $data Url to file or a text string
      * @return string Returns content as a string or null if no data
      */
-    public function contentify(string $data): string {
+    private function contentify(string $data): string {
         if (trim($data) === '') {
+            //Not sure why content will be returned if $data is empty, so TODO: Check if this can be removed and simply $data returned
             return $this->getContent();
         }
 
+        $content_hash = '';
+        if (self::$cache) {
+            $content_hash = $this->hashCache($data);
+            $cached_data = $this->cache($content_hash);
+            if ($cached_data) {
+                return $cached_data;
+            }
+        }
+
         $have_slash = str_contains($data, '/');
-        $have_tag = str_contains($data, stripslashes(self::getTag(self::TAG_BEFORE)));
-        $have_conditional = str_contains($data, stripslashes(self::getTag(self::TAG_CONDITIONAL_BEFORE)));
-        $have_list = str_contains($data, stripslashes(self::getTag(self::TAG_LIST_BEFORE)));
+        $have_tag = str_contains($data, self::getTag(self::TAG_BEFORE, true));
+        $have_conditional = str_contains($data, self::getTag(self::TAG_CONDITIONAL_BEFORE, true));
+        $have_list = str_contains($data, self::getTag(self::TAG_LIST_BEFORE, true));
         $have_space = str_contains($data, ' ');
 
         if (!$have_slash || ($have_space || $have_list || $have_conditional || $have_tag)) {
-            return $data;
+            return $this->cache($content_hash, $data);
         }
 
         $ext = $this->getExtension();
         $is_tpl_file = substr($data, -strlen($ext)) === $ext && str_contains($data, $ext);
         $location = $this->getRoot() . $data;
         if ($is_tpl_file) {
-            return is_file($location) ? file_get_contents($location) : '';
+            $file_data = is_file($location) ? file_get_contents($location) : '';
+            return $this->cache($content_hash, $file_data);
         }
 
         $location = $location . $this->getExtension();
-        return is_file($location) ? file_get_contents($location) : '';
+        $file_data = is_file($location) ? file_get_contents($location) : '';
+        return $this->cache($content_hash, $file_data);
     }
 
     /**
@@ -236,8 +299,8 @@ class PHPlater extends PHPlaterBase {
      * @return mixed Plate asked for if it is a get operation
      */
     public function getPlate(string $name): mixed {
-        $tag_before = stripslashes(self::getTag(self::TAG_BEFORE));
-        $tag_after = stripslashes(self::getTag(self::TAG_AFTER));
+        $tag_before = self::getTag(self::TAG_BEFORE, true);
+        $tag_after = self::getTag(self::TAG_AFTER, true);
         return $this->plates[$name] ?? $tag_before . $name . $tag_after;
     }
 
@@ -268,14 +331,14 @@ class PHPlater extends PHPlaterBase {
      */
     public function render(string $template = '', int $iterations = 1): string {
         $this->setResult($this->setContent($template)->getContent());
-        if (str_contains($this->getResult(), stripslashes(self::getTag(self::TAG_LIST_BEFORE)))) {
+        if (str_contains($this->getResult(), self::getTag(self::TAG_LIST_BEFORE, true))) {
             $this->setResult(self::renderCallback($this->getPHPlaterObject(self::CLASS_LIST), $this->getResult()));
         }
-        if (str_contains($this->getResult(), stripslashes(self::getTag(self::TAG_CONDITIONAL_BEFORE)))) {
+        if (str_contains($this->getResult(), self::getTag(self::TAG_CONDITIONAL_BEFORE, true))) {
             $this->setResult(self::renderCallback($this->getPHPlaterObject(self::CLASS_CONDITIONAL), $this->getResult()));
         }
-        $tag_before = stripslashes(self::getTag(self::TAG_BEFORE));
-        $tag_after = stripslashes(self::getTag(self::TAG_AFTER));
+        $tag_before = self::getTag(self::TAG_BEFORE, true);
+        $tag_after = self::getTag(self::TAG_AFTER, true);
         $content = $this->getMany() ? $tag_before . '0' . $tag_after : $this->getResult();
         if(str_contains($content, $tag_before)) {
             $this->setResult(self::renderCallback($this->getPHPlaterObject(self::CLASS_VARIABLE), $content));
@@ -286,6 +349,11 @@ class PHPlater extends PHPlaterBase {
         return $this->getResult();
     }
 
+    public static $total_time = 0;
+    public static $match_cache = [];
+    public static $pattern_cache = [];
+    public static $class_cache = [];
+
     /**
      * Renders the content with a callback to a method
      *
@@ -294,6 +362,39 @@ class PHPlater extends PHPlaterBase {
      * @return string The resulting content
      */
     private static function renderCallback(object $class, string $content): string {
-        return (string) preg_replace_callback($class::pattern(), [$class, 'find'], $content);
+        if (self::$cache) {
+
+            $class_name = get_class($class);
+
+            if (!isset(self::$pattern_cache[$class_name])) {
+                self::$pattern_cache[$class_name] = $class::pattern();
+            }
+            $pattern = self::$pattern_cache[$class_name];
+
+
+            $matches = [];
+            if (isset(self::$match_cache[$content][$pattern])) {
+                $matches = self::$match_cache[$content][$pattern];
+            } else {
+                preg_match_all($pattern, $content, $matches);
+                self::$match_cache[$content][$pattern] = $matches;
+            }
+
+
+            $data = $content;
+            if (isset($matches['x'])) {
+                $unique_matches = array_unique($matches['x']);
+                foreach ($unique_matches as $key => $match) {
+                    $replace_with = $class->find(['x' => $match]);
+                    $data = strtr($data, [$matches[0][$key] => $replace_with]);
+                }
+            }
+
+        } else {
+            $data = (string) preg_replace_callback($class::pattern(), [$class, 'find'], $content);
+        }
+
+
+        return $data;
     }
 }

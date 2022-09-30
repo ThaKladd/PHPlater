@@ -14,7 +14,7 @@ class PHPlaterVariable extends PHPlaterBase {
     /**
      * Get the pattern used to fetch all the variable tags in the template
      * \{\{\s*(?P<x>[\w,\-\|\.\:]+?)\s*\}\}
-     * 
+     *
      * @access public
      * @return string The pattern for preg_replace_callback
      */
@@ -42,6 +42,7 @@ class PHPlaterVariable extends PHPlaterBase {
             }
             return $all_plates;
         }
+
         [$parts, $filters] = self::getFiltersAndParts($match['x']);
         $plate = $phplater->getPlate(array_shift($parts));
         foreach ($parts as $part) {
@@ -61,6 +62,17 @@ class PHPlaterVariable extends PHPlaterBase {
         $parts = explode(self::getTag(self::TAG_FILTER), $plate);
         $first_part = array_shift($parts);
         return [explode(self::getTag(self::TAG_CHAIN), $first_part), $parts];
+ //The above works. The below not. Why??? TODO: fix.
+        $parts = ['']; //gives error or wrong result if this is []
+        if (str_contains($plate, self::getTag(self::TAG_FILTER))) {
+            $parts = explode(self::getTag(self::TAG_FILTER), $plate);
+            $plate = array_shift($parts);
+        }
+        $chain = [''];
+        if (str_contains($plate, self::getTag(self::TAG_CHAIN))) {
+            $chain = explode(self::getTag(self::TAG_CHAIN), $plate);
+        }
+        return [$chain, $parts];
     }
 
     /**

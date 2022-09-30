@@ -158,8 +158,8 @@ class PHPlaterTest extends TestCase {
      */
     public function testContentify() {
         file_put_contents($this->tpl_file, 'value ok');
-        $this->assertEquals('value ok', $this->phplater->contentify($this->tpl_file));
-        $this->assertEquals('value ok', $this->phplater->contentify('value ok'));
+        $this->assertEquals('value ok', $this->phplater->setContent($this->tpl_file));
+        $this->assertEquals('value ok', $this->phplater->setContent('value ok'));
     }
 
     /**
