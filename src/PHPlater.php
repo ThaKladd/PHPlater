@@ -275,6 +275,8 @@ class PHPlater extends PHPlaterBase {
      * @return PHPlater The array of all the plates or the current object or current PHPlater if set
      */
     public function setPlates(string|array $plates = []): PHPlater {
+        //Todo: Speedup by running ifJsonToArray recursevily here instead of each time in PHPlaterVariable find
+        //May not work as objects can return json
         $this->plates = self::ifJsonToArray($plates);
         return $this;
     }
@@ -349,11 +351,6 @@ class PHPlater extends PHPlaterBase {
         return $this->getResult();
     }
 
-    public static $total_time = 0;
-    public static $match_cache = [];
-    public static $pattern_cache = [];
-    public static $class_cache = [];
-
     /**
      * Renders the content with a callback to a method
      *
@@ -363,15 +360,7 @@ class PHPlater extends PHPlaterBase {
      */
     private static function renderCallback(object $class, string $content): string {
         if (self::$cache) {
-
-            $class_name = get_class($class);
-
-            if (!isset(self::$pattern_cache[$class_name])) {
-                self::$pattern_cache[$class_name] = $class::pattern();
-            }
-            $pattern = self::$pattern_cache[$class_name];
-
-
+            $pattern = self::patternCache($class);
             $matches = [];
             if (isset(self::$match_cache[$content][$pattern])) {
                 $matches = self::$match_cache[$content][$pattern];
@@ -379,7 +368,6 @@ class PHPlater extends PHPlaterBase {
                 preg_match_all($pattern, $content, $matches);
                 self::$match_cache[$content][$pattern] = $matches;
             }
-
 
             $data = $content;
             if (isset($matches['x'])) {

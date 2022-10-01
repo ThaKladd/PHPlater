@@ -59,16 +59,12 @@ class PHPlaterVariable extends PHPlaterBase {
      * @return array<mixed> Nesting parts and filters separated into array
      */
     private static function getFiltersAndParts(string $plate): array {
-        $parts = explode(self::getTag(self::TAG_FILTER), $plate);
-        $first_part = array_shift($parts);
-        return [explode(self::getTag(self::TAG_CHAIN), $first_part), $parts];
- //The above works. The below not. Why??? TODO: fix.
-        $parts = ['']; //gives error or wrong result if this is []
+        $parts = []; //gives error or wrong result if this is []
         if (str_contains($plate, self::getTag(self::TAG_FILTER))) {
             $parts = explode(self::getTag(self::TAG_FILTER), $plate);
             $plate = array_shift($parts);
         }
-        $chain = [''];
+        $chain = [$plate];
         if (str_contains($plate, self::getTag(self::TAG_CHAIN))) {
             $chain = explode(self::getTag(self::TAG_CHAIN), $plate);
         }

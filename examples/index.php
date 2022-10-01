@@ -9,7 +9,7 @@ include 'classes/Test.php';
 include 'classes/Data.php';
 
 $return = [];
-$runs = 10000;
+$runs = 1000;
 for ($y = 0; $y < $runs; $y++) {
     try {
         $phplater = new PHPlater();
@@ -41,7 +41,8 @@ for ($y = 0; $y < $runs; $y++) {
             'three' => 'Kolme',
             4 => 'Neljä',
             5 => ['Viisi'],
-            'six' => ['Kuusi']
+            'six' => ['Kuusi'],
+            'test' => '{ "testi": "Testattu" }'
         ],
         'seven_obj' => new Test(),
         'from_json' => $phpplater_json
@@ -67,7 +68,8 @@ for ($y = 0; $y < $runs; $y++) {
             Seven: {{ seven_obj.returnArray.seven }}<br />
             Eight: {{ from_json.eight }}<br />
             Nine: {{ nine|nineFunc|strtoupper }}<br />
-            Ten: {{ tens.0|implode|lowercase }}
+            Ten: {{ tens.0|implode|lowercase }}<br />
+            Test: {{ assoc.test.testi }}
        </div>
     '));
 
@@ -255,9 +257,9 @@ for ($y = 0; $y < $runs; $y++) {
 }
 echo implode('', $return);
 /**
+ * TODO:
  * Imagining a future implementation of an if else
  * (( {{ test }} | {{ true }} | {{ false }} ))
  * (( {{ test }} ?? {{ true }} :: {{ false }} ))
  */
-echo round(PHPlaterBase::$total_time, 4) . ' seconds.<br><br>';
 echo 'Page generated in ' . round(microtime(true) - $start_time, 3) . ' seconds with ' . $runs . ' runs.';

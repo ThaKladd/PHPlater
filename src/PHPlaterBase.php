@@ -48,12 +48,13 @@ class PHPlaterBase {
     public array $plates = [];
     protected static array $content_cache = [];
     protected static array $hash_cache = [];
+    public static $match_cache = [];
+    public static $pattern_cache = [];
     public string $content = '';
     public string $result = '';
     public string $root = '';
     public string $extension = '';
     public bool $many = false;
-    public static $total_time = 0;
 
     /**
      * @var array<string, callable>
@@ -119,6 +120,21 @@ class PHPlaterBase {
     }
 
     /**
+     * Caches the patterns, to reduce unnecessary redundancy
+     *
+     * @access protected
+     * @param  object $class The object to get pattern from
+     * @return string
+     */
+    protected static function patternCache(object $class): string {
+        $class_name = get_class($class);
+        if (!isset(self::$pattern_cache[$class_name])) {
+            self::$pattern_cache[$class_name] = $class::pattern();
+        }
+        return self::$pattern_cache[$class_name];
+    }
+
+    /**
      * Will manage the input so that if it is json it converted to an array, otherwise input is returned
      *
      * @access public
@@ -128,7 +144,7 @@ class PHPlaterBase {
     public static function ifJsonToArray(mixed $data): string|object|array {
         if (is_string($data)) {
             $array = json_decode($data, true);
-            $data = is_array($array) && $array ? $array : $data;
+            $data = is_array($array) ? $array : $data;
         }
         return $data;
     }
