@@ -275,8 +275,7 @@ class PHPlater extends PHPlaterBase {
      * @return PHPlater The array of all the plates or the current object or current PHPlater if set
      */
     public function setPlates(string|array $plates = []): PHPlater {
-        //Todo: Speedup by running ifJsonToArray recursevily here instead of each time in PHPlaterVariable find
-        //May not work as objects can return json
+        //TODO: Speedup by running ifJsonToArray recursevily here instead of each time in PHPlaterVariable find. May not work as objects can return json.
         $this->plates = self::ifJsonToArray($plates);
         return $this;
     }
