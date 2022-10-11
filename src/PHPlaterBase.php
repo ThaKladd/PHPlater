@@ -47,13 +47,13 @@ class PHPlaterBase {
      */
     public array $plates = [];
     protected static array $content_cache = [];
-    protected static array $hash_cache = [];
     public static $match_cache = [];
     public static $pattern_cache = [];
     public string $content = '';
     public string $result = '';
-    public string $root = '';
-    public string $extension = '';
+    public static string $root = '';
+    public static string $extension = '';
+    public static bool $changed = true;
     public bool $many = false;
 
     /**
@@ -208,6 +208,7 @@ class PHPlaterBase {
         if ($patter_cache_remove) {
             unset(self::$pattern_cache[$patter_cache_remove]);
         }
+        self::$changed = true;
     }
 
     /**

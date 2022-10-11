@@ -51,11 +51,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PHPlater.html#property_cache"
         },                {
-            "fqsen": "\\PHPlater\u003A\u003AhashCache\u0028\u0029",
-            "name": "hashCache",
-            "summary": "Cache\u0020hash\u0020of\u0020data",
-            "url": "classes/PHPlater.html#method_hashCache"
-        },                {
             "fqsen": "\\PHPlater\u003A\u003Acontentify\u0028\u0029",
             "name": "contentify",
             "summary": "Will\u0020manage\u0020the\u0020content\u0020so\u0020that\u0020it\u0020is\u0020a\u0020string\u0020when\u0020stored\u0020into\u0020data",
@@ -326,11 +321,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PHPlaterBase.html#property_content_cache"
         },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024hash_cache",
-            "name": "hash_cache",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#property_hash_cache"
-        },                {
             "fqsen": "\\PHPlaterBase\u003A\u003A\u0024match_cache",
             "name": "match_cache",
             "summary": "",
@@ -360,6 +350,11 @@ Search.appendIndex(
             "name": "extension",
             "summary": "",
             "url": "classes/PHPlaterBase.html#property_extension"
+        },                {
+            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024changed",
+            "name": "changed",
+            "summary": "",
+            "url": "classes/PHPlaterBase.html#property_changed"
         },                {
             "fqsen": "\\PHPlaterBase\u003A\u003A\u0024many",
             "name": "many",

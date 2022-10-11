@@ -25,23 +25,26 @@ class PHPlater extends PHPlaterBase {
         if (version_compare(phpversion(), '8.0.0', '<')) {
             throw new RuleBrokenError('PHPlater requires PHP version to be > 8.0');
         }
-        $this->setCore($this);
-        $this->setExtension('.tpl');
+        if (self::$changed) {
+            $this->setExtension('.tpl');
+            self::setTagsConditionals('((', '))');
+            self::setTagsVariables('{{', '}}');
+            self::setTagsList('[[', ']]');
+            self::setTags([
+                self::TAG_ARGUMENT => ':',
+                self::TAG_ARGUMENT_LIST => ',',
+                self::TAG_CHAIN => '.',
+                self::TAG_FILTER => '|',
+                self::TAG_IF => '??',
+                self::TAG_ELSE => '::',
+                self::TAG_LIST_KEY => '#',
+                self::TAG_DELIMITER => '~'
+            ]);
+            self::$changed = false;
+        }
         $this->setRoot($root);
-        self::setTagsConditionals('((', '))');
-        self::setTagsVariables('{{', '}}');
-        self::setTagsList('[[', ']]');
-        self::setTags([
-            self::TAG_ARGUMENT => ':',
-            self::TAG_ARGUMENT_LIST => ',',
-            self::TAG_CHAIN => '.',
-            self::TAG_FILTER => '|',
-            self::TAG_IF => '??',
-            self::TAG_ELSE => '::',
-            self::TAG_LIST_KEY => '#',
-            self::TAG_DELIMITER => '~'
-        ]);
         $this->setContent($template);
+        self::setCore($this);
     }
 
     /**
@@ -51,7 +54,7 @@ class PHPlater extends PHPlaterBase {
      * @return string Returns root location to templates
      */
     public function getRoot(): string {
-        return $this->root;
+        return self::$root;
     }
 
     /**
@@ -65,7 +68,7 @@ class PHPlater extends PHPlaterBase {
         if ($location && substr($location, -1) == '/') {
             throw new RuleBrokenError('Root must not end with slash. The template file should begin with it.');
         }
-        $this->root = $location;
+        self::$root = $location;
         return $this;
     }
 
@@ -89,7 +92,7 @@ class PHPlater extends PHPlaterBase {
      * @return string Returns extension of the template file
      */
     public function getExtension(): string {
-        return $this->extension;
+        return self::$extension;
     }
 
     /**
@@ -101,7 +104,8 @@ class PHPlater extends PHPlaterBase {
      * @return PHPlater Returns current object
      */
     public function setExtension(string $extension = ''): PHPlater {
-        $this->extension = $extension;
+        self::$extension = $extension;
+        self::$changed = true;
         return $this;
     }
 
@@ -147,24 +151,6 @@ class PHPlater extends PHPlaterBase {
     }
 
     /**
-     * Cache hash of data
-     *
-     * @access private
-     * @param  string $data Data to hash
-     * @return string The stored hash
-     */
-    private function hashCache(string $data = ''): string {
-        $content_hash = '';
-        if (isset(self::$hash_cache[$data])) {
-            $content_hash = self::$hash_cache[$data];
-        } else {
-            $content_hash = hash('xxh64', $data);
-            self::$hash_cache[$data] = $content_hash;
-        }
-        return $content_hash;
-    }
-
-    /**
      * Will manage the content so that it is a string when stored into data
      *
      * @access private
@@ -177,10 +163,8 @@ class PHPlater extends PHPlaterBase {
             return $this->getContent();
         }
 
-        $content_hash = '';
         if (self::$cache) {
-            $content_hash = $this->hashCache($data);
-            $cached_data = $this->cache($content_hash);
+            $cached_data = $this->cache($data);
             if ($cached_data) {
                 return $cached_data;
             }
@@ -193,7 +177,7 @@ class PHPlater extends PHPlaterBase {
         $have_space = str_contains($data, ' ');
 
         if (!$have_slash || ($have_space || $have_list || $have_conditional || $have_tag)) {
-            return $this->cache($content_hash, $data);
+            return $this->cache($data, $data);
         }
 
         $ext = $this->getExtension();
@@ -201,12 +185,12 @@ class PHPlater extends PHPlaterBase {
         $location = $this->getRoot() . $data;
         if ($is_tpl_file) {
             $file_data = is_file($location) ? file_get_contents($location) : '';
-            return $this->cache($content_hash, $file_data);
+            return $this->cache($data, $file_data);
         }
 
         $location = $location . $this->getExtension();
         $file_data = is_file($location) ? file_get_contents($location) : '';
-        return $this->cache($content_hash, $file_data);
+        return $this->cache($data, $file_data);
     }
 
     /**
