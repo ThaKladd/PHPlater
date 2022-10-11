@@ -341,7 +341,7 @@ class PHPlater extends PHPlaterBase {
         $tag_before = self::getTag(self::TAG_BEFORE, true);
         $tag_after = self::getTag(self::TAG_AFTER, true);
         $content = $this->getMany() ? $tag_before . '0' . $tag_after : $this->getResult();
-        if(str_contains($content, $tag_before)) {
+        if (str_contains($content, $tag_before)) {
             $this->setResult(self::renderCallback($this->getPHPlaterObject(self::CLASS_VARIABLE), $content));
         }
         if ($iterations-- && strstr($this->getResult(), $tag_before) && strstr($this->getResult(), $tag_after)) {

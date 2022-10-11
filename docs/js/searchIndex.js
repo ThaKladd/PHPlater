@@ -21,6 +21,11 @@ Search.appendIndex(
             "summary": "Set\u0020the\u0020root\u0020folder\u0020of\u0020templates",
             "url": "classes/PHPlater.html#method_setRoot"
         },                {
+            "fqsen": "\\PHPlater\u003A\u003AsetCache\u0028\u0029",
+            "name": "setCache",
+            "summary": "Set\u0020cache\u0020true\u0020of\u0020false.\u0020Default\u003A\u0020false",
+            "url": "classes/PHPlater.html#method_setCache"
+        },                {
             "fqsen": "\\PHPlater\u003A\u003AgetExtension\u0028\u0029",
             "name": "getExtension",
             "summary": "Get\u0020the\u0020template\u0020extension\nDefault\u003A\u0020.tpl",
@@ -40,6 +45,16 @@ Search.appendIndex(
             "name": "setContent",
             "summary": "Set\u0020the\u0020template\u0020to\u0020act\u0020upon",
             "url": "classes/PHPlater.html#method_setContent"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003A\u0024cache",
+            "name": "cache",
+            "summary": "",
+            "url": "classes/PHPlater.html#property_cache"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003AhashCache\u0028\u0029",
+            "name": "hashCache",
+            "summary": "Cache\u0020hash\u0020of\u0020data",
+            "url": "classes/PHPlater.html#method_hashCache"
         },                {
             "fqsen": "\\PHPlater\u003A\u003Acontentify\u0028\u0029",
             "name": "contentify",
@@ -135,6 +150,11 @@ Search.appendIndex(
             "name": "setCore",
             "summary": "Set\u0020the\u0020core\u0020object",
             "url": "classes/PHPlaterBase.html#method_setCore"
+        },                {
+            "fqsen": "\\PHPlaterBase\u003A\u003ApatternCache\u0028\u0029",
+            "name": "patternCache",
+            "summary": "Caches\u0020the\u0020patterns,\u0020to\u0020reduce\u0020unnecessary\u0020redundancy",
+            "url": "classes/PHPlaterBase.html#method_patternCache"
         },                {
             "fqsen": "\\PHPlaterBase\u003A\u003AifJsonToArray\u0028\u0029",
             "name": "ifJsonToArray",
@@ -301,6 +321,26 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PHPlaterBase.html#property_plates"
         },                {
+            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024content_cache",
+            "name": "content_cache",
+            "summary": "",
+            "url": "classes/PHPlaterBase.html#property_content_cache"
+        },                {
+            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024hash_cache",
+            "name": "hash_cache",
+            "summary": "",
+            "url": "classes/PHPlaterBase.html#property_hash_cache"
+        },                {
+            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024match_cache",
+            "name": "match_cache",
+            "summary": "",
+            "url": "classes/PHPlaterBase.html#property_match_cache"
+        },                {
+            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024pattern_cache",
+            "name": "pattern_cache",
+            "summary": "",
+            "url": "classes/PHPlaterBase.html#property_pattern_cache"
+        },                {
             "fqsen": "\\PHPlaterBase\u003A\u003A\u0024content",
             "name": "content",
             "summary": "",
@@ -353,7 +393,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PHPlaterConditional\u003A\u003Apattern\u0028\u0029",
             "name": "pattern",
-            "summary": "Get\u0020the\u0020pattern\u0020used\u0020for\u0020conditional",
+            "summary": "Get\u0020the\u0020pattern\u0020used\u0020for\u0020conditional\n\\\u0028\\\u0028\\s\u002A\u0028\u003FP\u003Cx\u003E.\u002B\u003F\u0029\\s\u002A\\\u0029\\\u0029",
             "url": "classes/PHPlaterConditional.html#method_pattern"
         },                {
             "fqsen": "\\PHPlaterConditional\u003A\u003Afind\u0028\u0029",
@@ -428,7 +468,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PHPlaterList\u003A\u003Apattern\u0028\u0029",
             "name": "pattern",
-            "summary": "Get\u0020the\u0020pattern\u0020used\u0020to\u0020fetch\u0020all\u0020the\u0020variable\u0020tags\u0020in\u0020the\u0020template",
+            "summary": "Get\u0020the\u0020pattern\u0020used\u0020to\u0020fetch\u0020all\u0020the\u0020variable\u0020tags\u0020in\u0020the\u0020template\n\\\u005B\\\u005B\\s\u002A\u0028\u003FP\u003Cx\u003E\u005B\\w\\W\u005D\u002B\u003F\\.\\.\u005B\\w\\W\u005D\u002B\u003F\u0029\\s\u002A\\\u005D\\\u005D",
             "url": "classes/PHPlaterList.html#method_pattern"
         },                {
             "fqsen": "\\PHPlaterList\u003A\u003AreplaceKeys\u0028\u0029",
@@ -443,7 +483,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PHPlaterVariable\u003A\u003Apattern\u0028\u0029",
             "name": "pattern",
-            "summary": "Get\u0020the\u0020pattern\u0020used\u0020to\u0020fetch\u0020all\u0020the\u0020variable\u0020tags\u0020in\u0020the\u0020template",
+            "summary": "Get\u0020the\u0020pattern\u0020used\u0020to\u0020fetch\u0020all\u0020the\u0020variable\u0020tags\u0020in\u0020the\u0020template\n\\\u007B\\\u007B\\s\u002A\u0028\u003FP\u003Cx\u003E\u005B\\w,\\\u002D\\\u007C\\.\\\u003A\u005D\u002B\u003F\u0029\\s\u002A\\\u007D\\\u007D",
             "url": "classes/PHPlaterVariable.html#method_pattern"
         },                {
             "fqsen": "\\PHPlaterVariable\u003A\u003Afind\u0028\u0029",

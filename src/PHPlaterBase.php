@@ -195,6 +195,7 @@ class PHPlaterBase {
         }
         self::$tags[0][$tag_constant] = $tag;
         self::$tags[1][$tag_constant] = stripslashes($tag);
+        self::$pattern_cache = [];
     }
 
     /**

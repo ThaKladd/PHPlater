@@ -158,8 +158,8 @@ class PHPlaterTest extends TestCase {
      */
     public function testContentify() {
         file_put_contents($this->tpl_file, 'value ok');
-        $this->assertEquals('value ok', $this->phplater->setContent($this->tpl_file));
-        $this->assertEquals('value ok', $this->phplater->setContent('value ok'));
+        $this->assertEquals('value ok', $this->phplater->setContent($this->tpl_file)->getContent());
+        $this->assertEquals('value ok', $this->phplater->setContent('value ok')->getContent());
     }
 
     /**
@@ -393,7 +393,10 @@ class PHPlaterTest extends TestCase {
                 ['value' => ['this' => 'ok']]
             ]
         ]);
-        $this->assertEquals('<ul><li>this ok</li></ul>', $this->phplater->render('<ul>[[<li>{{ # }} {{ list.0.value.. }}</li>]]</ul>'));
+
+        $template = '<ul>[[<li>{{ # }} {{ list.0.value.. }}</li>]]</ul>';
+        $rendered = $this->phplater->render($template);
+        $this->assertEquals('<ul><li>this ok</li></ul>', $rendered);
     }
 
     /**
@@ -411,7 +414,9 @@ class PHPlaterTest extends TestCase {
             ]
         ]);
         $this->phplater->setTag(PHPlater::TAG_LIST_KEY, '+');
-        $this->assertEquals('<ul><li>this ok</li></ul>', $this->phplater->render('<ul>[[<li>{{ + }} {{ list.0.value.. }}</li>]]</ul>'));
+        $template = '<ul>[[<li>{{ + }} {{ list.0.value.. }}</li>]]</ul>';
+        $rendered = $this->phplater->render($template);
+        $this->assertEquals('<ul><li>this ok</li></ul>', $rendered);
     }
 
     /**
