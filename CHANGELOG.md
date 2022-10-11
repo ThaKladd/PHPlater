@@ -6,10 +6,16 @@
 ### Cache
 
  - Added optional cache
- - Cache speeds ~40% faster when looping same template
+ - Cache speeds ~40% faster when looping same set of templates
  - Speeds without cache improved ~10%
  - Internal refactoring for speed, and more static
  - Some breaking changes due to static methods and chaining
+
+## v1.1.1
+
+### Quick Fix
+
+ - Fixed issue where multiple lists on one template refused to render
 
 ## v1.0.0
 
