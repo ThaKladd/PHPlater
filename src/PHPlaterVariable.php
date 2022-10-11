@@ -34,7 +34,7 @@ class PHPlaterVariable extends PHPlaterBase {
      * @return string The result after exchanging all the matched plates
      */
     public function find(array $match): string {
-        $phplater = $this->getCore();
+        $phplater = self::getCore();
         if ($phplater->getMany()) {
             $all_plates = '';
             foreach ($phplater->getPlates() as $plates) {
@@ -48,7 +48,7 @@ class PHPlaterVariable extends PHPlaterBase {
         foreach ($parts as $part) {
             $plate = self::extract(self::ifJsonToArray($plate), $part);
         }
-        return $phplater->getPHPlaterObject(self::CLASS_FILTER)->callFilters($plate, $filters);
+        return self::getPHPlaterObject(self::CLASS_FILTER)->callFilters($plate, $filters);
     }
 
     /**

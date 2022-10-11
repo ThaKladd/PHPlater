@@ -35,17 +35,17 @@ class PHPlaterList extends PHPlaterBase {
      * @return string The result after rendering all elements in the list
      */
     public function find(array $match): string {
-        $core = $this->getCore();
-        $variable_pattern = self::patternCache($core->getPHPlaterObject(self::CLASS_VARIABLE));
+        $variable_pattern = self::patternCache(self::getPHPlaterObject(self::CLASS_VARIABLE));
         preg_match_all($variable_pattern, $match['x'], $matches);
         $tag_chain = self::getTag(self::TAG_CHAIN);
-        $key_pattern = self::patternCache($core->getPHPlaterObject(self::CLASS_KEY));
+        $key_pattern = self::patternCache(self::getPHPlaterObject(self::CLASS_KEY));
         $tag_list = $tag_chain . $tag_chain;
         $all_before_parts = explode($tag_list, $matches['x'][0]);
         $tag_last = end($all_before_parts) === '' ? '' : $tag_chain;
         $tag_first = reset($all_before_parts) === '' ? '' : $tag_chain;
         $core_parts = explode($tag_chain, $all_before_parts[0]);
         $elements = '';
+        $core = self::getCore();
         $list = self::getList($core->getPlates(), $core_parts);
         foreach ($list as $key => $item) {
             $replaced_template = strtr($match['x'], [$tag_list => $tag_first . $key . $tag_last]);

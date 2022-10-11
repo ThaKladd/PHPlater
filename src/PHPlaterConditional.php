@@ -37,7 +37,7 @@ class PHPlaterConditional extends PHPlaterBase {
         $splitted_if_else = explode(self::getTag(self::TAG_ELSE), $splitted_conditional[1]);
         $ifTrue = trim($splitted_if_else[0] ?? '');
         $ifFalse = trim($splitted_if_else[1] ?? '');
-        return $this->getCore()->render($rendered_condition ? $ifTrue : $ifFalse);
+        return self::getCore()->render($rendered_condition ? $ifTrue : $ifFalse);
     }
 
     /**
@@ -47,14 +47,15 @@ class PHPlaterConditional extends PHPlaterBase {
      * @return bool|string|int
      */
     private function doOpreration(string $condition): bool|string|int {
+        $core = self::getCore();
         $operators = ['\={3}', '\={2}', '\!\={2}', '\!\={1}', '\<\=\>', '\>\=', '\<\=', '\<\>', '\>', '\<', '%', '&{2}', '\|{2}', 'xor', 'and', 'or'];
         if (preg_match('/.+\s*(' . implode('|', $operators) . ')\s*.+/U', $condition, $matches)) {
             $a_and_b = explode($matches[1], $condition);
-            $a = trim($this->getCore()->render($a_and_b[0]));
-            $b = trim($this->getCore()->render($a_and_b[1]));
+            $a = trim($core->render($a_and_b[0]));
+            $b = trim($core->render($a_and_b[1]));
             return self::evaluateOperation($a, $matches[1], $b);
         }
-        return $this->getCore()->render($condition);
+        return $core->render($condition);
     }
 
     /**

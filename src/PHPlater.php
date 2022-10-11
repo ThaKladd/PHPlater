@@ -262,7 +262,7 @@ class PHPlater extends PHPlaterBase {
      * @return void
      */
     public function setFilter(string $filter, callable $function): void {
-        $this->getPHPlaterObject(self::CLASS_FILTER)->setFilter($filter, $function);
+        self::getPHPlaterObject(self::CLASS_FILTER)->setFilter($filter, $function);
     }
 
     /**
@@ -333,16 +333,16 @@ class PHPlater extends PHPlaterBase {
     public function render(string $template = '', int $iterations = 1): string {
         $this->setResult($this->setContent($template)->getContent());
         if (str_contains($this->getResult(), self::getTag(self::TAG_LIST_BEFORE, true))) {
-            $this->setResult(self::renderCallback($this->getPHPlaterObject(self::CLASS_LIST), $this->getResult()));
+            $this->setResult(self::renderCallback(self::getPHPlaterObject(self::CLASS_LIST), $this->getResult()));
         }
         if (str_contains($this->getResult(), self::getTag(self::TAG_CONDITIONAL_BEFORE, true))) {
-            $this->setResult(self::renderCallback($this->getPHPlaterObject(self::CLASS_CONDITIONAL), $this->getResult()));
+            $this->setResult(self::renderCallback(self::getPHPlaterObject(self::CLASS_CONDITIONAL), $this->getResult()));
         }
         $tag_before = self::getTag(self::TAG_BEFORE, true);
         $tag_after = self::getTag(self::TAG_AFTER, true);
         $content = $this->getMany() ? $tag_before . '0' . $tag_after : $this->getResult();
         if (str_contains($content, $tag_before)) {
-            $this->setResult(self::renderCallback($this->getPHPlaterObject(self::CLASS_VARIABLE), $content));
+            $this->setResult(self::renderCallback(self::getPHPlaterObject(self::CLASS_VARIABLE), $content));
         }
         if ($iterations-- && strstr($this->getResult(), $tag_before) && strstr($this->getResult(), $tag_after)) {
             return $this->render($this->getResult(), $iterations);

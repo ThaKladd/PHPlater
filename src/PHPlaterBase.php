@@ -35,7 +35,7 @@ class PHPlaterBase {
     const TAG_FILTER = 12;
     const TAG_DELIMITER = 13;
 
-    protected ?PHPlater $core = null;
+    protected static ?PHPlater $core = null;
 
     /**
      * All data is managed within this one property array.
@@ -64,7 +64,7 @@ class PHPlaterBase {
     /**
      * @var array<string, object>
      */
-    public array $instances = [];
+    public static array $instances = [];
 
     /**
      * @var array<int, string>
@@ -82,7 +82,7 @@ class PHPlaterBase {
      * @access public
      */
     public function __construct(PHPlater $phplater) {
-        $this->setCore($phplater);
+        self::setCore($phplater);
     }
 
     /**
@@ -91,11 +91,11 @@ class PHPlaterBase {
      * @access public
      * @param  string $const get the current instance of the corresponding class
      */
-    public function getPHPlaterObject(string $const): object {
-        if(!isset($this->instances[$const])){
-            $this->instances[$const] = new $const($this);
+    public static function getPHPlaterObject(string $const): object {
+        if (!isset(self::$instances[$const])) {
+            self::$instances[$const] = new $const(self::getCore());
         }
-        return $this->instances[$const];
+        return self::$instances[$const];
     }
 
     /**
@@ -104,8 +104,8 @@ class PHPlaterBase {
      * @access protected
      * @return PHPlater Returns core object
      */
-    protected function getCore(): PHPlater {
-        return $this->core ?? new PHPlater();
+    protected static function getCore(): PHPlater {
+        return self::$core ?? new PHPlater();
     }
 
     /**
@@ -115,8 +115,8 @@ class PHPlaterBase {
      * @param  PHPlater $phplater the core PHPlater object
      * @return void
      */
-    protected function setCore(PHPlater $phplater): void {
-        $this->core = $phplater;
+    protected static function setCore(PHPlater $phplater): void {
+        self::$core = $phplater;
     }
 
     /**
@@ -126,9 +126,10 @@ class PHPlaterBase {
      * @param  object $class The object to get pattern from
      * @return string
      */
-    protected static function patternCache(object $class): string {
-        $class_name = get_class($class);
+    protected static function patternCache(object|string $class): string {
+        $class_name = is_string($class) ? $class : get_class($class);
         if (!isset(self::$pattern_cache[$class_name])) {
+            $class = is_string($class) ? self::getPHPlaterObject($class) : $class;
             self::$pattern_cache[$class_name] = $class::pattern();
         }
         return self::$pattern_cache[$class_name];
@@ -195,7 +196,18 @@ class PHPlaterBase {
         }
         self::$tags[0][$tag_constant] = $tag;
         self::$tags[1][$tag_constant] = stripslashes($tag);
-        self::$pattern_cache = [];
+        $patter_cache_remove = match ($tag_constant) {
+            self::TAG_BEFORE || self::TAG_AFTER => self::CLASS_VARIABLE,
+            self::TAG_LIST_BEFORE || self::TAG_LIST_AFTER => self::CLASS_LIST,
+            self::TAG_LIST_AFTER => self::CLASS_VARIABLE,
+            self::TAG_LIST_KEY => self::CLASS_KEY,
+            self::TAG_CONDITIONAL_BEFORE || self::TAG_CONDITIONAL_AFTER || self::TAG_IF || self::TAG_ELSE => self::CLASS_CONDITIONAL,
+            self::TAG_ARGUMENT || self::TAG_ARGUMENT_LIST || self::TAG_CHAIN || self::TAG_FILTER => self::CLASS_FILTER,
+            default => false
+        };
+        if ($patter_cache_remove) {
+            unset(self::$pattern_cache[$patter_cache_remove]);
+        }
     }
 
     /**
