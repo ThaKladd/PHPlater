@@ -11,6 +11,11 @@ Search.appendIndex(
             "summary": "Creates\u0020PHPlater\u0020object\u0020and\u0020initializes\u0020it",
             "url": "classes/PHPlater.html#method___construct"
         },                {
+            "fqsen": "\\PHPlater\u003A\u003AgetPHPlaterObject\u0028\u0029",
+            "name": "getPHPlaterObject",
+            "summary": "Get\u0020the\u0020instance\u0020of\u0020the\u0020core\u0020on\u0020demand",
+            "url": "classes/PHPlater.html#method_getPHPlaterObject"
+        },                {
             "fqsen": "\\PHPlater\u003A\u003AgetRoot\u0028\u0029",
             "name": "getRoot",
             "summary": "Get\u0020root\u0020folder\u0020of\u0020templates",
@@ -111,6 +116,11 @@ Search.appendIndex(
             "summary": "Renders\u0020the\u0020content\u0020with\u0020a\u0020callback\u0020to\u0020a\u0020method",
             "url": "classes/PHPlater.html#method_renderCallback"
         },                {
+            "fqsen": "\\PHPlater\u003A\u003A\u0024instances",
+            "name": "instances",
+            "summary": "",
+            "url": "classes/PHPlater.html#property_instances"
+        },                {
             "fqsen": "\\Error\\RuleBrokenError",
             "name": "RuleBrokenError",
             "summary": "",
@@ -131,11 +141,6 @@ Search.appendIndex(
             "summary": "Creates\u0020the\u0020object\u0020and\u0020initializes\u0020it",
             "url": "classes/PHPlaterBase.html#method___construct"
         },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003AgetPHPlaterObject\u0028\u0029",
-            "name": "getPHPlaterObject",
-            "summary": "Get\u0020the\u0020instance\u0020of\u0020the\u0020object\u0020on\u0020demand",
-            "url": "classes/PHPlaterBase.html#method_getPHPlaterObject"
-        },                {
             "fqsen": "\\PHPlaterBase\u003A\u003AgetCore\u0028\u0029",
             "name": "getCore",
             "summary": "Get\u0020the\u0020core\u0020object",
@@ -148,7 +153,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PHPlaterBase\u003A\u003ApatternCache\u0028\u0029",
             "name": "patternCache",
-            "summary": "Caches\u0020the\u0020patterns,\u0020to\u0020reduce\u0020unnecessary\u0020redundancy",
+            "summary": "Caches\u0020the\u0020patterns,\u0020to\u0020reduce\u0020unnecessary\u0020redundancy\nTODO\u003A\u0020This\u0020may\u0020break,\u0020as\u0020patterns\u0020for\u0020objects\u0020may\u0020change\u0020and\u0020this\u0020is\u0020static\u0020\u002D\u0020it\u0020does\u0020not\u0020because\u0020tags\u0020are\u0020set\u0020usually\u0020only\u0020once\nFix\u0020can\u0020be\u0020done\u0020by\u0020adding\u0020a\u0020tag\u0020sum\u0020and\u0020changing\u0020tags\u0020to\u0020be\u0020binary",
             "url": "classes/PHPlaterBase.html#method_patternCache"
         },                {
             "fqsen": "\\PHPlaterBase\u003A\u003AifJsonToArray\u0028\u0029",
@@ -351,10 +356,10 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PHPlaterBase.html#property_extension"
         },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024changed",
-            "name": "changed",
+            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024changed_tags",
+            "name": "changed_tags",
             "summary": "",
-            "url": "classes/PHPlaterBase.html#property_changed"
+            "url": "classes/PHPlaterBase.html#property_changed_tags"
         },                {
             "fqsen": "\\PHPlaterBase\u003A\u003A\u0024many",
             "name": "many",
@@ -365,11 +370,6 @@ Search.appendIndex(
             "name": "filters",
             "summary": "",
             "url": "classes/PHPlaterBase.html#property_filters"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024instances",
-            "name": "instances",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#property_instances"
         },                {
             "fqsen": "\\PHPlaterBase\u003A\u003A\u0024tags",
             "name": "tags",
