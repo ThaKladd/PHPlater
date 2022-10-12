@@ -16,6 +16,11 @@ class PHPlater extends PHPlaterBase {
     private static bool $cache = false;
 
     /**
+     * @var array<string, object>
+     */
+    public array $instances = [];
+
+    /**
      * Creates PHPlater object and initializes it
      *
      * @access public
@@ -25,8 +30,8 @@ class PHPlater extends PHPlaterBase {
         if (version_compare(phpversion(), '8.0.0', '<')) {
             throw new RuleBrokenError('PHPlater requires PHP version to be > 8.0');
         }
-        if (self::$changed) {
-            $this->setExtension('.tpl');
+
+        if (self::$changed_tags) {
             self::setTagsConditionals('((', '))');
             self::setTagsVariables('{{', '}}');
             self::setTagsList('[[', ']]');
@@ -40,11 +45,27 @@ class PHPlater extends PHPlaterBase {
                 self::TAG_LIST_KEY => '#',
                 self::TAG_DELIMITER => '~'
             ]);
-            self::$changed = false;
+            self::$changed_tags = false;
         }
+
+        $this->setCore($this);
+        $this->setExtension('.tpl');
         $this->setRoot($root);
         $this->setContent($template);
-        self::setCore($this);
+    }
+
+
+    /**
+     * Get the instance of the core on demand
+     *
+     * @access public
+     * @param  string $const get the current instance of the corresponding class
+     */
+    public function getPHPlaterObject(string $const): object {
+        if (!isset($this->instances[$const])) {
+            $this->instances[$const] = new $const($this);
+        }
+        return $this->instances[$const];
     }
 
     /**
@@ -54,7 +75,7 @@ class PHPlater extends PHPlaterBase {
      * @return string Returns root location to templates
      */
     public function getRoot(): string {
-        return self::$root;
+        return $this->root;
     }
 
     /**
@@ -68,7 +89,7 @@ class PHPlater extends PHPlaterBase {
         if ($location && substr($location, -1) == '/') {
             throw new RuleBrokenError('Root must not end with slash. The template file should begin with it.');
         }
-        self::$root = $location;
+        $this->root = $location;
         return $this;
     }
 
@@ -92,7 +113,7 @@ class PHPlater extends PHPlaterBase {
      * @return string Returns extension of the template file
      */
     public function getExtension(): string {
-        return self::$extension;
+        return $this->extension;
     }
 
     /**
@@ -104,8 +125,7 @@ class PHPlater extends PHPlaterBase {
      * @return PHPlater Returns current object
      */
     public function setExtension(string $extension = ''): PHPlater {
-        self::$extension = $extension;
-        self::$changed = true;
+        $this->extension = $extension;
         return $this;
     }
 
@@ -246,7 +266,7 @@ class PHPlater extends PHPlaterBase {
      * @return void
      */
     public function setFilter(string $filter, callable $function): void {
-        self::getPHPlaterObject(self::CLASS_FILTER)->setFilter($filter, $function);
+        self::getPHPlaterObject(self::CLASS_FILTER, $this)->setFilter($filter, $function);
     }
 
     /**
@@ -317,16 +337,16 @@ class PHPlater extends PHPlaterBase {
     public function render(string $template = '', int $iterations = 1): string {
         $this->setResult($this->setContent($template)->getContent());
         if (str_contains($this->getResult(), self::getTag(self::TAG_LIST_BEFORE, true))) {
-            $this->setResult(self::renderCallback(self::getPHPlaterObject(self::CLASS_LIST), $this->getResult()));
+            $this->setResult(self::renderCallback($this->getPHPlaterObject(self::CLASS_LIST), $this->getResult()));
         }
         if (str_contains($this->getResult(), self::getTag(self::TAG_CONDITIONAL_BEFORE, true))) {
-            $this->setResult(self::renderCallback(self::getPHPlaterObject(self::CLASS_CONDITIONAL), $this->getResult()));
+            $this->setResult(self::renderCallback($this->getPHPlaterObject(self::CLASS_CONDITIONAL), $this->getResult()));
         }
         $tag_before = self::getTag(self::TAG_BEFORE, true);
         $tag_after = self::getTag(self::TAG_AFTER, true);
         $content = $this->getMany() ? $tag_before . '0' . $tag_after : $this->getResult();
         if (str_contains($content, $tag_before)) {
-            $this->setResult(self::renderCallback(self::getPHPlaterObject(self::CLASS_VARIABLE), $content));
+            $this->setResult(self::renderCallback($this->getPHPlaterObject(self::CLASS_VARIABLE), $content));
         }
         if ($iterations-- && strstr($this->getResult(), $tag_before) && strstr($this->getResult(), $tag_after)) {
             return $this->render($this->getResult(), $iterations);

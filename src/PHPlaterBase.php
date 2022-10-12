@@ -35,7 +35,7 @@ class PHPlaterBase {
     const TAG_FILTER = 12;
     const TAG_DELIMITER = 13;
 
-    protected static ?PHPlater $core = null;
+    protected ?PHPlater $core = null;
 
     /**
      * All data is managed within this one property array.
@@ -51,20 +51,15 @@ class PHPlaterBase {
     public static $pattern_cache = [];
     public string $content = '';
     public string $result = '';
-    public static string $root = '';
-    public static string $extension = '';
-    public static bool $changed = true;
+    public string $root = '';
+    public string $extension = '';
+    public static bool $changed_tags = true;
     public bool $many = false;
 
     /**
      * @var array<string, callable>
      */
     public array $filters = [];
-
-    /**
-     * @var array<string, object>
-     */
-    public static array $instances = [];
 
     /**
      * @var array<int, string>
@@ -82,20 +77,7 @@ class PHPlaterBase {
      * @access public
      */
     public function __construct(PHPlater $phplater) {
-        self::setCore($phplater);
-    }
-
-    /**
-     * Get the instance of the object on demand
-     *
-     * @access public
-     * @param  string $const get the current instance of the corresponding class
-     */
-    public static function getPHPlaterObject(string $const): object {
-        if (!isset(self::$instances[$const])) {
-            self::$instances[$const] = new $const(self::getCore());
-        }
-        return self::$instances[$const];
+        $this->setCore($phplater);
     }
 
     /**
@@ -104,8 +86,8 @@ class PHPlaterBase {
      * @access protected
      * @return PHPlater Returns core object
      */
-    protected static function getCore(): PHPlater {
-        return self::$core ?? new PHPlater();
+    protected function getCore(): PHPlater {
+        return $this->core ?? new PHPlater();
     }
 
     /**
@@ -115,21 +97,22 @@ class PHPlaterBase {
      * @param  PHPlater $phplater the core PHPlater object
      * @return void
      */
-    protected static function setCore(PHPlater $phplater): void {
-        self::$core = $phplater;
+    protected function setCore(PHPlater $phplater): void {
+        $this->core = $phplater;
     }
 
     /**
      * Caches the patterns, to reduce unnecessary redundancy
+     * TODO: This may break, as patterns for objects may change and this is static - it does not because tags are set usually only once
+     * Fix can be done by adding a tag sum and changing tags to be binary
      *
      * @access protected
      * @param  object $class The object to get pattern from
      * @return string
      */
-    protected static function patternCache(object|string $class): string {
-        $class_name = is_string($class) ? $class : get_class($class);
+    protected static function patternCache(object $class): string {
+        $class_name = get_class($class);
         if (!isset(self::$pattern_cache[$class_name])) {
-            $class = is_string($class) ? self::getPHPlaterObject($class) : $class;
             self::$pattern_cache[$class_name] = $class::pattern();
         }
         return self::$pattern_cache[$class_name];
@@ -208,7 +191,7 @@ class PHPlaterBase {
         if ($patter_cache_remove) {
             unset(self::$pattern_cache[$patter_cache_remove]);
         }
-        self::$changed = true;
+        self::$changed_tags = true;
     }
 
     /**

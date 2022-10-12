@@ -1,6 +1,13 @@
 
 # Changelog
 
+## v1.1.1
+
+### Fixing bug
+
+ - Fixed a issue introduced in previous version failing complex nestings
+ - Various other minor improvements
+
 ## v1.1.0
 
 ### Cache
@@ -11,7 +18,7 @@
  - Internal refactoring for speed, and more static
  - Some breaking changes due to static methods and chaining
 
-## v1.1.1
+## v1.0.1
 
 ### Quick Fix
 
