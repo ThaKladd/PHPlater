@@ -50,6 +50,7 @@ for ($y = 0; $y < $runs; $y++) {
     $phplater_array->setFilter('nineFunc', function (string $nine): ?string {
         return $nine == 'nine' ? 'Yhdeksän' : 'Undefined';
     });
+
     $phplater_array->setFilter('strtoupper', 'mb_strtoupper');
     $phplater_array->setFilter('lowercase', 'mb_strtolower');
     $phplater_array->setFilter('implode', function (array $data) {

@@ -34,21 +34,21 @@ class PHPlaterVariable extends PHPlaterBase {
      * @return string The result after exchanging all the matched plates
      */
     public function find(array $match): string {
-        $phplater = self::getCore();
-        if ($phplater->getMany()) {
+        $core = $this->getCore();
+        if ($core->getMany()) {
             $all_plates = '';
-            foreach ($phplater->getPlates() as $plates) {
-                $all_plates .= (new PHPlater())->setPlates($plates)->render($phplater->getResult());
+            foreach ($core->getPlates() as $plates) {
+                $all_plates .= (new PHPlater())->setPlates($plates)->render($core->getResult());
             }
             return $all_plates;
         }
 
         [$parts, $filters] = self::getFiltersAndParts($match['x']);
-        $plate = $phplater->getPlate(array_shift($parts));
+        $plate = $core->getPlate(array_shift($parts));
         foreach ($parts as $part) {
             $plate = self::extract(self::ifJsonToArray($plate), $part);
         }
-        return self::getPHPlaterObject(self::CLASS_FILTER)->callFilters($plate, $filters);
+        return $core->getPHPlaterObject(self::CLASS_FILTER)->callFilters($plate, $filters);
     }
 
     /**
