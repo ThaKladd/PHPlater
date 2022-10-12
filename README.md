@@ -1,10 +1,10 @@
 # PHPlater
 
-A simple PHP template engine that aims for PHP do most of the logic(even if some logic is supported in the engine) and then append it to the HTML in the template file. It is set to solve the problem of mixing too much logic into the template file itself and by that loosing some control over where the logic happens. Some of the syntax is also unique, and the engine itself is very lightweight. You also get a bit more control over the data that is passed down to the template, and the code is easier to manage and to track.
+A simple PHP template engine that intially aimed for PHP to do most of the logic and then append it to the HTML in the template file like a glorified search and replace, but that turned into a more full fledged template engine. The aim is still to make things simple and fast while doing it runtime. Some of the syntax is unique, and the engine itself is very lightweight.
 
 ## Why?
 
-As a backend developer, I want to do most of the logic in PHP, and when to seperate HTML out from the code, I usually need a simple variable to value replacement tool. In its simplest form, its just a str_replace, but soon you find that you need something a little bit more powerfull, although still simple. PHPlater is aimed to solve this, that most of the values and logic should still be done in pure PHP, but then in order for the view to be as much pure HTML as possible to introduce a simple syntax for the most common operations. So, in a nutshell, PHPlater gives you variables with filters, lists and conditionals, with the simplicity of the syntax in mind as well as ease of use without any other dependencies. Every coder is different, and this was made to solve my way of doing it. Maybe there are someone else that finds it attractive too?
+As a backend developer, I want to do most of the logic in PHP, and when to seperate HTML out from the code, I usually need a simple variable to value replacement tool. In its simplest form, its just a str_replace, but soon you find that you need something a little bit more powerfull, although still simple. So, I decieded to make a template enginge as so many has done before me. PHPlater is aimed to solve some of the issues I found with other template engines - maybe only to introduce new things for others to have issue with. So, in a nutshell, PHPlater gives you variables with filters, lists and conditionals, with the simplicity of the syntax in mind as well as ease of use without any other dependencies. Every coder is different, and this was made to solve my way of doing it. Maybe there are someone else that finds it attractive too?
 
 ---
 
@@ -269,15 +269,22 @@ At the moment, very little of known bugs. Improvements and features are multiple
 
 ### Planning following
 
+#### Fixes
+
+Fix the issues with getPHPlaterObject and patternCache - both can be improved
+
 #### Placeholder block
+
 <<block>> or {{non-existing-plate}}
 >>block = values<< or {{non-existing-plate = value}} or >>non-existing-plate = values<< 
 
 #### Includes
+
 ''include file or url content'' -> ''css/style.css'' ''js/script.js'', ''text.txt'', ''template.tpl''
 '''includes and renders'''? -> see twig source
 
 #### Filters that comes with engine
+
 {{ plate|escape }} -> short {{ plate|e }} -> {{ plate|escape:html }}, {{ plate|escape:js }}, {{ plate|escape:css }}, {{ plate|escape:url }} (url_encode), {{ plate|escape:attr }}
 {{ plate|raw }} -> unescape? ignore escape?, {{ plate|raw:url }} -> urldecode
 {{ plate|raw:striptags }} or {{ plate|escape:striptags }} or {{ plate|striptags }}??
@@ -329,29 +336,35 @@ Filters are for transforming values, and functions should be for generating cont
 text text text {{ function(plate) }} text  => text text text {{ escape(plate) }} text 
 
 #### Set Varibales and get them
+
 {{ |set_plate:key,value }} or {{ |var:key,value }} or {{ key => value }}
 {{ |get_plate:key }} or {{ |var:key }} or {{ key }}
 Value should be able to be an array -> like {{ key => [1,2,3,4] }} or  {{ key => [1 => value, 2 => value2] }}
 
 #### Lists first and last
+
 [[ {{ #|first }} {{ #|last }} ]]
 
 #### Use filters, with no value
+
 {{ []|range:100,1000 }} or {{ |range:100,1000 }} 
 {{ ""|lipsum:100 }} or {{ |lipsum:100 }}
 Ture and falsy filters can be used in iffs
 
 #### If text in " then can use filter on without tags
+
 "Hello"|tolowercase or ""Hello""|tolowercase - seems unneccessary, unless from other source or result of if
 -> removes surrounding "" after
 
 #### Better extendable
+
 Make extendable as twig is with -> $phplater->addGlobal('text', new Text()) -> maybe call it addOwn? addDish?
 It can already be added through a plate of course, but if it should be added differently?? Does it even make sense?
 
 Twig have own TwigFilter class that stores filter ref, and addFilter accepts only that -> but it is needed? Is it only there for the options?
 
 #### Plate Objects
+
 For version 2 or 3 -> When plates are added, build a obkject tree with each plate as a object-type such as PHPlateString etc 
 - to make sure they follow rules and are easier to operate upon. This may take som toll on performance, but also have other gains
 
