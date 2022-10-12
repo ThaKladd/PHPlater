@@ -300,7 +300,7 @@
 <dd></dd>
 
                     <dt class="phpdocumentor-table-of-contents__entry -property -public">
-    <a href="classes/PHPlaterBase.html#property_changed">$changed</a>
+    <a href="classes/PHPlaterBase.html#property_changed_tags">$changed_tags</a>
     <span>
                         &nbsp;: bool            </span>
 </dt>
@@ -329,13 +329,6 @@
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/PHPlaterBase.html#property_function_instances">$function_instances</a>
-    <span>
-                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -public">
-    <a href="classes/PHPlaterBase.html#property_instances">$instances</a>
     <span>
                         &nbsp;: array&lt;string|int, mixed&gt;            </span>
 </dt>
@@ -426,13 +419,6 @@
 <dd>Begins with the root plated and iterates through every one and extracts the matching value</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/PHPlaterBase.html#method_getPHPlaterObject">getPHPlaterObject()</a>
-    <span>
-                                &nbsp;: object    </span>
-</dt>
-<dd>Get the instance of the object on demand</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PHPlaterBase.html#method_getTag">getTag()</a>
     <span>
                                 &nbsp;: string    </span>
@@ -515,7 +501,9 @@
     <span>
                                 &nbsp;: string    </span>
 </dt>
-<dd>Caches the patterns, to reduce unnecessary redundancy</dd>
+<dd>Caches the patterns, to reduce unnecessary redundancy
+TODO: This may break, as patterns for objects may change and this is static - it does not because tags are set usually only once
+Fix can be done by adding a tag sum and changing tags to be binary</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/PHPlaterBase.html#method_setCore">setCore()</a>
@@ -1172,9 +1160,9 @@
             -public
             -static                                            "
 >
-    <h4 class="phpdocumentor-element__name" id="property_changed">
-        $changed
-        <a href="classes/PHPlaterBase.html#property_changed" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="property_changed_tags">
+        $changed_tags
+        <a href="classes/PHPlaterBase.html#property_changed_tags" class="headerlink"><i class="fas fa-link"></i></a>
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
@@ -1189,7 +1177,7 @@
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
     <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__type">bool</span>
-    <span class="phpdocumentor-signature__name">$changed</span>
+    <span class="phpdocumentor-signature__name">$changed_tags</span>
      = <span class="phpdocumentor-signature__default-value">\true</span></code>
 
         <section class="phpdocumentor-description"></section>
@@ -1238,7 +1226,7 @@
             phpdocumentor-element
             -property
             -public
-            -static                                            "
+                                                        "
 >
     <h4 class="phpdocumentor-element__name" id="property_extension">
         $extension
@@ -1256,7 +1244,7 @@
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-    <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$extension</span>
      = <span class="phpdocumentor-signature__default-value">&#039;&#039;</span></code>
 
@@ -1315,7 +1303,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">77</span>
+    <span class="phpdocumentor-element-found-in__line">72</span>
 
     </aside>
 
@@ -1324,38 +1312,6 @@
     <span class="phpdocumentor-signature__visibility">public</span>
     <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$function_instances</span>
-     = <span class="phpdocumentor-signature__default-value">[]</span></code>
-
-    
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -public
-            -static                                            "
->
-    <h4 class="phpdocumentor-element__name" id="property_instances">
-        $instances
-        <a href="classes/PHPlaterBase.html#property_instances" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">67</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-    <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
-    <span class="phpdocumentor-signature__name">$instances</span>
      = <span class="phpdocumentor-signature__default-value">[]</span></code>
 
     
@@ -1536,7 +1492,7 @@
             phpdocumentor-element
             -property
             -public
-            -static                                            "
+                                                        "
 >
     <h4 class="phpdocumentor-element__name" id="property_root">
         $root
@@ -1554,7 +1510,7 @@
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-    <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__type">string</span>
+        <span class="phpdocumentor-signature__type">string</span>
     <span class="phpdocumentor-signature__name">$root</span>
      = <span class="phpdocumentor-signature__default-value">&#039;&#039;</span></code>
 
@@ -1581,7 +1537,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">72</span>
+    <span class="phpdocumentor-element-found-in__line">67</span>
 
     </aside>
 
@@ -1636,7 +1592,7 @@
             phpdocumentor-element
             -property
             -protected
-            -static                                            "
+                                                        "
 >
     <h4 class="phpdocumentor-element__name" id="property_core">
         $core
@@ -1654,7 +1610,7 @@
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
-    <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__type"><a href="classes/PHPlater.html"><abbr title="\PHPlater">PHPlater</abbr></a>|null</span>
+        <span class="phpdocumentor-signature__type"><a href="classes/PHPlater.html"><abbr title="\PHPlater">PHPlater</abbr></a>|null</span>
     <span class="phpdocumentor-signature__name">$core</span>
      = <span class="phpdocumentor-signature__default-value">\null</span></code>
 
@@ -1685,7 +1641,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">84</span>
+    <span class="phpdocumentor-element-found-in__line">79</span>
 
     </aside>
 
@@ -1744,7 +1700,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">298</span>
+    <span class="phpdocumentor-element-found-in__line">281</span>
 
     </aside>
 
@@ -1862,66 +1818,6 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
             -public
                                     -static                    "
 >
-    <h4 class="phpdocumentor-element__name" id="method_getPHPlaterObject">
-        getPHPlaterObject()
-        <a href="classes/PHPlaterBase.html#method_getPHPlaterObject" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">94</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Get the instance of the object on demand</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">getPHPlaterObject</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$const</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">object</span></code>
-
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$const</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>get the current instance of the corresponding class</p>
-</section>
-
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">access</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>public</p>
-</section>
-
-                                    </dd>
-                        </dl>
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">object</span>
-            &mdash;
-        
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -public
-                                    -static                    "
->
     <h4 class="phpdocumentor-element__name" id="method_getTag">
         getTag()
         <a href="classes/PHPlaterBase.html#method_getTag" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1929,7 +1825,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">174</span>
+    <span class="phpdocumentor-element-found-in__line">157</span>
 
     </aside>
 
@@ -2000,7 +1896,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">287</span>
+    <span class="phpdocumentor-element-found-in__line">270</span>
 
     </aside>
 
@@ -2050,7 +1946,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">145</span>
+    <span class="phpdocumentor-element-found-in__line">128</span>
 
     </aside>
 
@@ -2163,7 +2059,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">189</span>
+    <span class="phpdocumentor-element-found-in__line">172</span>
 
     </aside>
 
@@ -2232,7 +2128,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">275</span>
+    <span class="phpdocumentor-element-found-in__line">258</span>
 
     </aside>
 
@@ -2292,7 +2188,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">243</span>
+    <span class="phpdocumentor-element-found-in__line">226</span>
 
     </aside>
 
@@ -2364,7 +2260,7 @@ Make sure there are no conflicts with the other tags</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">261</span>
+    <span class="phpdocumentor-element-found-in__line">244</span>
 
     </aside>
 
@@ -2436,7 +2332,7 @@ Make sure there are no conflicts with the other tags</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">225</span>
+    <span class="phpdocumentor-element-found-in__line">208</span>
 
     </aside>
 
@@ -2508,7 +2404,7 @@ Make sure there are no conflicts with the other tags</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">159</span>
+    <span class="phpdocumentor-element-found-in__line">142</span>
 
     </aside>
 
@@ -2576,7 +2472,7 @@ Make sure there are no conflicts with the other tags</p>
         class="phpdocumentor-element
             -method
             -protected
-                                    -static                    "
+                                                        "
 >
     <h4 class="phpdocumentor-element__name" id="method_getCore">
         getCore()
@@ -2585,7 +2481,7 @@ Make sure there are no conflicts with the other tags</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">107</span>
+    <span class="phpdocumentor-element-found-in__line">89</span>
 
     </aside>
 
@@ -2593,7 +2489,7 @@ Make sure there are no conflicts with the other tags</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
-            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">getCore</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/PHPlater.html"><abbr title="\PHPlater">PHPlater</abbr></a></span></code>
+                    <span class="phpdocumentor-signature__name">getCore</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/PHPlater.html"><abbr title="\PHPlater">PHPlater</abbr></a></span></code>
 
     
     
@@ -2635,11 +2531,13 @@ Make sure there are no conflicts with the other tags</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">129</span>
+    <span class="phpdocumentor-element-found-in__line">113</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Caches the patterns, to reduce unnecessary redundancy</p>
+        <p class="phpdocumentor-summary">Caches the patterns, to reduce unnecessary redundancy
+TODO: This may break, as patterns for objects may change and this is static - it does not because tags are set usually only once
+Fix can be done by adding a tag sum and changing tags to be binary</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
@@ -2686,7 +2584,7 @@ Make sure there are no conflicts with the other tags</p>
         class="phpdocumentor-element
             -method
             -protected
-                                    -static                    "
+                                                        "
 >
     <h4 class="phpdocumentor-element__name" id="method_setCore">
         setCore()
@@ -2695,7 +2593,7 @@ Make sure there are no conflicts with the other tags</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">118</span>
+    <span class="phpdocumentor-element-found-in__line">100</span>
 
     </aside>
 
@@ -2703,7 +2601,7 @@ Make sure there are no conflicts with the other tags</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
-            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">setCore</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><a href="classes/PHPlater.html"><abbr title="\PHPlater">PHPlater</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$phplater</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+                    <span class="phpdocumentor-signature__name">setCore</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><a href="classes/PHPlater.html"><abbr title="\PHPlater">PHPlater</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$phplater</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
