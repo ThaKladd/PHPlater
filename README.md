@@ -275,13 +275,13 @@ Fix the issues with getPHPlaterObject and patternCache - both can be improved
 
 #### Placeholder block
 
+>>bloack-as-non-existing-plate => values and {{ variables }}<< 
 <<block>> or {{non-existing-plate}}
->>block = values<< or {{non-existing-plate = value}} or >>non-existing-plate = values<< 
 
 #### Includes
 
 ''include file or url content'' -> ''css/style.css'' ''js/script.js'', ''text.txt'', ''template.tpl''
-'''includes and renders'''? -> see twig source
+'''includes and renders'''? -> see twig source. Maybe use filter ''includes.tpl|render''
 
 #### Filters that comes with engine
 
@@ -320,6 +320,7 @@ Fix the issues with getPHPlaterObject and patternCache - both can be improved
 {{ plate|divby:3 }} 
 {{ plate|empty }} 
 {{ plate|even }} 
+{{ plate|render }} -> Renders on core
 {{ plate|odd }} 
 {{ plate|null }} 
 {{ plate|object }} 

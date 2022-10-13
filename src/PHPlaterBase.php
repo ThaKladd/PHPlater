@@ -20,20 +20,29 @@ class PHPlaterBase {
     const CLASS_FILTER = 'PHPlaterFilter';
     const CLASS_KEY = 'PHPlaterKey';
 
-    const TAG_BEFORE = 0;
-    const TAG_AFTER = 1;
-    const TAG_LIST_BEFORE = 2;
-    const TAG_LIST_AFTER = 3;
-    const TAG_LIST_KEY = 4;
-    const TAG_CONDITIONAL_BEFORE = 5;
-    const TAG_CONDITIONAL_AFTER = 6;
-    const TAG_IF = 7;
-    const TAG_ELSE = 8;
-    const TAG_ARGUMENT = 9;
-    const TAG_ARGUMENT_LIST = 10;
-    const TAG_CHAIN = 11;
-    const TAG_FILTER = 12;
-    const TAG_DELIMITER = 13;
+    const TAG_BEFORE = 1;
+    const TAG_AFTER = 2;
+    const TAG_LIST_BEFORE = 4;
+    const TAG_LIST_AFTER = 8;
+    const TAG_LIST_KEY = 16;
+    const TAG_CONDITIONAL_BEFORE = 32;
+    const TAG_CONDITIONAL_AFTER = 64;
+    const TAG_IF = 128;
+    const TAG_ELSE = 256;
+    const TAG_ARGUMENT = 512;
+    const TAG_ARGUMENT_LIST = 1024;
+    const TAG_CHAIN = 2048;
+    const TAG_FILTER = 4096;
+    const TAG_DELIMITER = 8192;
+    const TAG_BLOCK_BEFORE = 16384; //Undecided - May not be needed?
+    const TAG_BLOCK_AFTER = 32768; //Undecided - May not be needed?
+    const TAG_UNBLOCK_BEFORE = 65536; //Undecided - May not be needed?
+    const TAG_UNBLOCK_AFTER = 131072; //Undecided - May not be needed?
+    const TAG_INCLUDE = 262144;
+    const TAG_INCLUDE_RENDER = 524288;  //Undecided - Maybe use filter?
+    const TAG_ASSIGN = 1048576; //Undecided
+    const TAG_EMPTY_ARRAY = 2097152; //Undecided
+    const TAG_EMPTY_STRING = 4194304; //Undecided
 
     protected ?PHPlater $core = null;
 
@@ -46,7 +55,7 @@ class PHPlaterBase {
      * @var array<string|int, mixed>
      */
     public array $plates = [];
-    protected static array $content_cache = [];
+    public static array $content_cache = [];
     public static $match_cache = [];
     public static $pattern_cache = [];
     public string $content = '';
@@ -104,16 +113,16 @@ class PHPlaterBase {
     /**
      * Caches the patterns, to reduce unnecessary redundancy
      * TODO: This may break, as patterns for objects may change and this is static - it does not because tags are set usually only once
-     * Fix can be done by adding a tag sum and changing tags to be binary
+     * Fix can be done by adding a tag sum and changing tags to be binary, but is it worth it?
      *
      * @access protected
+     * @param  string $class_name The class name to object
      * @param  object $class The object to get pattern from
      * @return string
      */
-    protected static function patternCache(object $class): string {
-        $class_name = get_class($class);
+    protected static function patternCache(string $class_name): string {
         if (!isset(self::$pattern_cache[$class_name])) {
-            self::$pattern_cache[$class_name] = $class::pattern();
+            self::$pattern_cache[$class_name] = $class_name::pattern();
         }
         return self::$pattern_cache[$class_name];
     }

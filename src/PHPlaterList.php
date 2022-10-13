@@ -36,10 +36,10 @@ class PHPlaterList extends PHPlaterBase {
      */
     public function find(array $match): string {
         $core = $this->getCore();
-        $variable_pattern = self::patternCache($core->getPHPlaterObject(self::CLASS_VARIABLE));
+        $variable_pattern = self::patternCache(self::CLASS_VARIABLE);
         preg_match_all($variable_pattern, $match['x'], $matches);
         $tag_chain = self::getTag(self::TAG_CHAIN);
-        $key_pattern = self::patternCache($core->getPHPlaterObject(self::CLASS_KEY));
+        $key_pattern = self::patternCache(self::CLASS_KEY);
         $tag_list = $tag_chain . $tag_chain;
         $all_before_parts = explode($tag_list, $matches['x'][0]);
         $tag_last = end($all_before_parts) === '' ? '' : $tag_chain;

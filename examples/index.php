@@ -263,4 +263,7 @@ echo implode('', $return);
  * (( {{ test }} | {{ true }} | {{ false }} ))
  * (( {{ test }} ?? {{ true }} :: {{ false }} ))
  */
-echo 'Page generated in ' . round(microtime(true) - $start_time, 3) . ' seconds with ' . $runs . ' runs.';
+echo 'Page generated in ' . round(microtime(true) - $start_time, 3) . ' seconds with ' . $runs . ' runs.<br><br>';
+
+//PHPlater::debug(PHPlaterBase::$content_cache);
+//echo 'Timer: ' . round(PHPlater::$timer, 3) . 'seconds for str_contains.';

@@ -156,15 +156,17 @@ class PHPlater extends PHPlaterBase {
      *
      * @access private
      * @param  string $key Key or hash of the data
-     * @param  string $data Data to store
+     * @param  context $context To store within the key
+     * @param  string|array $data Data to store
      * @return string The stored data or data that is set
      */
-    private function cache(string $key, string $data = ''): string {
+    private function cache(string $key, string $context = 'data', array|string $data = ''): array|string {
+        $hash = hash('xxh3', $key);
         if (self::$cache) {
             if ($data) {
-                self::$content_cache[$key] = $data;
-            } else if (isset(self::$content_cache[$key])) {
-                $data = self::$content_cache[$key];
+                self::$content_cache[$hash][$context] = $data;
+            } else if (isset(self::$content_cache[$hash][$context])) {
+                $data = self::$content_cache[$hash][$context];
             }
         }
         return $data;
@@ -184,7 +186,7 @@ class PHPlater extends PHPlaterBase {
         }
 
         if (self::$cache) {
-            $cached_data = $this->cache($data);
+            $cached_data = $this->cache($data, 'data');
             if ($cached_data) {
                 return $cached_data;
             }
@@ -197,7 +199,7 @@ class PHPlater extends PHPlaterBase {
         $have_space = str_contains($data, ' ');
 
         if (!$have_slash || ($have_space || $have_list || $have_conditional || $have_tag)) {
-            return $this->cache($data, $data);
+            return $this->cache($data, 'data', $data);
         }
 
         $ext = $this->getExtension();
@@ -205,12 +207,12 @@ class PHPlater extends PHPlaterBase {
         $location = $this->getRoot() . $data;
         if ($is_tpl_file) {
             $file_data = is_file($location) ? file_get_contents($location) : '';
-            return $this->cache($data, $file_data);
+            return $this->cache($data, 'data', $file_data);
         }
 
         $location = $location . $this->getExtension();
         $file_data = is_file($location) ? file_get_contents($location) : '';
-        return $this->cache($data, $file_data);
+        return $this->cache($data, 'data', $file_data);
     }
 
     /**
@@ -336,56 +338,54 @@ class PHPlater extends PHPlaterBase {
      */
     public function render(string $template = '', int $iterations = 1): string {
         $this->setResult($this->setContent($template)->getContent());
-        if (str_contains($this->getResult(), self::getTag(self::TAG_LIST_BEFORE, true))) {
-            $this->setResult(self::renderCallback($this->getPHPlaterObject(self::CLASS_LIST), $this->getResult()));
+        if (str_contains($result = $this->getResult(), self::getTag(self::TAG_LIST_BEFORE, true))) {
+            $this->setResult($this->renderCallback(self::CLASS_LIST, $result));
         }
-        if (str_contains($this->getResult(), self::getTag(self::TAG_CONDITIONAL_BEFORE, true))) {
-            $this->setResult(self::renderCallback($this->getPHPlaterObject(self::CLASS_CONDITIONAL), $this->getResult()));
+        if (str_contains($result = $this->getResult(), self::getTag(self::TAG_CONDITIONAL_BEFORE, true))) {
+            $this->setResult($this->renderCallback(self::CLASS_CONDITIONAL, $result));
         }
         $tag_before = self::getTag(self::TAG_BEFORE, true);
         $tag_after = self::getTag(self::TAG_AFTER, true);
         $content = $this->getMany() ? $tag_before . '0' . $tag_after : $this->getResult();
         if (str_contains($content, $tag_before)) {
-            $this->setResult(self::renderCallback($this->getPHPlaterObject(self::CLASS_VARIABLE), $content));
+            $this->setResult($this->renderCallback(self::CLASS_VARIABLE, $content));
         }
-        if ($iterations-- && strstr($this->getResult(), $tag_before) && strstr($this->getResult(), $tag_after)) {
-            return $this->render($this->getResult(), $iterations);
+        $result = $this->getResult();
+        if ($iterations-- && str_contains($result, $tag_before) && str_contains($result, $tag_after)) {
+            return $this->render($result, $iterations);
         }
-        return $this->getResult();
+        return $result;
     }
 
     /**
      * Renders the content with a callback to a method
      *
-     * @param object $class The class to call the find method on
+     * @param object $class_name The name of the class
      * @param string $content The content to render
      * @return string The resulting content
      */
-    private static function renderCallback(object $class, string $content): string {
+    private function renderCallback(string $class_name, string $content): string {
         if (self::$cache) {
-            $pattern = self::patternCache($class);
-            $matches = [];
-            if (isset(self::$match_cache[$content][$pattern])) {
-                $matches = self::$match_cache[$content][$pattern];
-            } else {
+            $cache_key = $content . json_encode($this->getPlates());
+            $data = $this->cache($cache_key, 'rendered');
+            if (!$data) {
+                $pattern = self::patternCache($class_name);
                 preg_match_all($pattern, $content, $matches);
-                self::$match_cache[$content][$pattern] = $matches;
-            }
-
-            $data = $content;
-            if (isset($matches['x'])) {
-                $unique_matches = array_unique($matches['x']);
-                foreach ($unique_matches as $key => $match) {
-                    $replace_with = $class->find(['x' => $match]);
-                    $data = strtr($data, [$matches[0][$key] => $replace_with]);
+                $data = $content;
+                if (isset($matches['x'])) {
+                    $unique_matches = array_unique($matches['x']);
+                    $class = $this->getPHPlaterObject($class_name);
+                    foreach ($unique_matches as $key => $match) {
+                        $replace_with = $class->find(['x' => $match]);
+                        $data = strtr($data, [$matches[0][$key] => $replace_with]);
+                    }
                 }
+                $this->cache($cache_key, 'rendered', $data);
             }
-
         } else {
-            $data = (string) preg_replace_callback($class::pattern(), [$class, 'find'], $content);
+            $class = $this->getPHPlaterObject($class_name);
+            $data = (string) preg_replace_callback($class_name::pattern(), [$class, 'find'], $content);
         }
-
-
         return $data;
     }
 }
