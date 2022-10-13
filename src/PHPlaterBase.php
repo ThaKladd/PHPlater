@@ -19,6 +19,7 @@ class PHPlaterBase {
     const CLASS_CONDITIONAL = 'PHPlaterConditional';
     const CLASS_FILTER = 'PHPlaterFilter';
     const CLASS_KEY = 'PHPlaterKey';
+    const CLASS_INCLUDE = 'PHPlaterInclude';
 
     const TAG_BEFORE = 1;
     const TAG_AFTER = 2;
@@ -55,14 +56,13 @@ class PHPlaterBase {
      * @var array<string|int, mixed>
      */
     public array $plates = [];
-    public static array $content_cache = [];
-    public static $match_cache = [];
-    public static $pattern_cache = [];
+    protected static array $content_cache = [];
+    protected static array $pattern_cache = [];
+    protected static bool $changed_tags = true;
     public string $content = '';
     public string $result = '';
     public string $root = '';
     public string $extension = '';
-    public static bool $changed_tags = true;
     public bool $many = false;
 
     /**
@@ -195,6 +195,7 @@ class PHPlaterBase {
             self::TAG_LIST_KEY => self::CLASS_KEY,
             self::TAG_CONDITIONAL_BEFORE || self::TAG_CONDITIONAL_AFTER || self::TAG_IF || self::TAG_ELSE => self::CLASS_CONDITIONAL,
             self::TAG_ARGUMENT || self::TAG_ARGUMENT_LIST || self::TAG_CHAIN || self::TAG_FILTER => self::CLASS_FILTER,
+            self::TAG_INCLUDE => self::CLASS_INCLUDE,
             default => false
         };
         if ($patter_cache_remove) {

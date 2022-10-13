@@ -43,7 +43,9 @@ class PHPlater extends PHPlaterBase {
                 self::TAG_IF => '??',
                 self::TAG_ELSE => '::',
                 self::TAG_LIST_KEY => '#',
-                self::TAG_DELIMITER => '~'
+                self::TAG_DELIMITER => '~',
+                self::TAG_INCLUDE => '\'\'',
+                self::TAG_ASSIGN => '=>'
             ]);
             self::$changed_tags = false;
         }
@@ -336,7 +338,7 @@ class PHPlater extends PHPlaterBase {
      * @param  int $iterations To allow for variables that return variables, you can choose the amount of iterations
      * @return string The finished result after all plates are applied to the template
      */
-    public function render(string $template = '', int $iterations = 1): string {
+    public function render(string $template = '', int $iterations = 0): string {
         $this->setResult($this->setContent($template)->getContent());
         if (str_contains($result = $this->getResult(), self::getTag(self::TAG_LIST_BEFORE, true))) {
             $this->setResult($this->renderCallback(self::CLASS_LIST, $result));
@@ -350,11 +352,15 @@ class PHPlater extends PHPlaterBase {
         if (str_contains($content, $tag_before)) {
             $this->setResult($this->renderCallback(self::CLASS_VARIABLE, $content));
         }
-        $result = $this->getResult();
-        if ($iterations-- && str_contains($result, $tag_before) && str_contains($result, $tag_after)) {
-            return $this->render($result, $iterations);
+
+        if ($iterations-- && str_contains($this->getResult(), $tag_before) && str_contains($this->getResult(), $tag_after)) {
+            return $this->render($this->getResult(), $iterations);
         }
-        return $result;
+
+        if (str_contains($result = $this->getResult(), self::getTag(self::TAG_INCLUDE, true))) {
+            $this->setResult($this->renderCallback(self::CLASS_INCLUDE, $result));
+        }
+        return $this->getResult();
     }
 
     /**
@@ -372,6 +378,7 @@ class PHPlater extends PHPlaterBase {
                 $pattern = self::patternCache($class_name);
                 preg_match_all($pattern, $content, $matches);
                 $data = $content;
+                $tag_assign = self::getTag(self::TAG_ASSIGN);
                 if (isset($matches['x'])) {
                     $unique_matches = array_unique($matches['x']);
                     $class = $this->getPHPlaterObject($class_name);
@@ -388,4 +395,5 @@ class PHPlater extends PHPlaterBase {
         }
         return $data;
     }
+
 }

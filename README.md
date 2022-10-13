@@ -272,6 +272,7 @@ At the moment, very little of known bugs. Improvements and features are multiple
 #### Fixes
 
 Fix the issues with getPHPlaterObject and patternCache - both can be improved
+See into reducing memory footprint
 
 #### Placeholder block
 
@@ -280,8 +281,8 @@ Fix the issues with getPHPlaterObject and patternCache - both can be improved
 
 #### Includes
 
-''include file or url content'' -> ''css/style.css'' ''js/script.js'', ''text.txt'', ''template.tpl''
-'''includes and renders'''? -> see twig source. Maybe use filter ''includes.tpl|render''
+~~''include file or url content'' -> ''css/style.css'' ''js/script.js'', ''text.txt'', ''template.tpl''~~
+~~'''includes and renders'''? -> see twig source. Maybe use filter ''includes.tpl|render''~~
 
 #### Filters that comes with engine
 
@@ -338,9 +339,9 @@ text text text {{ function(plate) }} text  => text text text {{ escape(plate) }}
 
 #### Set Varibales and get them
 
-{{ |set_plate:key,value }} or {{ |var:key,value }} or {{ key => value }}
-{{ |get_plate:key }} or {{ |var:key }} or {{ key }}
-Value should be able to be an array -> like {{ key => [1,2,3,4] }} or  {{ key => [1 => value, 2 => value2] }}
+~~{{ |set_plate:key,value }} or {{ |var:key,value }} or {{ key => value }}~~
+~~{{ |get_plate:key }} or {{ |var:key }} or {{ key }}~~
+~~Value should be able to be an array -> like {{ key => [1,2,3,4] }} or  {{ key => [1 => value, 2 => value2] }}~~
 
 #### Lists first and last
 

@@ -239,7 +239,7 @@ class PHPlaterTest extends TestCase {
 
         $this->assertEquals('test OK', $this->phplater->render('test {{o|implode|uppercase}}'));
         $this->assertEquals('test ok', $this->phplater->render('test {{okey.0|implode}}'));
-        $this->assertEquals('test ok', $this->phplater->render('test {{oks}}'));
+        $this->assertEquals('test ok', $this->phplater->render('test {{oks}}', 1));
     }
 
     /**

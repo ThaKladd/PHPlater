@@ -10,6 +10,7 @@ include 'classes/Data.php';
 
 $return = [];
 $runs = 1000;
+$last_memory = $mid_memory = $first_memory = 0;
 for ($y = 0; $y < $runs; $y++) {
     try {
         $phplater = new PHPlater();
@@ -74,7 +75,7 @@ for ($y = 0; $y < $runs; $y++) {
        </div>
     '));
 
-    $return['first'] = $phplater->render('./templates/test_page.tpl');
+    $return['first'] = $phplater->render('./templates/test_page.tpl', 1);
 
     $phplater = new PHPlater();
     //$phplater->setCache(true);
@@ -255,6 +256,27 @@ for ($y = 0; $y < $runs; $y++) {
         ]]
         </table>
     ');
+    $phplater = new PHPlater();
+    $phplater->setPlate('test', 'value');
+    $phplater->setPlate('test_value', 'Should not show');
+    $return['seventh'] = $phplater->render('<br>With no render: \'\' ./templates/test_no_value.tpl \'\'');
+    $return['eight'] = $phplater->render('With render: \'\' ./templates/test_value.tpl|render \'\'');
+
+    $phplater = new PHPlater();
+    $return['ninth'] = $phplater->render('
+        Set varaible to: {{test => varaible set before}}varaible set before<br>Get variable: {{test}}<br><br>
+        Set varaible to: {{test_array => [1,2,3,"this here"]}}[1,2,3,"this here"]<br>Get variable from array index 3: {{test_array.3}}<br><br>
+    ');
+
+    if ($y == ceil($runs / 2) - 1) {
+        $mid_memory = memory_get_usage() / 1024;
+    }
+    if ($y == 0) {
+        $first_memory = memory_get_usage() / 1024;
+    }
+    if ($y == $runs - 1) {
+        $last_memory = memory_get_usage() / 1024;
+    }
 }
 echo implode('', $return);
 /**
@@ -264,6 +286,7 @@ echo implode('', $return);
  * (( {{ test }} ?? {{ true }} :: {{ false }} ))
  */
 echo 'Page generated in ' . round(microtime(true) - $start_time, 3) . ' seconds with ' . $runs . ' runs.<br><br>';
-
+echo 'Memory usage first: ' . round($first_memory, 3) . ' KB, and mid: ' . round($mid_memory / 1024, 3) . ' KB.<br><br>';
+echo 'Memory usage last: ' . round($last_memory, 3) . ' KB, and end: ' . round(memory_get_usage() / 1024, 3) . ' KB.<br><br>';
 //PHPlater::debug(PHPlaterBase::$content_cache);
 //echo 'Timer: ' . round(PHPlater::$timer, 3) . 'seconds for str_contains.';

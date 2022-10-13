@@ -1,6 +1,15 @@
 
 # Changelog
 
+## v1.2.0
+
+### More tags
+
+ - Includes added, as well as render filter for include
+ - You can now set variables witin a template
+ - More agressive caching - speeds up previous cahce up to ~80%
+ - Slight improvements on internal arhictecture
+
 ## v1.1.1
 
 ### Fixing bug

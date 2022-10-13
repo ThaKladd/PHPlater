@@ -8,6 +8,7 @@
  * @author  John Larsen
  * @license MIT
  */
+use Error\RuleBrokenError;
 
 class PHPlaterVariable extends PHPlaterBase {
 
@@ -19,8 +20,9 @@ class PHPlaterVariable extends PHPlaterBase {
      * @return string The pattern for preg_replace_callback
      */
     public static function pattern(): string {
-        $tags = preg_quote(self::getTag(self::TAG_FILTER) . self::getTag(self::TAG_ARGUMENT) . self::getTag(self::TAG_CHAIN));
-        return self::buildPattern(self::TAG_BEFORE, '\s*(?P<x>[\w,\-' . $tags . ']+?)\s*', self::TAG_AFTER);
+        $tags = preg_quote(self::getTag(self::TAG_FILTER) . self::getTag(self::TAG_ARGUMENT) . self::getTag(self::TAG_CHAIN) . self::getTag(self::TAG_ASSIGN));
+        $old = '[\w,\-' . $tags . ' ]+';
+        return self::buildPattern(self::TAG_BEFORE, '\s*(?P<x>.+?)\s*', self::TAG_AFTER);
     }
 
     /**
@@ -42,8 +44,18 @@ class PHPlaterVariable extends PHPlaterBase {
             }
             return $all_plates;
         }
+        $exploded = explode(self::getTag(self::TAG_ASSIGN), $match['x']);
+        if (isset($exploded[1])) {
+            if (!trim($exploded[1])) {
+                throw new RuleBrokenError('Cannot assign empty to variable.');
+            } else if (!trim($exploded[0])) {
+                throw new RuleBrokenError('Variable cannot be empty when setting.');
+            }
+            $this->getCore()->setPlate(trim($exploded[0]), trim($exploded[1]));
+            return '';
+        }
 
-        [$parts, $filters] = self::getFiltersAndParts($match['x']);
+        [$parts, $filters] = self::getFiltersAndParts($exploded[0]);
         $plate = $core->getPlate(array_shift($parts));
         foreach ($parts as $part) {
             $plate = self::extract(self::ifJsonToArray($plate), $part);

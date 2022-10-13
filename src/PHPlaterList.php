@@ -38,6 +38,16 @@ class PHPlaterList extends PHPlaterBase {
         $core = $this->getCore();
         $variable_pattern = self::patternCache(self::CLASS_VARIABLE);
         preg_match_all($variable_pattern, $match['x'], $matches);
+        //Because a variable can have any cahracter, the key has to be filtered out and not match the character
+        if (count($matches['x']) > 1) {
+            $tag_key = self::getTag(self::TAG_LIST_KEY);
+            foreach ($matches['x'] as $i => $tag_match) {
+                if ($tag_match == $tag_key) {
+                    unset($matches['x'][$i]);
+                }
+            }
+            $matches['x'] = array_values($matches['x']); //Rebuild array indexes
+        }
         $tag_chain = self::getTag(self::TAG_CHAIN);
         $key_pattern = self::patternCache(self::CLASS_KEY);
         $tag_list = $tag_chain . $tag_chain;
