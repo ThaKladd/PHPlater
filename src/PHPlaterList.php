@@ -8,7 +8,6 @@
  * @author  John Larsen
  * @license MIT
  */
-
 class PHPlaterList extends PHPlaterBase {
 
     /**
@@ -35,12 +34,11 @@ class PHPlaterList extends PHPlaterBase {
      * @return string The result after rendering all elements in the list
      */
     public function find(array $match): string {
-        $core = $this->getCore();
-        $variable_pattern = self::patternCache(self::CLASS_VARIABLE);
+        $variable_pattern = ClassString::VARIABLE->pattern();
         preg_match_all($variable_pattern, $match['x'], $matches);
         //Because a variable can have any cahracter, the key has to be filtered out and not match the character
         if (count($matches['x']) > 1) {
-            $tag_key = self::getTag(self::TAG_LIST_KEY);
+            $tag_key = Tag::LIST_KEY->get();
             foreach ($matches['x'] as $i => $tag_match) {
                 if ($tag_match == $tag_key) {
                     unset($matches['x'][$i]);
@@ -48,19 +46,19 @@ class PHPlaterList extends PHPlaterBase {
             }
             $matches['x'] = array_values($matches['x']); //Rebuild array indexes
         }
-        $tag_chain = self::getTag(self::TAG_CHAIN);
-        $key_pattern = self::patternCache(self::CLASS_KEY);
+        $tag_chain = Tag::CHAIN->get(true);
+        $key_pattern = ClassString::KEY->pattern();
         $tag_list = $tag_chain . $tag_chain;
         $all_before_parts = explode($tag_list, $matches['x'][0]);
         $tag_last = end($all_before_parts) === '' ? '' : $tag_chain;
         $tag_first = reset($all_before_parts) === '' ? '' : $tag_chain;
         $core_parts = explode($tag_chain, $all_before_parts[0]);
         $elements = '';
-        $list = self::getList($core->getPlates(), $core_parts);
+        $list = self::getList($this->core->getPlates(), $core_parts);
         foreach ($list as $key => $item) {
             $replaced_template = strtr($match['x'], [$tag_list => $tag_first . $key . $tag_last]);
             $new_template = self::replaceKeys($replaced_template, $key, $key_pattern);
-            $elements .= $core->render($new_template);
+            $elements .= $this->core->render($new_template);
         }
         return $elements;
     }
@@ -73,8 +71,8 @@ class PHPlaterList extends PHPlaterBase {
      * @return string The pattern for preg_replace_callback
      */
     public static function pattern(): string {
-        $tag_chain = preg_quote(self::getTag(self::TAG_CHAIN));
-        return self::buildPattern(self::TAG_LIST_BEFORE, '\s*(?P<x>[\w\W]+?' . $tag_chain . $tag_chain . '[\w\W]+?)\s*', self::TAG_LIST_AFTER);
+        $tag_chain = Tag::CHAIN->get();
+        return self::buildPattern(Tag::LIST_BEFORE, '\s*(?P<x>[\w\W]+?' . $tag_chain . $tag_chain . '[\w\W]+?)\s*', Tag::LIST_AFTER);
     }
 
     /**
@@ -93,4 +91,5 @@ class PHPlaterList extends PHPlaterBase {
         }
         return $template;
     }
+
 }

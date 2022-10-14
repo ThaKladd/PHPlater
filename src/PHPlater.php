@@ -16,58 +16,36 @@ class PHPlater extends PHPlaterBase {
     private static bool $cache = false;
 
     /**
-     * @var array<string, object>
-     */
-    public array $instances = [];
-
-    /**
      * Creates PHPlater object and initializes it
      *
      * @access public
      * @param  string $template Optional to put in template as argument to constructor
      */
     public function __construct(string $template = '', string $root = '') {
-        if (version_compare(phpversion(), '8.0.0', '<')) {
-            throw new RuleBrokenError('PHPlater requires PHP version to be > 8.0');
+        if (version_compare(phpversion(), '8.1.0', '<')) {
+            throw new RuleBrokenError('PHPlater requires PHP version to be >= 8.1');
         }
 
         if (self::$changed_tags) {
             self::setTagsConditionals('((', '))');
             self::setTagsVariables('{{', '}}');
             self::setTagsList('[[', ']]');
-            self::setTags([
-                self::TAG_ARGUMENT => ':',
-                self::TAG_ARGUMENT_LIST => ',',
-                self::TAG_CHAIN => '.',
-                self::TAG_FILTER => '|',
-                self::TAG_IF => '??',
-                self::TAG_ELSE => '::',
-                self::TAG_LIST_KEY => '#',
-                self::TAG_DELIMITER => '~',
-                self::TAG_INCLUDE => '\'\'',
-                self::TAG_ASSIGN => '=>'
-            ]);
+            Tag::ARGUMENT->set(':');
+            Tag::ARGUMENT_LIST->set(',');
+            Tag::CHAIN->set('.');
+            Tag::FILTER->set('|');
+            Tag::IF_CONDITIONAL->set('??');
+            Tag::ELSE_CONDITIONAL->set('::');
+            Tag::LIST_KEY->set('#');
+            Tag::DELIMITER->set('~');
+            Tag::INCLUDE_FILE->set('\'\'');
+            Tag::ASSIGN->set('=>');
             self::$changed_tags = false;
         }
 
-        $this->setCore($this);
         $this->setExtension('.tpl');
         $this->setRoot($root);
         $this->setContent($template);
-    }
-
-
-    /**
-     * Get the instance of the core on demand
-     *
-     * @access public
-     * @param  string $const get the current instance of the corresponding class
-     */
-    public function getPHPlaterObject(string $const): object {
-        if (!isset($this->instances[$const])) {
-            $this->instances[$const] = new $const($this);
-        }
-        return $this->instances[$const];
     }
 
     /**
@@ -195,9 +173,9 @@ class PHPlater extends PHPlaterBase {
         }
 
         $have_slash = str_contains($data, '/');
-        $have_tag = str_contains($data, self::getTag(self::TAG_BEFORE, true));
-        $have_conditional = str_contains($data, self::getTag(self::TAG_CONDITIONAL_BEFORE, true));
-        $have_list = str_contains($data, self::getTag(self::TAG_LIST_BEFORE, true));
+        $have_tag = str_contains($data, Tag::BEFORE->get(true));
+        $have_conditional = str_contains($data, Tag::CONDITIONAL_BEFORE->get(true));
+        $have_list = str_contains($data, Tag::LIST_BEFORE->get(true));
         $have_space = str_contains($data, ' ');
 
         if (!$have_slash || ($have_space || $have_list || $have_conditional || $have_tag)) {
@@ -270,7 +248,7 @@ class PHPlater extends PHPlaterBase {
      * @return void
      */
     public function setFilter(string $filter, callable $function): void {
-        self::getPHPlaterObject(self::CLASS_FILTER, $this)->setFilter($filter, $function);
+        ClassString::FILTER->object($this)->setFilter($filter, $function);
     }
 
     /**
@@ -308,9 +286,7 @@ class PHPlater extends PHPlaterBase {
      * @return mixed Plate asked for if it is a get operation
      */
     public function getPlate(string $name): mixed {
-        $tag_before = self::getTag(self::TAG_BEFORE, true);
-        $tag_after = self::getTag(self::TAG_AFTER, true);
-        return $this->plates[$name] ?? $tag_before . $name . $tag_after;
+        return $this->plates[$name] ?? Tag::BEFORE->get(true) . $name . Tag::AFTER->get(true);
     }
 
     /**
@@ -340,25 +316,24 @@ class PHPlater extends PHPlaterBase {
      */
     public function render(string $template = '', int $iterations = 0): string {
         $this->setResult($this->setContent($template)->getContent());
-        if (str_contains($result = $this->getResult(), self::getTag(self::TAG_LIST_BEFORE, true))) {
-            $this->setResult($this->renderCallback(self::CLASS_LIST, $result));
+        if (str_contains($result = $this->getResult(), Tag::LIST_BEFORE->get(true))) {
+            $this->setResult($this->renderCallback(ClassString::LISTS, $result));
         }
-        if (str_contains($result = $this->getResult(), self::getTag(self::TAG_CONDITIONAL_BEFORE, true))) {
-            $this->setResult($this->renderCallback(self::CLASS_CONDITIONAL, $result));
+        if (str_contains($result = $this->getResult(), Tag::CONDITIONAL_BEFORE->get(true))) {
+            $this->setResult($this->renderCallback(ClassString::CONDITIONAL, $result));
         }
-        $tag_before = self::getTag(self::TAG_BEFORE, true);
-        $tag_after = self::getTag(self::TAG_AFTER, true);
+        $tag_before = Tag::BEFORE->get(true);
+        $tag_after = Tag::AFTER->get(true);
         $content = $this->getMany() ? $tag_before . '0' . $tag_after : $this->getResult();
         if (str_contains($content, $tag_before)) {
-            $this->setResult($this->renderCallback(self::CLASS_VARIABLE, $content));
+            $this->setResult($this->renderCallback(ClassString::VARIABLE, $content));
         }
 
         if ($iterations-- && str_contains($this->getResult(), $tag_before) && str_contains($this->getResult(), $tag_after)) {
             return $this->render($this->getResult(), $iterations);
         }
-
-        if (str_contains($result = $this->getResult(), self::getTag(self::TAG_INCLUDE, true))) {
-            $this->setResult($this->renderCallback(self::CLASS_INCLUDE, $result));
+        if (str_contains($result = $this->getResult(), Tag::INCLUDE_FILE->get(true))) {
+            $this->setResult($this->renderCallback(ClassString::INCLUDE_FILE, $result));
         }
         return $this->getResult();
     }
@@ -366,22 +341,21 @@ class PHPlater extends PHPlaterBase {
     /**
      * Renders the content with a callback to a method
      *
-     * @param object $class_name The name of the class
+     * @param object $enum The name of the class
      * @param string $content The content to render
      * @return string The resulting content
      */
-    private function renderCallback(string $class_name, string $content): string {
+    private function renderCallback(ClassString $enum, string $content): string {
         if (self::$cache) {
             $cache_key = $content . json_encode($this->getPlates());
             $data = $this->cache($cache_key, 'rendered');
             if (!$data) {
-                $pattern = self::patternCache($class_name);
+                $pattern = $enum->pattern();
                 preg_match_all($pattern, $content, $matches);
                 $data = $content;
-                $tag_assign = self::getTag(self::TAG_ASSIGN);
                 if (isset($matches['x'])) {
                     $unique_matches = array_unique($matches['x']);
-                    $class = $this->getPHPlaterObject($class_name);
+                    $class = $enum->object($this);
                     foreach ($unique_matches as $key => $match) {
                         $replace_with = $class->find(['x' => $match]);
                         $data = strtr($data, [$matches[0][$key] => $replace_with]);
@@ -390,8 +364,7 @@ class PHPlater extends PHPlaterBase {
                 $this->cache($cache_key, 'rendered', $data);
             }
         } else {
-            $class = $this->getPHPlaterObject($class_name);
-            $data = (string) preg_replace_callback($class_name::pattern(), [$class, 'find'], $content);
+            $data = (string) preg_replace_callback($enum->pattern(), [$enum->object($this), 'find'], $content);
         }
         return $data;
     }

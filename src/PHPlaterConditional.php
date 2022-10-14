@@ -20,7 +20,7 @@ class PHPlaterConditional extends PHPlaterBase {
      * @return string The pattern for preg_replace_callback
      */
     public static function pattern(): string {
-        return self::buildPattern(self::TAG_CONDITIONAL_BEFORE, '\s*(?P<x>.+?)\s*', self::TAG_CONDITIONAL_AFTER);
+        return self::buildPattern(Tag::CONDITIONAL_BEFORE, '\s*(?P<x>.+?)\s*', Tag::CONDITIONAL_AFTER);
     }
 
     /**
@@ -31,13 +31,13 @@ class PHPlaterConditional extends PHPlaterBase {
      * @return string The result after rendering all conditionals
      */
     public function find(array $match): string {
-        $splitted_conditional = explode(self::getTag(self::TAG_IF), $match['x']);
+        $splitted_conditional = explode(Tag::IF_CONDITIONAL->get(true), $match['x']);
         $condition = trim($splitted_conditional[0]);
         $rendered_condition = $this->doOpreration($condition);
-        $splitted_if_else = explode(self::getTag(self::TAG_ELSE), $splitted_conditional[1]);
+        $splitted_if_else = explode(Tag::ELSE_CONDITIONAL->get(true), $splitted_conditional[1]);
         $ifTrue = trim($splitted_if_else[0] ?? '');
         $ifFalse = trim($splitted_if_else[1] ?? '');
-        return $this->getCore()->render($rendered_condition ? $ifTrue : $ifFalse);
+        return $this->core->render($rendered_condition ? $ifTrue : $ifFalse);
     }
 
     /**
@@ -50,11 +50,11 @@ class PHPlaterConditional extends PHPlaterBase {
         $operators = ['\={3}', '\={2}', '\!\={2}', '\!\={1}', '\<\=\>', '\>\=', '\<\=', '\<\>', '\>', '\<', '%', '&{2}', '\|{2}', 'xor', 'and', 'or'];
         if (preg_match('/.+\s*(' . implode('|', $operators) . ')\s*.+/U', $condition, $matches)) {
             $a_and_b = explode($matches[1], $condition);
-            $a = trim($this->getCore()->render($a_and_b[0]));
-            $b = trim($this->getCore()->render($a_and_b[1]));
+            $a = trim($this->core->render($a_and_b[0]));
+            $b = trim($this->core->render($a_and_b[1]));
             return self::evaluateOperation($a, $matches[1], $b);
         }
-        return $this->getCore()->render($condition);
+        return $this->core->render($condition);
     }
 
     /**
@@ -89,4 +89,5 @@ class PHPlaterConditional extends PHPlaterBase {
         };
         return $match;
     }
+
 }

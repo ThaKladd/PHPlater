@@ -8,10 +8,9 @@
  * @author  John Larsen
  * @license MIT
  */
-
 class PHPlaterFilter extends PHPlaterBase {
 
-     /**
+    /**
      * Adds the callable filter function to class
      *
      * @access public
@@ -59,8 +58,8 @@ class PHPlaterFilter extends PHPlaterBase {
      * @return array<mixed> Filter as first, arguments in second
      */
     private function getFunctionAndArguments(string $filter): array {
-        $parts = explode(self::getTag(self::TAG_ARGUMENT), $filter);
-        return [$this->getFilter($parts[0]), isset($parts[1]) ? explode(self::getTag(self::TAG_ARGUMENT_LIST), $parts[1]) : []];
+        $parts = explode(Tag::ARGUMENT->get(true), $filter);
+        return [$this->getFilter($parts[0]), isset($parts[1]) ? explode(Tag::ARGUMENT_LIST->get(true), $parts[1]) : []];
     }
 
     /**
@@ -77,4 +76,5 @@ class PHPlaterFilter extends PHPlaterBase {
         }
         return $plate;
     }
+
 }

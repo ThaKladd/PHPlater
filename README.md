@@ -271,17 +271,18 @@ At the moment, very little of known bugs. Improvements and features are multiple
 
 #### Fixes
 
-Fix the issues with getPHPlaterObject and patternCache - both can be improved
+~~Fix the issues with getPHPlaterObject and patternCache - both can be improved~~
+Put constants into enum classes
 See into reducing memory footprint
 
 #### Placeholder block
 
->>bloack-as-non-existing-plate => values and {{ variables }}<< 
+>>block-as-non-existing-plate => values and {{ variables }}<< 
 <<block>> or {{non-existing-plate}}
 
 #### Includes
 
-~~''include file or url content'' -> ''css/style.css'' ''js/script.js'', ''text.txt'', ''template.tpl''~~
+~~''include file or~~ url ~~content'' -> ''css/style.css'' ''js/script.js'', ''text.txt'', ''template.tpl''~~
 ~~'''includes and renders'''? -> see twig source. Maybe use filter ''includes.tpl|render''~~
 
 #### Filters that comes with engine

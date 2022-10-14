@@ -10,55 +10,20 @@
  */
 use Error\RuleBrokenError;
 
+include_once 'Enum\Tag.php';
+include_once 'Enum\ClassString.php';
+
 class PHPlaterBase {
 
-    const CLASS_BASE = 'PHPlaterBase';
-    const CLASS_CORE = 'PHPlater';
-    const CLASS_VARIABLE = 'PHPlaterVariable';
-    const CLASS_LIST = 'PHPlaterList';
-    const CLASS_CONDITIONAL = 'PHPlaterConditional';
-    const CLASS_FILTER = 'PHPlaterFilter';
-    const CLASS_KEY = 'PHPlaterKey';
-    const CLASS_INCLUDE = 'PHPlaterInclude';
-
-    const TAG_BEFORE = 1;
-    const TAG_AFTER = 2;
-    const TAG_LIST_BEFORE = 4;
-    const TAG_LIST_AFTER = 8;
-    const TAG_LIST_KEY = 16;
-    const TAG_CONDITIONAL_BEFORE = 32;
-    const TAG_CONDITIONAL_AFTER = 64;
-    const TAG_IF = 128;
-    const TAG_ELSE = 256;
-    const TAG_ARGUMENT = 512;
-    const TAG_ARGUMENT_LIST = 1024;
-    const TAG_CHAIN = 2048;
-    const TAG_FILTER = 4096;
-    const TAG_DELIMITER = 8192;
-    const TAG_BLOCK_BEFORE = 16384; //Undecided - May not be needed?
-    const TAG_BLOCK_AFTER = 32768; //Undecided - May not be needed?
-    const TAG_UNBLOCK_BEFORE = 65536; //Undecided - May not be needed?
-    const TAG_UNBLOCK_AFTER = 131072; //Undecided - May not be needed?
-    const TAG_INCLUDE = 262144;
-    const TAG_INCLUDE_RENDER = 524288;  //Undecided - Maybe use filter?
-    const TAG_ASSIGN = 1048576; //Undecided
-    const TAG_EMPTY_ARRAY = 2097152; //Undecided
-    const TAG_EMPTY_STRING = 4194304; //Undecided
-
-    protected ?PHPlater $core = null;
-
-    /**
-     * All data is managed within this one property array.
-     * Defaults are set in constructors
-     */
+    public ?PHPlater $core = null;
 
     /**
      * @var array<string|int, mixed>
      */
     public array $plates = [];
-    protected static array $content_cache = [];
-    protected static array $pattern_cache = [];
-    protected static bool $changed_tags = true;
+    public static array $content_cache = [];
+    public static array $instances = [];
+    public static bool $changed_tags = true;
     public string $content = '';
     public string $result = '';
     public string $root = '';
@@ -80,34 +45,8 @@ class PHPlaterBase {
      */
     public static array $function_instances = [];
 
-    /**
-     * Creates the object and initializes it
-     *
-     * @access public
-     */
-    public function __construct(PHPlater $phplater) {
-        $this->setCore($phplater);
-    }
-
-    /**
-     * Get the core object
-     *
-     * @access protected
-     * @return PHPlater Returns core object
-     */
-    protected function getCore(): PHPlater {
-        return $this->core ?? new PHPlater();
-    }
-
-    /**
-     * Set the core object
-     *
-     * @access protected
-     * @param  PHPlater $phplater the core PHPlater object
-     * @return void
-     */
-    protected function setCore(PHPlater $phplater): void {
-        $this->core = $phplater;
+    public function __construct(?PHPlater $core = null) {
+        $this->core = $core;
     }
 
     /**
@@ -144,64 +83,18 @@ class PHPlaterBase {
 
     /**
      * Get the pattern used to fetch all the variable tags in the template
-     *
+
      * @access protected
+     * @param  enum $before The before tag
+     * @param  string $pattern The pattern
+     * @param  enum $after The after tag
      * @return string The pattern for preg_replace_callback
      */
-    protected static function buildPattern(int $before, string $pattern, int $after): string {
-        $tag_before = self::getTag($before);
-        $tag_after = self::getTag($after);
-        $delimiter = self::getTag(self::TAG_DELIMITER);
+    protected static function buildPattern(Tag $before, string $pattern, Tag $after): string {
+        $tag_before = $before->get();
+        $tag_after = $after->get();
+        $delimiter = Tag::DELIMITER->get(true);
         return $delimiter . $tag_before . $pattern . $tag_after . $delimiter;
-    }
-
-    /**
-     * Get tag by tag constant
-     *
-     * @access public
-     * @param  int $tag_constant The constant to get tag from
-     * @param  bool $stripslashes If the stripped version
-     * @return string The tag
-     */
-    public static function getTag(int $tag_constant, bool $stripslashes = false): string {
-        if ($stripslashes) {
-            return self::$tags[1][$tag_constant] ?? '';
-        }
-        return self::$tags[0][$tag_constant] ?? '';
-    }
-
-    /**
-     * Set tag by a constant
-     *
-     * @access public
-     * @param  int $tag_constant The constant to set tag with
-     * @param  string $tag The tag string
-     * @return void
-     */
-    public static function setTag(int $tag_constant, string $tag): void {
-        if ($tag_constant === self::TAG_DELIMITER) {
-            if (strlen($tag) > 1) {
-                throw new RuleBrokenError('Preg delimiter can not be over 1 in length.');
-            } else if (ctype_alnum($tag) || $tag === '\\') {
-                throw new RuleBrokenError('Preg Delimiter can not be alphanumeric or backslash.');
-            }
-        }
-        self::$tags[0][$tag_constant] = $tag;
-        self::$tags[1][$tag_constant] = stripslashes($tag);
-        $patter_cache_remove = match ($tag_constant) {
-            self::TAG_BEFORE || self::TAG_AFTER => self::CLASS_VARIABLE,
-            self::TAG_LIST_BEFORE || self::TAG_LIST_AFTER => self::CLASS_LIST,
-            self::TAG_LIST_AFTER => self::CLASS_VARIABLE,
-            self::TAG_LIST_KEY => self::CLASS_KEY,
-            self::TAG_CONDITIONAL_BEFORE || self::TAG_CONDITIONAL_AFTER || self::TAG_IF || self::TAG_ELSE => self::CLASS_CONDITIONAL,
-            self::TAG_ARGUMENT || self::TAG_ARGUMENT_LIST || self::TAG_CHAIN || self::TAG_FILTER => self::CLASS_FILTER,
-            self::TAG_INCLUDE => self::CLASS_INCLUDE,
-            default => false
-        };
-        if ($patter_cache_remove) {
-            unset(self::$pattern_cache[$patter_cache_remove]);
-        }
-        self::$changed_tags = true;
     }
 
     /**
@@ -216,10 +109,8 @@ class PHPlaterBase {
      * @return void
      */
     public static function setTagsVariables(string $before, string $after): void {
-        self::setTags([
-            self::TAG_BEFORE => preg_quote($before),
-            self::TAG_AFTER => preg_quote($after)
-        ]);
+        Tag::BEFORE->set($before);
+        Tag::AFTER->set($after);
     }
 
     /**
@@ -234,10 +125,8 @@ class PHPlaterBase {
      * @return void
      */
     public static function setTagsConditionals(string $before, string $after): void {
-        self::setTags([
-            self::TAG_CONDITIONAL_BEFORE => preg_quote($before),
-            self::TAG_CONDITIONAL_AFTER => preg_quote($after)
-        ]);
+        Tag::CONDITIONAL_BEFORE->set($before);
+        Tag::CONDITIONAL_AFTER->set($after);
     }
 
     /**
@@ -252,33 +141,19 @@ class PHPlaterBase {
      * @return void
      */
     public static function setTagsList(string $before, string $after): void {
-        self::setTags([
-            self::TAG_LIST_BEFORE => preg_quote($before),
-            self::TAG_LIST_AFTER => preg_quote($after)
-        ]);
-    }
-
-    /**
-     * Set all tags you want in one method
-     *
-     * @access public
-     * @param array<int, string> $tags The array of all the tags to set
-     * @return void
-     */
-    public static function setTags(array $tags): void {
-        foreach ($tags as $const => $tag) {
-            self::setTag($const, $tag);
-        }
+        Tag::LIST_BEFORE->set($before);
+        Tag::LIST_AFTER->set($after);
     }
 
     /**
      * Get all tags
      *
      * @access public
+     * @param  bool $raw The raw version of the tag
      * @return array<string> All the tags
      */
-    public static function getTags(): array {
-        return self::$tags[0] ?? [];
+    public static function getTags(bool $raw = false): array {
+        return self::$tags[$raw] ?? [];
     }
 
     /**
@@ -291,4 +166,5 @@ class PHPlaterBase {
     public static function debug(mixed $value): void {
         echo PHP_EOL . 'DEBUG &gt; <pre>' . print_r($value, true) . '</pre> &lt; DEBUG' . PHP_EOL;
     }
+
 }

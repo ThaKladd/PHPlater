@@ -8,7 +8,6 @@
  * @author  John Larsen
  * @license MIT
  */
-
 class PHPlaterInclude extends PHPlaterBase {
 
     /**
@@ -18,8 +17,8 @@ class PHPlaterInclude extends PHPlaterBase {
      * @return string The pattern for preg_replace_callback
      */
     public static function pattern(): string {
-        self::setTag(self::TAG_DELIMITER, '^');
-        return self::buildPattern(self::TAG_INCLUDE, '\s*(?P<x>.+?)\s*', self::TAG_INCLUDE);
+        Tag::DELIMITER->set('^');
+        return self::buildPattern(Tag::INCLUDE_FILE, '\s*(?P<x>.+?)\s*', Tag::INCLUDE_FILE);
     }
 
     /**
@@ -30,9 +29,8 @@ class PHPlaterInclude extends PHPlaterBase {
      * @return string The result after rendering all includes
      */
     public function find(array $match): string {
-        $phplater = clone $this->getCore();
-        $filter_tag = self::getTag(self::TAG_FILTER);
-        $exploded = explode($filter_tag, $match['x']);
+        $phplater = clone $this->core;
+        $exploded = explode(Tag::FILTER->get(true), $match['x']);
         $data = $phplater->setContent($exploded[0])->getContent();
         if (isset($exploded[1])) {
             if ($exploded[1] == 'render') {

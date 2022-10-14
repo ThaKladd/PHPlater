@@ -1,4 +1,5 @@
 <?php
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 $start_time = microtime(true);
@@ -54,7 +55,7 @@ for ($y = 0; $y < $runs; $y++) {
 
     $phplater_array->setFilter('strtoupper', 'mb_strtoupper');
     $phplater_array->setFilter('lowercase', 'mb_strtolower');
-    $phplater_array->setFilter('implode', function (array $data) {
+    $phplater_array->setFilter('implode', function (array|string $data) {
         return implode('', $data);
     });
     $phplater_array->setPlate('tens', [['K', 'y', 'm', 'm', 'e', 'n', 'e', 'n']]);

@@ -20,9 +20,9 @@ class PHPlaterVariable extends PHPlaterBase {
      * @return string The pattern for preg_replace_callback
      */
     public static function pattern(): string {
-        $tags = preg_quote(self::getTag(self::TAG_FILTER) . self::getTag(self::TAG_ARGUMENT) . self::getTag(self::TAG_CHAIN) . self::getTag(self::TAG_ASSIGN));
-        $old = '[\w,\-' . $tags . ' ]+';
-        return self::buildPattern(self::TAG_BEFORE, '\s*(?P<x>.+?)\s*', self::TAG_AFTER);
+        //$tags = preg_quote(Tag::FILTER_ > get() . Tag::ARGUMENT->get() . Tag::CHAIN->get() . Tag::ASSIGN->get());
+        //$old = '[\w,\-' . $tags . ' ]+';
+        return self::buildPattern(Tag::BEFORE, '\s*(?P<x>.+?)\s*', Tag::AFTER);
     }
 
     /**
@@ -36,31 +36,29 @@ class PHPlaterVariable extends PHPlaterBase {
      * @return string The result after exchanging all the matched plates
      */
     public function find(array $match): string {
-        $core = $this->getCore();
-        if ($core->getMany()) {
+        if ($this->core->getMany()) {
             $all_plates = '';
-            foreach ($core->getPlates() as $plates) {
-                $all_plates .= (new PHPlater())->setPlates($plates)->render($core->getResult());
+            foreach (self::$core->getPlates() as $plates) {
+                $all_plates .= (new PHPlater())->setPlates($plates)->render(self::$core->getResult());
             }
             return $all_plates;
         }
-        $exploded = explode(self::getTag(self::TAG_ASSIGN), $match['x']);
+        $exploded = explode(Tag::ASSIGN->get(true), $match['x']);
         if (isset($exploded[1])) {
             if (!trim($exploded[1])) {
                 throw new RuleBrokenError('Cannot assign empty to variable.');
             } else if (!trim($exploded[0])) {
                 throw new RuleBrokenError('Variable cannot be empty when setting.');
             }
-            $this->getCore()->setPlate(trim($exploded[0]), trim($exploded[1]));
+            $this->core->setPlate(trim($exploded[0]), trim($exploded[1]));
             return '';
         }
-
         [$parts, $filters] = self::getFiltersAndParts($exploded[0]);
-        $plate = $core->getPlate(array_shift($parts));
+        $plate = $this->core->getPlate(array_shift($parts));
         foreach ($parts as $part) {
             $plate = self::extract(self::ifJsonToArray($plate), $part);
         }
-        return $core->getPHPlaterObject(self::CLASS_FILTER)->callFilters($plate, $filters);
+        return ClassString::FILTER->object($this->core)->callFilters($plate, $filters);
     }
 
     /**
@@ -72,13 +70,15 @@ class PHPlaterVariable extends PHPlaterBase {
      */
     private static function getFiltersAndParts(string $plate): array {
         $parts = []; //gives error or wrong result if this is []
-        if (str_contains($plate, self::getTag(self::TAG_FILTER))) {
-            $parts = explode(self::getTag(self::TAG_FILTER), $plate);
+        $tag_filter = Tag::FILTER->get(true);
+        if (str_contains($plate, $tag_filter)) {
+            $parts = explode($tag_filter, $plate);
             $plate = array_shift($parts);
         }
         $chain = [$plate];
-        if (str_contains($plate, self::getTag(self::TAG_CHAIN))) {
-            $chain = explode(self::getTag(self::TAG_CHAIN), $plate);
+        $tag_chain = Tag::CHAIN->get(true);
+        if (str_contains($plate, $tag_chain)) {
+            $chain = explode($tag_chain, $plate);
         }
         return [$chain, $parts];
     }
