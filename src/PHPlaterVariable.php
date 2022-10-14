@@ -55,7 +55,10 @@ class PHPlaterVariable extends PHPlaterBase {
         }
 
         [$parts, $filters] = self::getFiltersAndParts($exploded[0]);
+        self::debug($exploded);
+        self::debug($this->core->plates);
         $plate = $this->core->getPlate(array_shift($parts));
+        self::debug($plate);
         foreach ($parts as $part) {
             $plate = self::extract(self::ifJsonToArray($plate), $part);
         }
