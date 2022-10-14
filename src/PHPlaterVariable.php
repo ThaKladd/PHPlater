@@ -53,6 +53,7 @@ class PHPlaterVariable extends PHPlaterBase {
             $this->core->setPlate(trim($exploded[0]), trim($exploded[1]));
             return '';
         }
+
         [$parts, $filters] = self::getFiltersAndParts($exploded[0]);
         $plate = $this->core->getPlate(array_shift($parts));
         foreach ($parts as $part) {
