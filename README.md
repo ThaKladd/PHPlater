@@ -272,8 +272,8 @@ At the moment, very little of known bugs. Improvements and features are multiple
 #### Fixes
 
 ~~Fix the issues with getPHPlaterObject and patternCache - both can be improved~~
-Put constants into enum classes
-See into reducing memory footprint
+~~Put constants into enum classes~~
+~~See into reducing memory footprint~~
 
 #### Placeholder block
 

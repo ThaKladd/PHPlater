@@ -357,14 +357,17 @@ class PHPlater extends PHPlaterBase {
                     $unique_matches = array_unique($matches['x']);
                     $class = $enum->object($this);
                     foreach ($unique_matches as $key => $match) {
-                        $replace_with = $class->find(['x' => $match]);
+                        $replace_with = $class->find(['x' => $match], $this);
                         $data = strtr($data, [$matches[0][$key] => $replace_with]);
                     }
                 }
                 $this->cache($cache_key, 'rendered', $data);
             }
         } else {
-            $data = (string) preg_replace_callback($enum->pattern(), [$enum->object($this), 'find'], $content);
+            $phplater = $this;
+            $data = preg_replace_callback($enum->pattern(), function ($matches) use ($enum, $phplater): string {
+                return $enum->object()->find($matches, $phplater);
+            }, $content);
         }
         return $data;
     }

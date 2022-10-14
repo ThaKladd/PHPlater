@@ -33,13 +33,14 @@ class PHPlaterVariable extends PHPlaterBase {
      *
      * @access public
      * @param  array<int|string, string> $match The matched regular expression from render
+     * @param  PHPlater $core The core object
      * @return string The result after exchanging all the matched plates
      */
-    public function find(array $match): string {
-        if ($this->core->getMany()) {
+    public function find(array $match, PHPlater $core): string {
+        if ($core->getMany()) {
             $all_plates = '';
-            foreach (self::$core->getPlates() as $plates) {
-                $all_plates .= (new PHPlater())->setPlates($plates)->render(self::$core->getResult());
+            foreach ($core->getPlates() as $plates) {
+                $all_plates .= (new PHPlater())->setPlates($plates)->render($core->getResult());
             }
             return $all_plates;
         }
@@ -50,19 +51,15 @@ class PHPlaterVariable extends PHPlaterBase {
             } else if (!trim($exploded[0])) {
                 throw new RuleBrokenError('Variable cannot be empty when setting.');
             }
-            $this->core->setPlate(trim($exploded[0]), trim($exploded[1]));
+            $core->setPlate(trim($exploded[0]), trim($exploded[1]));
             return '';
         }
-
         [$parts, $filters] = self::getFiltersAndParts($exploded[0]);
-        self::debug($exploded);
-        self::debug($this->core->plates);
-        $plate = $this->core->getPlate(array_shift($parts));
-        self::debug($plate);
+        $plate = $core->getPlate(array_shift($parts));
         foreach ($parts as $part) {
             $plate = self::extract(self::ifJsonToArray($plate), $part);
         }
-        return ClassString::FILTER->object($this->core)->callFilters($plate, $filters);
+        return ClassString::FILTER->object()->callFilters($plate, $filters);
     }
 
     /**

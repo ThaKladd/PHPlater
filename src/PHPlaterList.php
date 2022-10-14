@@ -31,9 +31,10 @@ class PHPlaterList extends PHPlaterBase {
      *
      * @access public
      * @param  array<int|string, string> $match The matched regular expression from renderList
+     * @param  PHPlater $core The core object
      * @return string The result after rendering all elements in the list
      */
-    public function find(array $match): string {
+    public function find(array $match, PHPlater $core): string {
         $variable_pattern = ClassString::VARIABLE->pattern();
         preg_match_all($variable_pattern, $match['x'], $matches);
         //Because a variable can have any cahracter, the key has to be filtered out and not match the character
@@ -54,11 +55,11 @@ class PHPlaterList extends PHPlaterBase {
         $tag_first = reset($all_before_parts) === '' ? '' : $tag_chain;
         $core_parts = explode($tag_chain, $all_before_parts[0]);
         $elements = '';
-        $list = self::getList($this->core->getPlates(), $core_parts);
+        $list = self::getList($core->getPlates(), $core_parts);
         foreach ($list as $key => $item) {
             $replaced_template = strtr($match['x'], [$tag_list => $tag_first . $key . $tag_last]);
             $new_template = self::replaceKeys($replaced_template, $key, $key_pattern);
-            $elements .= $this->core->render($new_template);
+            $elements .= $core->render($new_template);
         }
         return $elements;
     }

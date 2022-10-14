@@ -26,10 +26,11 @@ class PHPlaterInclude extends PHPlaterBase {
      *
      * @access public
      * @param  array<int|string, string> $match The matched regular expression from render
+     * @param  PHPlater $core The core object
      * @return string The result after rendering all includes
      */
-    public function find(array $match): string {
-        $phplater = clone $this->core;
+    public function find(array $match, PHPlater $core): string {
+        $phplater = clone $core;
         $exploded = explode(Tag::FILTER->get(true), $match['x']);
         $data = $phplater->setContent($exploded[0])->getContent();
         if (isset($exploded[1])) {

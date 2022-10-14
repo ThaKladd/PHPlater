@@ -28,16 +28,17 @@ class PHPlaterConditional extends PHPlaterBase {
      *
      * @access public
      * @param  array<int|string, string> $match The matched regular expression from renderConditional
+     * @param  PHPlater $core The core object
      * @return string The result after rendering all conditionals
      */
-    public function find(array $match): string {
+    public function find(array $match, PHPlater $core): string {
         $splitted_conditional = explode(Tag::IF_CONDITIONAL->get(true), $match['x']);
         $condition = trim($splitted_conditional[0]);
-        $rendered_condition = $this->doOpreration($condition);
+        $rendered_condition = $this->doOpreration($condition, $core);
         $splitted_if_else = explode(Tag::ELSE_CONDITIONAL->get(true), $splitted_conditional[1]);
         $ifTrue = trim($splitted_if_else[0] ?? '');
         $ifFalse = trim($splitted_if_else[1] ?? '');
-        return $this->core->render($rendered_condition ? $ifTrue : $ifFalse);
+        return $core->render($rendered_condition ? $ifTrue : $ifFalse);
     }
 
     /**
@@ -46,15 +47,15 @@ class PHPlaterConditional extends PHPlaterBase {
      * @param string $condition The condition of the conditional
      * @return bool|string|int
      */
-    private function doOpreration(string $condition): bool|string|int {
+    private function doOpreration(string $condition, PHPlater $core): bool|string|int {
         $operators = ['\={3}', '\={2}', '\!\={2}', '\!\={1}', '\<\=\>', '\>\=', '\<\=', '\<\>', '\>', '\<', '%', '&{2}', '\|{2}', 'xor', 'and', 'or'];
         if (preg_match('/.+\s*(' . implode('|', $operators) . ')\s*.+/U', $condition, $matches)) {
             $a_and_b = explode($matches[1], $condition);
-            $a = trim($this->core->render($a_and_b[0]));
-            $b = trim($this->core->render($a_and_b[1]));
+            $a = trim($core->render($a_and_b[0]));
+            $b = trim($core->render($a_and_b[1]));
             return self::evaluateOperation($a, $matches[1], $b);
         }
-        return $this->core->render($condition);
+        return $core->render($condition);
     }
 
     /**

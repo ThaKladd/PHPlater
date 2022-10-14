@@ -15,8 +15,6 @@ include_once 'Enum\ClassString.php';
 
 class PHPlaterBase {
 
-    public ?PHPlater $core = null;
-
     /**
      * @var array<string|int, mixed>
      */
@@ -44,10 +42,6 @@ class PHPlaterBase {
      * @var array<string|int, PHPlater>
      */
     public static array $function_instances = [];
-
-    public function __construct(?PHPlater $core = null) {
-        $this->core = $core;
-    }
 
     /**
      * Caches the patterns, to reduce unnecessary redundancy
