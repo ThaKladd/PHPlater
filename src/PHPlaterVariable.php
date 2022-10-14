@@ -8,7 +8,6 @@
  * @author  John Larsen
  * @license MIT
  */
-
 class PHPlaterVariable extends PHPlaterBase {
 
     /**

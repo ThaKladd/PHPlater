@@ -1,4 +1,5 @@
 <?php
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 $start_time = microtime(true);
@@ -9,7 +10,7 @@ include 'classes/Test.php';
 include 'classes/Data.php';
 
 $return = [];
-$runs = 1000;
+$runs = 1;
 for ($y = 0; $y < $runs; $y++) {
     try {
         $phplater = new PHPlater();
