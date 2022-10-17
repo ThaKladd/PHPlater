@@ -33,16 +33,17 @@ enum Tag: int {
     case EMPTY_STRING = 4194304; //Undecided
 
     public function affectedClasses(): array {
-        return match ($this) {
-            self::BEFORE || self::AFTER => [ClassString::VARIABLE],
-            self::LIST_BEFORE || self::LIST_AFTER => [ClassString::LISTS],
+        $return = match ($this) {
+            self::BEFORE, self::AFTER => [ClassString::VARIABLE],
+            self::LIST_BEFORE, self::LIST_AFTER => [ClassString::LISTS],
             self::CHAIN => [ClassString::VARIABLE, ClassString::FILTER, ClassString::LISTS],
             self::LIST_KEY => [ClassString::KEY, ClassString::LISTS],
-            self::CONDITIONAL_BEFORE || self::CONDITIONAL_AFTER || self::IF_CONDITIONAL || self::ELSE_CONDITIONAL => [ClassString::CONDITIONAL],
-            self::ARGUMENT || self::ARGUMENT_LIST || self::FILTER => [ClassString::FILTER],
+            self::CONDITIONAL_BEFORE, self::CONDITIONAL_AFTER, self::IF_CONDITIONAL, self::ELSE_CONDITIONAL => [ClassString::CONDITIONAL],
+            self::ARGUMENT, self::ARGUMENT_LIST, self::FILTER => [ClassString::FILTER],
             self::INCLUDE_FILE => [ClassString::INCLUDE_FILE],
             default => []
         };
+        return $return;
     }
 
     /**

@@ -10,7 +10,7 @@ include 'classes/Test.php';
 include 'classes/Data.php';
 
 $return = [];
-$runs = 1;
+$runs = 10000;
 $last_memory = $mid_memory = $first_memory = 0;
 for ($y = 0; $y < $runs; $y++) {
     try {
@@ -287,7 +287,7 @@ for ($y = 0; $y < $runs; $y++) {
         ]
     ]);
 
-    PHPlaterBase::debug($phplater);
+    //PHPlaterBase::debug($phplater);
     $return['eleventh'] = $phplater->render('1. this is (( {{ list.0.value.0 }} ?? {{ list.1.value.0 }} :: not ok ))') . '<br>'
             . $phplater->render('2. this is (( {{ list.0.value.2 }} ?? not ok :: {{ list.1.value.0 }} ))') . '<br>'
             . $phplater->render('3. this is (( {{ list.0.value.0 }} ?? ok ))') . '<br>'

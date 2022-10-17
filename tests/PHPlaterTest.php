@@ -364,7 +364,7 @@ class PHPlaterTest extends TestCase {
     }
 
     /**
-     * @covers  PHPlater::tagsList
+     * @covers  PHPlater::setTagsList
      * @covers  PHPlaterList::pattern
      * @covers  PHPlaterList::find
      * @covers  PHPlaterList::getList
