@@ -355,7 +355,7 @@ class PHPlater extends PHPlaterBase {
                 $data = $content;
                 if (isset($matches['x'])) {
                     $unique_matches = array_unique($matches['x']);
-                    $class = $enum->object($this);
+                    $class = $enum->object();
                     foreach ($unique_matches as $key => $match) {
                         $replace_with = $class->find(['x' => $match], $this);
                         $data = strtr($data, [$matches[0][$key] => $replace_with]);

@@ -1,4 +1,5 @@
 <?php
+
 use PHPUnit\Framework\TestCase;
 use Error\RuleBrokenError;
 
@@ -51,10 +52,10 @@ class PHPlaterTest extends TestCase {
      * @covers  PHPlater::tagsConditionals
      */
     public function testConstruct() {
-        $this->assertEquals('::', $this->phplater->getTag(PHPlater::TAG_ELSE));
-        $this->assertEquals(preg_quote('(('), $this->phplater->getTag(PHPlater::TAG_CONDITIONAL_BEFORE));
-        $this->assertEquals(preg_quote('[['), $this->phplater->getTag(PHPlater::TAG_LIST_BEFORE));
-        $this->assertEquals(preg_quote('{{'), $this->phplater->getTag(PHPlater::TAG_BEFORE));
+        $this->assertEquals('::', Tag::ELSE_CONDITIONAL->get(true));
+        $this->assertEquals('((', Tag::CONDITIONAL_BEFORE->get(true));
+        $this->assertEquals('[[', Tag::LIST_BEFORE->get(true));
+        $this->assertEquals('{{', Tag::BEFORE->get(true));
     }
 
     /**
@@ -138,7 +139,7 @@ class PHPlaterTest extends TestCase {
     public function testChainSeperator() {
         $this->phplater->setPlate('arr', ['arr' => ['arr' => ['value' => 'ok']]]);
         $this->phplater->setContent('{{ arr->arr->arr->value }}');
-        $this->phplater->setTag(PHPlater::TAG_CHAIN, '->');
+        Tag::CHAIN->set('->');
         $this->assertEquals('ok', $this->phplater->render());
     }
 
@@ -194,8 +195,8 @@ class PHPlaterTest extends TestCase {
     public function testTags() {
         $this->phplater->setPlate('string', 'ok');
         $this->phplater->setTagsVariables('<!--', '-->');
-        $this->assertEquals(preg_quote('<!--'), $this->phplater->getTag(PHPlater::TAG_BEFORE));
-        $this->assertEquals(preg_quote('-->'), $this->phplater->getTag(PHPlater::TAG_AFTER));
+        $this->assertEquals('<!--', Tag::BEFORE->get(true));
+        $this->assertEquals('-->', Tag::AFTER->get(true));
         $this->assertEquals('test ok', $this->phplater->render('test <!-- string -->'));
     }
 
@@ -204,7 +205,7 @@ class PHPlaterTest extends TestCase {
      */
     public function testDelimiter() {
         $this->phplater->setPlate('string', 'ok');
-        $this->phplater->setTag(PHPlater::TAG_DELIMITER, '=');
+        Tag::DELIMITER->set('=');
         $this->assertEquals('test ok', $this->phplater->render('test {{string}}'));
     }
 
@@ -262,7 +263,7 @@ class PHPlaterTest extends TestCase {
      */
     public function testArgumentSeperator() {
         $this->phplater->setPlate('testing', 'test');
-        $this->phplater->setTag(PHPlater::TAG_ARGUMENT, '>');
+        Tag::ARGUMENT->set('>');
         $this->phplater->setFilter('add_args', function (string $test, string $is = 'no', string $ok = 'no') {
             return $test . ' ' . $is . ' ' . $ok;
         });
@@ -274,7 +275,7 @@ class PHPlaterTest extends TestCase {
      */
     public function testArgumentListSeperator() {
         $this->phplater->setPlate('testing', 'test');
-        $this->phplater->setTag(PHPlater::TAG_ARGUMENT_LIST, '_');
+        Tag::ARGUMENT_LIST->set('_');
         $this->phplater->setFilter('add_args', function (string $test, string $is = 'no', string $ok = 'no') {
             return $test . ' ' . $is . ' ' . $ok;
         });
@@ -290,7 +291,7 @@ class PHPlaterTest extends TestCase {
             return $data . ' is ok';
         });
         $this->phplater->setPlate('string', 'test');
-        $this->phplater->setTag(PHPlater::TAG_FILTER, '¤');
+        Tag::FILTER->set('¤');
         $this->assertEquals('This TEST IS OK', $this->phplater->render('This {{string¤add_ok¤uppercase}}'));
     }
 
@@ -413,7 +414,7 @@ class PHPlaterTest extends TestCase {
                 ['value' => ['this' => 'ok']]
             ]
         ]);
-        $this->phplater->setTag(PHPlater::TAG_LIST_KEY, '+');
+        Tag::LIST_KEY->set('+');
         $template = '<ul>[[<li>{{ + }} {{ list.0.value.. }}</li>]]</ul>';
         $rendered = $this->phplater->render($template);
         $this->assertEquals('<ul><li>this ok</li></ul>', $rendered);
@@ -433,6 +434,7 @@ class PHPlaterTest extends TestCase {
                 ['value' => ['ok']]
             ]
         ]);
+        //PHPlaterBase::debug(PHPlaterBase::$tags);
         $this->assertEquals('1. this is ok', $this->phplater->render('1. this is (( {{ list.0.value.0 }} ?? {{ list.1.value.0 }} :: not ok ))'));
         $this->assertEquals('2. this is ok', $this->phplater->render('2. this is (( {{ list.0.value.2 }} ?? not ok :: {{ list.1.value.0 }} ))'));
         $this->assertEquals('3. this is ok', $this->phplater->render('3. this is (( {{ list.0.value.0 }} ?? ok ))'));
@@ -456,9 +458,9 @@ class PHPlaterTest extends TestCase {
         ]);
         $this->phplater->setTagsConditionals('<?', '?>');
         $this->assertEquals('this is ok', $this->phplater->render('this is <? {{ list.0.value.0 }} ?? {{ list.1.value.0 }} :: not ok ?>'));
-        $this->phplater->setTag(PHPlater::TAG_IF, 'TRUE:');
+        Tag::IF_CONDITIONAL->set('TRUE:');
         $this->assertEquals('this is ok', $this->phplater->render('this is <? {{ list.0.value.0 }} TRUE: {{ list.1.value.0 }} :: not ok ?>'));
-        $this->phplater->setTag(PHPlater::TAG_ELSE, 'FALSE:');
+        Tag::ELSE_CONDITIONAL->set('FALSE:');
         $this->assertEquals('this is ok', $this->phplater->render('this is <? {{ list.0.value.0 }} TRUE: {{ list.1.value.0 }} FALSE: not ok ?>'));
     }
 

@@ -8,7 +8,9 @@
  - Includes added, as well as render filter for include
  - You can now set variables witin a template
  - More agressive caching - speeds up previous cahce up to ~80%
- - Slight improvements on internal arhictecture
+ - Improvements on internal arhictecture
+ - Memory usage low and stable
+ - Changed the way how to change tags through enums
 
 ## v1.1.1
 

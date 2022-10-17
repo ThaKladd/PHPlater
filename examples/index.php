@@ -10,7 +10,7 @@ include 'classes/Test.php';
 include 'classes/Data.php';
 
 $return = [];
-$runs = 10000;
+$runs = 1;
 $last_memory = $mid_memory = $first_memory = 0;
 for ($y = 0; $y < $runs; $y++) {
     try {
@@ -178,7 +178,7 @@ for ($y = 0; $y < $runs; $y++) {
         Value is (( {{assoc.value.1.fi}} == Kaksikymmentäseitsemän ?? true :: false )) <br>
     ');
 
-    $number = 10;
+    $number = 3;
     $scalarValues = [];
     for ($i = 0; $i < $number; $i++) {
         $scalarValues[] = 'val ' . $i;
@@ -268,6 +268,41 @@ for ($y = 0; $y < $runs; $y++) {
         Set varaible to: {{test => varaible set before}}varaible set before<br>Get variable: {{test}}<br><br>
         Set varaible to: {{test_array => [1,2,3,"this here"]}}[1,2,3,"this here"]<br>Get variable from array index 3: {{test_array.3}}<br><br>
     ');
+
+    $phplater = new PHPlater();
+    $phplater->setPlates([
+        'list' => [
+            ['value' => ['this']],
+            ['value' => ['ok']]
+        ]
+    ]);
+    $phplater->setTagsList('-foreach-', '-end-');
+    $return['tenth'] = $phplater->render('<ul>-foreach-<li>{{ list..value.0 }}</li>-end-</ul>');
+
+    $phplater = new PHPlater();
+    $phplater->setPlates([
+        'list' => [
+            ['value' => ['this']],
+            ['value' => ['ok']]
+        ]
+    ]);
+
+    PHPlaterBase::debug($phplater);
+    $return['eleventh'] = $phplater->render('1. this is (( {{ list.0.value.0 }} ?? {{ list.1.value.0 }} :: not ok ))') . '<br>'
+            . $phplater->render('2. this is (( {{ list.0.value.2 }} ?? not ok :: {{ list.1.value.0 }} ))') . '<br>'
+            . $phplater->render('3. this is (( {{ list.0.value.0 }} ?? ok ))') . '<br>'
+            . $phplater->render('4. this is (( {{ list.0.value.1 }} ?? :: ok ))') . '<br>'
+            . $phplater->render('5. this is (( {{ list.0.value.0 }} ?? <b>{{ list.1.value.0 }}</b> :: not ok ))') . '<br>';
+
+    $phplater = new PHPlater();
+    //$phplater->setCache(true);
+    $phplater->setPlates([
+        'list' => [
+            ['value' => ['this' => 'ok']]
+        ]
+    ]);
+    $template = '<ul>[[<li>{{ # }} {{ list.0.value.. }}</li>]]</ul>';
+    $return['twelvth'] = $phplater->render($template);
 
     if ($y == ceil($runs / 2) - 1) {
         $mid_memory = memory_get_usage() / 1024;

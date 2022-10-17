@@ -2,7 +2,7 @@
 
 /**
  * All the tags in PHPLater and corresponding functionality
- *
+ * Quick ref here: https://en.wikipedia.org/wiki/Power_of_two
  * @author  John Larsen
  * @license MIT
  */
@@ -36,10 +36,10 @@ enum Tag: int {
         return match ($this) {
             self::BEFORE || self::AFTER => [ClassString::VARIABLE],
             self::LIST_BEFORE || self::LIST_AFTER => [ClassString::LISTS],
-            self::LIST_AFTER => [ClassString::VARIABLE],
-            self::LIST_KEY => [ClassString::KEY],
+            self::CHAIN => [ClassString::VARIABLE, ClassString::FILTER, ClassString::LISTS],
+            self::LIST_KEY => [ClassString::KEY, ClassString::LISTS],
             self::CONDITIONAL_BEFORE || self::CONDITIONAL_AFTER || self::IF_CONDITIONAL || self::ELSE_CONDITIONAL => [ClassString::CONDITIONAL],
-            self::ARGUMENT || self::ARGUMENT_LIST || self::CHAIN || self::FILTER => [ClassString::FILTER],
+            self::ARGUMENT || self::ARGUMENT_LIST || self::FILTER => [ClassString::FILTER],
             self::INCLUDE_FILE => [ClassString::INCLUDE_FILE],
             default => []
         };

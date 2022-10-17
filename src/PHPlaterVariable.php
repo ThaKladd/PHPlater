@@ -14,13 +14,13 @@ class PHPlaterVariable extends PHPlaterBase {
 
     /**
      * Get the pattern used to fetch all the variable tags in the template
-     * \{\{\s*(?P<x>[\w,\-\|\.\:]+?)\s*\}\}
+     * \{\{\s*(?P<x>.+?)\s*\}\}
      *
      * @access public
      * @return string The pattern for preg_replace_callback
      */
     public static function pattern(): string {
-        //$tags = preg_quote(Tag::FILTER_ > get() . Tag::ARGUMENT->get() . Tag::CHAIN->get() . Tag::ASSIGN->get());
+        //$tags = preg_quote(Tag::FILTER->get() . Tag::ARGUMENT->get() . Tag::CHAIN->get() . Tag::ASSIGN->get());
         //$old = '[\w,\-' . $tags . ' ]+';
         return self::buildPattern(Tag::BEFORE, '\s*(?P<x>.+?)\s*', Tag::AFTER);
     }

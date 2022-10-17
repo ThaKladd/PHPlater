@@ -11,6 +11,18 @@
 class PHPlaterList extends PHPlaterBase {
 
     /**
+     * Get the pattern used to fetch all the variable tags in the template
+     * \[\[\s*(?P<x>[\w\W]+?\.\.[\w\W]+?)\s*\]\]
+     *
+     * @access public
+     * @return string The pattern for preg_replace_callback
+     */
+    public static function pattern(): string {
+        $tag_chain = Tag::CHAIN->get();
+        return self::buildPattern(Tag::LIST_BEFORE, '\s*(?P<x>[\w\W]+?' . $tag_chain . $tag_chain . '[\w\W]+?)\s*', Tag::LIST_AFTER);
+    }
+
+    /**
      * Finds and returns the list from the location ['one', 'two', 'three'] in plates
      *
      * @access private
@@ -37,15 +49,15 @@ class PHPlaterList extends PHPlaterBase {
     public function find(array $match, PHPlater $core): string {
         $variable_pattern = ClassString::VARIABLE->pattern();
         preg_match_all($variable_pattern, $match['x'], $matches);
+
         //Because a variable can have any cahracter, the key has to be filtered out and not match the character
         if (count($matches['x']) > 1) {
-            $tag_key = Tag::LIST_KEY->get();
-            foreach ($matches['x'] as $i => $tag_match) {
-                if ($tag_match == $tag_key) {
-                    unset($matches['x'][$i]);
-                }
+            $tag_key = Tag::LIST_KEY->get(true);
+            $array_index = array_search($tag_key, $matches['x']);
+            if ($array_index !== false) {
+                unset($matches['x'][$array_index]);
+                $matches['x'] = array_values($matches['x']); //Rebuild array indexes
             }
-            $matches['x'] = array_values($matches['x']); //Rebuild array indexes
         }
         $tag_chain = Tag::CHAIN->get(true);
         $key_pattern = ClassString::KEY->pattern();
@@ -62,18 +74,6 @@ class PHPlaterList extends PHPlaterBase {
             $elements .= $core->render($new_template);
         }
         return $elements;
-    }
-
-    /**
-     * Get the pattern used to fetch all the variable tags in the template
-     * \[\[\s*(?P<x>[\w\W]+?\.\.[\w\W]+?)\s*\]\]
-     *
-     * @access public
-     * @return string The pattern for preg_replace_callback
-     */
-    public static function pattern(): string {
-        $tag_chain = Tag::CHAIN->get();
-        return self::buildPattern(Tag::LIST_BEFORE, '\s*(?P<x>[\w\W]+?' . $tag_chain . $tag_chain . '[\w\W]+?)\s*', Tag::LIST_AFTER);
     }
 
     /**
