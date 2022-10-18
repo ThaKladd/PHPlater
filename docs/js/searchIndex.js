@@ -11,11 +11,6 @@ Search.appendIndex(
             "summary": "Creates\u0020PHPlater\u0020object\u0020and\u0020initializes\u0020it",
             "url": "classes/PHPlater.html#method___construct"
         },                {
-            "fqsen": "\\PHPlater\u003A\u003AgetPHPlaterObject\u0028\u0029",
-            "name": "getPHPlaterObject",
-            "summary": "Get\u0020the\u0020instance\u0020of\u0020the\u0020core\u0020on\u0020demand",
-            "url": "classes/PHPlater.html#method_getPHPlaterObject"
-        },                {
             "fqsen": "\\PHPlater\u003A\u003AgetRoot\u0028\u0029",
             "name": "getRoot",
             "summary": "Get\u0020root\u0020folder\u0020of\u0020templates",
@@ -30,6 +25,11 @@ Search.appendIndex(
             "name": "setCache",
             "summary": "Set\u0020cache\u0020true\u0020of\u0020false.\u0020Default\u003A\u0020false",
             "url": "classes/PHPlater.html#method_setCache"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003AgetCache\u0028\u0029",
+            "name": "getCache",
+            "summary": "Get\u0020if\u0020cache\u0020is\u0020on",
+            "url": "classes/PHPlater.html#method_getCache"
         },                {
             "fqsen": "\\PHPlater\u003A\u003AgetExtension\u0028\u0029",
             "name": "getExtension",
@@ -116,11 +116,6 @@ Search.appendIndex(
             "summary": "Renders\u0020the\u0020content\u0020with\u0020a\u0020callback\u0020to\u0020a\u0020method",
             "url": "classes/PHPlater.html#method_renderCallback"
         },                {
-            "fqsen": "\\PHPlater\u003A\u003A\u0024instances",
-            "name": "instances",
-            "summary": "",
-            "url": "classes/PHPlater.html#property_instances"
-        },                {
             "fqsen": "\\Error\\RuleBrokenError",
             "name": "RuleBrokenError",
             "summary": "",
@@ -136,24 +131,9 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PHPlaterBase.html"
         },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "Creates\u0020the\u0020object\u0020and\u0020initializes\u0020it",
-            "url": "classes/PHPlaterBase.html#method___construct"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003AgetCore\u0028\u0029",
-            "name": "getCore",
-            "summary": "Get\u0020the\u0020core\u0020object",
-            "url": "classes/PHPlaterBase.html#method_getCore"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003AsetCore\u0028\u0029",
-            "name": "setCore",
-            "summary": "Set\u0020the\u0020core\u0020object",
-            "url": "classes/PHPlaterBase.html#method_setCore"
-        },                {
             "fqsen": "\\PHPlaterBase\u003A\u003ApatternCache\u0028\u0029",
             "name": "patternCache",
-            "summary": "Caches\u0020the\u0020patterns,\u0020to\u0020reduce\u0020unnecessary\u0020redundancy\nTODO\u003A\u0020This\u0020may\u0020break,\u0020as\u0020patterns\u0020for\u0020objects\u0020may\u0020change\u0020and\u0020this\u0020is\u0020static\u0020\u002D\u0020it\u0020does\u0020not\u0020because\u0020tags\u0020are\u0020set\u0020usually\u0020only\u0020once\nFix\u0020can\u0020be\u0020done\u0020by\u0020adding\u0020a\u0020tag\u0020sum\u0020and\u0020changing\u0020tags\u0020to\u0020be\u0020binary",
+            "summary": "Caches\u0020the\u0020patterns,\u0020to\u0020reduce\u0020unnecessary\u0020redundancy\nTODO\u003A\u0020This\u0020may\u0020break,\u0020as\u0020patterns\u0020for\u0020objects\u0020may\u0020change\u0020and\u0020this\u0020is\u0020static\u0020\u002D\u0020it\u0020does\u0020not\u0020because\u0020tags\u0020are\u0020set\u0020usually\u0020only\u0020once\nFix\u0020can\u0020be\u0020done\u0020by\u0020adding\u0020a\u0020tag\u0020sum\u0020and\u0020changing\u0020tags\u0020to\u0020be\u0020binary,\u0020but\u0020is\u0020it\u0020worth\u0020it\u003F",
             "url": "classes/PHPlaterBase.html#method_patternCache"
         },                {
             "fqsen": "\\PHPlaterBase\u003A\u003AifJsonToArray\u0028\u0029",
@@ -166,35 +146,30 @@ Search.appendIndex(
             "summary": "Get\u0020the\u0020pattern\u0020used\u0020to\u0020fetch\u0020all\u0020the\u0020variable\u0020tags\u0020in\u0020the\u0020template",
             "url": "classes/PHPlaterBase.html#method_buildPattern"
         },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003AgetTag\u0028\u0029",
-            "name": "getTag",
-            "summary": "Get\u0020tag\u0020by\u0020tag\u0020constant",
-            "url": "classes/PHPlaterBase.html#method_getTag"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003AsetTag\u0028\u0029",
-            "name": "setTag",
-            "summary": "Set\u0020tag\u0020by\u0020a\u0020constant",
-            "url": "classes/PHPlaterBase.html#method_setTag"
-        },                {
             "fqsen": "\\PHPlaterBase\u003A\u003AsetTagsVariables\u0028\u0029",
             "name": "setTagsVariables",
-            "summary": "Set\u0020both\u0020template\u0020variable\u0020tags\u0020in\u0020one\u0020method",
+            "summary": "Set\u0020both\u0020template\u0020variable\u0020tags\u0020in\u0020one\u0020method\u0020\u0028default\u0020\u007B\u007B\u0020and\u0020\u007D\u007D\u0029",
             "url": "classes/PHPlaterBase.html#method_setTagsVariables"
         },                {
             "fqsen": "\\PHPlaterBase\u003A\u003AsetTagsConditionals\u0028\u0029",
             "name": "setTagsConditionals",
-            "summary": "Set\u0020both\u0020conditional\u0020tags\u0020in\u0020one\u0020method",
+            "summary": "Set\u0020both\u0020conditional\u0020tags\u0020in\u0020one\u0020method\u0020\u0028default\u0020\u0028\u0028\u0020and\u0020\u0029\u0029\u0029",
             "url": "classes/PHPlaterBase.html#method_setTagsConditionals"
         },                {
             "fqsen": "\\PHPlaterBase\u003A\u003AsetTagsList\u0028\u0029",
             "name": "setTagsList",
-            "summary": "Set\u0020both\u0020list\u0020tags\u0020in\u0020one\u0020method",
+            "summary": "Set\u0020both\u0020list\u0020tags\u0020in\u0020one\u0020method\u0020\u0028default\u0020\u005B\u005B\u0020and\u0020\u005D\u005D\u0029",
             "url": "classes/PHPlaterBase.html#method_setTagsList"
         },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003AsetTags\u0028\u0029",
-            "name": "setTags",
-            "summary": "Set\u0020all\u0020tags\u0020you\u0020want\u0020in\u0020one\u0020method",
-            "url": "classes/PHPlaterBase.html#method_setTags"
+            "fqsen": "\\PHPlaterBase\u003A\u003AsetTagsBlock\u0028\u0029",
+            "name": "setTagsBlock",
+            "summary": "Set\u0020both\u0020block\u0020tags\u0020in\u0020one\u0020method\u0020\u0028default\u0020\u003E\u003E\u0020and\u0020\u003C\u003C\u0029",
+            "url": "classes/PHPlaterBase.html#method_setTagsBlock"
+        },                {
+            "fqsen": "\\PHPlaterBase\u003A\u003AsetTagsUnblock\u0028\u0029",
+            "name": "setTagsUnblock",
+            "summary": "Set\u0020both\u0020unblock\u0020tags\u0020in\u0020one\u0020method\u0020\u0028default\u0020\u003C\u003C\u0020and\u0020\u003E\u003E\u0029",
+            "url": "classes/PHPlaterBase.html#method_setTagsUnblock"
         },                {
             "fqsen": "\\PHPlaterBase\u003A\u003AgetTags\u0028\u0029",
             "name": "getTags",
@@ -206,135 +181,30 @@ Search.appendIndex(
             "summary": "Quick\u0020debugging",
             "url": "classes/PHPlaterBase.html#method_debug"
         },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ACLASS_BASE",
-            "name": "CLASS_BASE",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_CLASS_BASE"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ACLASS_CORE",
-            "name": "CLASS_CORE",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_CLASS_CORE"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ACLASS_VARIABLE",
-            "name": "CLASS_VARIABLE",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_CLASS_VARIABLE"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ACLASS_LIST",
-            "name": "CLASS_LIST",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_CLASS_LIST"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ACLASS_CONDITIONAL",
-            "name": "CLASS_CONDITIONAL",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_CLASS_CONDITIONAL"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ACLASS_FILTER",
-            "name": "CLASS_FILTER",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_CLASS_FILTER"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ACLASS_KEY",
-            "name": "CLASS_KEY",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_CLASS_KEY"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ATAG_BEFORE",
-            "name": "TAG_BEFORE",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_TAG_BEFORE"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ATAG_AFTER",
-            "name": "TAG_AFTER",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_TAG_AFTER"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ATAG_LIST_BEFORE",
-            "name": "TAG_LIST_BEFORE",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_TAG_LIST_BEFORE"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ATAG_LIST_AFTER",
-            "name": "TAG_LIST_AFTER",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_TAG_LIST_AFTER"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ATAG_LIST_KEY",
-            "name": "TAG_LIST_KEY",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_TAG_LIST_KEY"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ATAG_CONDITIONAL_BEFORE",
-            "name": "TAG_CONDITIONAL_BEFORE",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_TAG_CONDITIONAL_BEFORE"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ATAG_CONDITIONAL_AFTER",
-            "name": "TAG_CONDITIONAL_AFTER",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_TAG_CONDITIONAL_AFTER"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ATAG_IF",
-            "name": "TAG_IF",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_TAG_IF"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ATAG_ELSE",
-            "name": "TAG_ELSE",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_TAG_ELSE"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ATAG_ARGUMENT",
-            "name": "TAG_ARGUMENT",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_TAG_ARGUMENT"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ATAG_ARGUMENT_LIST",
-            "name": "TAG_ARGUMENT_LIST",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_TAG_ARGUMENT_LIST"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ATAG_CHAIN",
-            "name": "TAG_CHAIN",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_TAG_CHAIN"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ATAG_FILTER",
-            "name": "TAG_FILTER",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_TAG_FILTER"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003ATAG_DELIMITER",
-            "name": "TAG_DELIMITER",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#constant_TAG_DELIMITER"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024core",
-            "name": "core",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#property_core"
-        },                {
             "fqsen": "\\PHPlaterBase\u003A\u003A\u0024plates",
             "name": "plates",
             "summary": "",
             "url": "classes/PHPlaterBase.html#property_plates"
+        },                {
+            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024hold",
+            "name": "hold",
+            "summary": "",
+            "url": "classes/PHPlaterBase.html#property_hold"
         },                {
             "fqsen": "\\PHPlaterBase\u003A\u003A\u0024content_cache",
             "name": "content_cache",
             "summary": "",
             "url": "classes/PHPlaterBase.html#property_content_cache"
         },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024match_cache",
-            "name": "match_cache",
+            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024instances",
+            "name": "instances",
             "summary": "",
-            "url": "classes/PHPlaterBase.html#property_match_cache"
+            "url": "classes/PHPlaterBase.html#property_instances"
         },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024pattern_cache",
-            "name": "pattern_cache",
+            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024changed_tags",
+            "name": "changed_tags",
             "summary": "",
-            "url": "classes/PHPlaterBase.html#property_pattern_cache"
+            "url": "classes/PHPlaterBase.html#property_changed_tags"
         },                {
             "fqsen": "\\PHPlaterBase\u003A\u003A\u0024content",
             "name": "content",
@@ -355,11 +225,6 @@ Search.appendIndex(
             "name": "extension",
             "summary": "",
             "url": "classes/PHPlaterBase.html#property_extension"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024changed_tags",
-            "name": "changed_tags",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#property_changed_tags"
         },                {
             "fqsen": "\\PHPlaterBase\u003A\u003A\u0024many",
             "name": "many",
@@ -451,6 +316,11 @@ Search.appendIndex(
             "summary": "The\u0020PHPlaterList\u0020class",
             "url": "classes/PHPlaterList.html"
         },                {
+            "fqsen": "\\PHPlaterList\u003A\u003Apattern\u0028\u0029",
+            "name": "pattern",
+            "summary": "Get\u0020the\u0020pattern\u0020used\u0020to\u0020fetch\u0020all\u0020the\u0020variable\u0020tags\u0020in\u0020the\u0020template\n\\\u005B\\\u005B\\s\u002A\u0028\u003FP\u003Cx\u003E\u005B\\w\\W\u005D\u002B\u003F\\.\\.\u005B\\w\\W\u005D\u002B\u003F\u0029\\s\u002A\\\u005D\\\u005D",
+            "url": "classes/PHPlaterList.html#method_pattern"
+        },                {
             "fqsen": "\\PHPlaterList\u003A\u003AgetList\u0028\u0029",
             "name": "getList",
             "summary": "Finds\u0020and\u0020returns\u0020the\u0020list\u0020from\u0020the\u0020location\u0020\u005B\u0027one\u0027,\u0020\u0027two\u0027,\u0020\u0027three\u0027\u005D\u0020in\u0020plates",
@@ -461,11 +331,6 @@ Search.appendIndex(
             "summary": "Finds\u0020the\u0020list\u0020variable\u0020and\u0020exchanges\u0020the\u0020position\u0020with\u0020the\u0020keys,\u0020and\u0020then\u0020renders\u0020the\u0020result",
             "url": "classes/PHPlaterList.html#method_find"
         },                {
-            "fqsen": "\\PHPlaterList\u003A\u003Apattern\u0028\u0029",
-            "name": "pattern",
-            "summary": "Get\u0020the\u0020pattern\u0020used\u0020to\u0020fetch\u0020all\u0020the\u0020variable\u0020tags\u0020in\u0020the\u0020template\n\\\u005B\\\u005B\\s\u002A\u0028\u003FP\u003Cx\u003E\u005B\\w\\W\u005D\u002B\u003F\\.\\.\u005B\\w\\W\u005D\u002B\u003F\u0029\\s\u002A\\\u005D\\\u005D",
-            "url": "classes/PHPlaterList.html#method_pattern"
-        },                {
             "fqsen": "\\PHPlaterList\u003A\u003AreplaceKeys\u0028\u0029",
             "name": "replaceKeys",
             "summary": "Replaces\u0020the\u0020key\u0020tags\u0020with\u0020the\u0020current\u0020key\u0020in\u0020list",
@@ -473,12 +338,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PHPlaterVariable",
             "name": "PHPlaterVariable",
-            "summary": "The\u0020PHPlaterVariable\u0020class",
+            "summary": "",
             "url": "classes/PHPlaterVariable.html"
         },                {
             "fqsen": "\\PHPlaterVariable\u003A\u003Apattern\u0028\u0029",
             "name": "pattern",
-            "summary": "Get\u0020the\u0020pattern\u0020used\u0020to\u0020fetch\u0020all\u0020the\u0020variable\u0020tags\u0020in\u0020the\u0020template\n\\\u007B\\\u007B\\s\u002A\u0028\u003FP\u003Cx\u003E\u005B\\w,\\\u002D\\\u007C\\.\\\u003A\u005D\u002B\u003F\u0029\\s\u002A\\\u007D\\\u007D",
+            "summary": "Get\u0020the\u0020pattern\u0020used\u0020to\u0020fetch\u0020all\u0020the\u0020variable\u0020tags\u0020in\u0020the\u0020template\n\\\u007B\\\u007B\\s\u002A\u0028\u003FP\u003Cx\u003E.\u002B\u003F\u0029\\s\u002A\\\u007D\\\u007D",
             "url": "classes/PHPlaterVariable.html#method_pattern"
         },                {
             "fqsen": "\\PHPlaterVariable\u003A\u003Afind\u0028\u0029",
@@ -495,6 +360,256 @@ Search.appendIndex(
             "name": "extract",
             "summary": "Will\u0020manage\u0020the\u0020content\u0020so\u0020that\u0020it\u0020is\u0020a\u0020string\u0020when\u0020stored\u0020into\u0020data",
             "url": "classes/PHPlaterVariable.html#method_extract"
+        },                {
+            "fqsen": "\\ClassString",
+            "name": "ClassString",
+            "summary": "All\u0020the\u0020classes\u0020in\u0020PHPLater",
+            "url": "classes/ClassString.html"
+        },                {
+            "fqsen": "\\ClassString\u003A\u003Apattern\u0028\u0029",
+            "name": "pattern",
+            "summary": "Caches\u0020the\u0020patterns,\u0020to\u0020reduce\u0020unnecessary\u0020redundancy",
+            "url": "classes/ClassString.html#method_pattern"
+        },                {
+            "fqsen": "\\ClassString\u003A\u003Aobject\u0028\u0029",
+            "name": "object",
+            "summary": "Get\u0020the\u0020instance\u0020of\u0020the\u0020core\u0020on\u0020demand",
+            "url": "classes/ClassString.html#method_object"
+        },                {
+            "fqsen": "\\ClassString\u003A\u003ABASE",
+            "name": "BASE",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\ClassString\u003A\u003ACORE",
+            "name": "CORE",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\ClassString\u003A\u003AVARIABLE",
+            "name": "VARIABLE",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\ClassString\u003A\u003ALISTS",
+            "name": "LISTS",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\ClassString\u003A\u003ACONDITIONAL",
+            "name": "CONDITIONAL",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\ClassString\u003A\u003AFILTER",
+            "name": "FILTER",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\ClassString\u003A\u003AKEY",
+            "name": "KEY",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\ClassString\u003A\u003AINCLUDE_FILE",
+            "name": "INCLUDE_FILE",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\ClassString\u003A\u003ABLOCK",
+            "name": "BLOCK",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\ClassString\u003A\u003AUNBLOCK",
+            "name": "UNBLOCK",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag",
+            "name": "Tag",
+            "summary": "All\u0020the\u0020tags\u0020in\u0020PHPLater\u0020and\u0020corresponding\u0020functionality\nQuick\u0020ref\u0020here\u003A\u0020https\u003A\/\/en.wikipedia.org\/wiki\/Power_of_two",
+            "url": "classes/Tag.html"
+        },                {
+            "fqsen": "\\Tag\u003A\u003AaffectedClasses\u0028\u0029",
+            "name": "affectedClasses",
+            "summary": "",
+            "url": "classes/Tag.html#method_affectedClasses"
+        },                {
+            "fqsen": "\\Tag\u003A\u003Aset\u0028\u0029",
+            "name": "set",
+            "summary": "Set\u0020tag\u0020on\u0020enum,\u0020both\u0020the\u0020preg_quote\u0020and\u0020the\u0020raw\u0020version",
+            "url": "classes/Tag.html#method_set"
+        },                {
+            "fqsen": "\\Tag\u003A\u003Aget\u0028\u0029",
+            "name": "get",
+            "summary": "Get\u0020tag\u0020from\u0020enum",
+            "url": "classes/Tag.html#method_get"
+        },                {
+            "fqsen": "\\Tag\u003A\u003ABEFORE",
+            "name": "BEFORE",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003AAFTER",
+            "name": "AFTER",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003ALIST_BEFORE",
+            "name": "LIST_BEFORE",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003ALIST_AFTER",
+            "name": "LIST_AFTER",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003ALIST_KEY",
+            "name": "LIST_KEY",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003ACONDITIONAL_BEFORE",
+            "name": "CONDITIONAL_BEFORE",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003ACONDITIONAL_AFTER",
+            "name": "CONDITIONAL_AFTER",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003AIF_CONDITIONAL",
+            "name": "IF_CONDITIONAL",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003AELSE_CONDITIONAL",
+            "name": "ELSE_CONDITIONAL",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003AARGUMENT",
+            "name": "ARGUMENT",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003AARGUMENT_LIST",
+            "name": "ARGUMENT_LIST",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003ACHAIN",
+            "name": "CHAIN",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003AFILTER",
+            "name": "FILTER",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003ADELIMITER",
+            "name": "DELIMITER",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003ABLOCK_BEFORE",
+            "name": "BLOCK_BEFORE",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003ABLOCK_AFTER",
+            "name": "BLOCK_AFTER",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003AUNBLOCK_BEFORE",
+            "name": "UNBLOCK_BEFORE",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003AUNBLOCK_AFTER",
+            "name": "UNBLOCK_AFTER",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003AINCLUDE_FILE",
+            "name": "INCLUDE_FILE",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003AINCLUDE_RENDER",
+            "name": "INCLUDE_RENDER",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003AASSIGN",
+            "name": "ASSIGN",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003AEMPTY_ARRAY",
+            "name": "EMPTY_ARRAY",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\Tag\u003A\u003AEMPTY_STRING",
+            "name": "EMPTY_STRING",
+            "summary": "",
+            "url": ""
+        },                {
+            "fqsen": "\\PHPlaterBlock",
+            "name": "PHPlaterBlock",
+            "summary": "The\u0020PHPlaterBlock\u0020class",
+            "url": "classes/PHPlaterBlock.html"
+        },                {
+            "fqsen": "\\PHPlaterBlock\u003A\u003Apattern\u0028\u0029",
+            "name": "pattern",
+            "summary": "Get\u0020the\u0020pattern\u0020used\u0020to\u0020fetch\u0020all\u0020the\u0020blocks\u0020in\u0020the\u0020template\u0020list",
+            "url": "classes/PHPlaterBlock.html#method_pattern"
+        },                {
+            "fqsen": "\\PHPlaterBlock\u003A\u003Afind\u0028\u0029",
+            "name": "find",
+            "summary": "Finds\u0020the\u0020block\u0020variable\u0020and\u0020renders\u0020it\u0020in\u0020place",
+            "url": "classes/PHPlaterBlock.html#method_find"
+        },                {
+            "fqsen": "\\PHPlaterInclude",
+            "name": "PHPlaterInclude",
+            "summary": "The\u0020PHPlaterInclude\u0020class",
+            "url": "classes/PHPlaterInclude.html"
+        },                {
+            "fqsen": "\\PHPlaterInclude\u003A\u003Apattern\u0028\u0029",
+            "name": "pattern",
+            "summary": "Get\u0020the\u0020pattern\u0020used\u0020to\u0020fetch\u0020all\u0020the\u0020includes\u0020in\u0020the\u0020template\u0020list",
+            "url": "classes/PHPlaterInclude.html#method_pattern"
+        },                {
+            "fqsen": "\\PHPlaterInclude\u003A\u003Afind\u0028\u0029",
+            "name": "find",
+            "summary": "Finds\u0020the\u0020include\u0020variable\u0020and\u0020includes\u0020the\u0020content\u0020of\u0020the\u0020file",
+            "url": "classes/PHPlaterInclude.html#method_find"
+        },                {
+            "fqsen": "\\PHPlaterUnblock",
+            "name": "PHPlaterUnblock",
+            "summary": "The\u0020PHPlaterUnblock\u0020class",
+            "url": "classes/PHPlaterUnblock.html"
+        },                {
+            "fqsen": "\\PHPlaterUnblock\u003A\u003Apattern\u0028\u0029",
+            "name": "pattern",
+            "summary": "Get\u0020the\u0020pattern\u0020used\u0020to\u0020fetch\u0020all\u0020the\u0020includes\u0020in\u0020the\u0020template\u0020list",
+            "url": "classes/PHPlaterUnblock.html#method_pattern"
+        },                {
+            "fqsen": "\\PHPlaterUnblock\u003A\u003Afind\u0028\u0029",
+            "name": "find",
+            "summary": "Finds\u0020the\u0020include\u0020variable\u0020and\u0020includes\u0020the\u0020content\u0020of\u0020the\u0020file",
+            "url": "classes/PHPlaterUnblock.html#method_find"
+        },                {
+            "fqsen": "\\PHPlaterUnblock\u003A\u003Aunblock\u0028\u0029",
+            "name": "unblock",
+            "summary": "Goes\u0020through\u0020all\u0020the\u0020plates\u0020and\u0020replaces\u0020those\u0020that\u0020are\u0020in\u0020need\u0020of\u0020nesting\u0020and\u0020returns\u0020result",
+            "url": "classes/PHPlaterUnblock.html#method_unblock"
         },                {
             "fqsen": "\\",
             "name": "\\",

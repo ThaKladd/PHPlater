@@ -341,8 +341,8 @@ class PHPlater extends PHPlaterBase {
             $this->setResult($this->renderCallback(ClassString::VARIABLE, Tag::BEFORE->get(true) . '0' . Tag::AFTER->get(true)));
         }
 
+        $cache_before = $this->getCache();
         if (str_contains($result = $this->getResult(), Tag::UNBLOCK_BEFORE->get(true))) {
-            $cache_before = $this->getCache();
             $this->setCache(false);
             $this->setResult($this->renderCallback(ClassString::UNBLOCK, $result));
             $this->setCache($cache_before);
@@ -359,7 +359,9 @@ class PHPlater extends PHPlaterBase {
 
         //Block last in case parent have blocks that need to be rendered
         if (str_contains($result = $this->getResult(), Tag::BLOCK_BEFORE->get(true))) {
+            $this->setCache(false);
             $this->setResult($this->renderCallback(ClassString::BLOCK, $result));
+            $this->setCache($cache_before);
         }
 
         if (self::$hold['block']) {

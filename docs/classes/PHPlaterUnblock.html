@@ -87,7 +87,7 @@
 
     <article class="phpdocumentor-element -class">
         <h2 class="phpdocumentor-content__title">
-    PHPlaterVariable
+    PHPlaterUnblock
 
         <span class="phpdocumentor-element__extends">
         extends <a href="classes/PHPlaterBase.html"><abbr title="\PHPlaterBase">PHPlaterBase</abbr></a>
@@ -104,16 +104,42 @@
     </h2>
 
         <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterVariable.php"><a href="files/src-phplatervariable.html"><abbr title="src/PHPlaterVariable.php">PHPlaterVariable.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterUnblock.php"><a href="files/src-phplaterunblock.html"><abbr title="src/PHPlaterUnblock.php">PHPlaterUnblock.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">13</span>
+    <span class="phpdocumentor-element-found-in__line">11</span>
 
     </aside>
 
-        
-    <section class="phpdocumentor-description"></section>
+            <p class="phpdocumentor-summary">The PHPlaterUnblock class</p>
+
+    <section class="phpdocumentor-description"><p>This class manages the assining block within a template.</p>
+</section>
 
 
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">author</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>John Larsen</p>
+</section>
+
+                                    </dd>
+                                                <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">license</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>MIT</p>
+</section>
+
+                                    </dd>
+                        </dl>
 
 
 
@@ -225,11 +251,11 @@
 <dd>Quick debugging</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/PHPlaterVariable.html#method_find">find()</a>
+    <a href="classes/PHPlaterUnblock.html#method_find">find()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
-<dd>Begins with the root plated and iterates through every one and extracts the matching value</dd>
+<dd>Finds the include variable and includes the content of the file</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PHPlaterBase.html#method_getTags">getTags()</a>
@@ -246,12 +272,11 @@
 <dd>Will manage the input so that if it is json it converted to an array, otherwise input is returned</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
-    <a href="classes/PHPlaterVariable.html#method_pattern">pattern()</a>
+    <a href="classes/PHPlaterUnblock.html#method_pattern">pattern()</a>
     <span>
                                 &nbsp;: string    </span>
 </dt>
-<dd>Get the pattern used to fetch all the variable tags in the template
-\{\{\s*(?P&lt;x&gt;.+?)\s*\}\}</dd>
+<dd>Get the pattern used to fetch all the includes in the template list</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PHPlaterBase.html#method_setTagsBlock">setTagsBlock()</a>
@@ -288,6 +313,13 @@
 </dt>
 <dd>Set both template variable tags in one method (default {{ and }})</dd>
 
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PHPlaterUnblock.html#method_unblock">unblock()</a>
+    <span>
+                                &nbsp;: string    </span>
+</dt>
+<dd>Goes through all the plates and replaces those that are in need of nesting and returns result</dd>
+
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/PHPlaterBase.html#method_buildPattern">buildPattern()</a>
     <span>
@@ -304,20 +336,6 @@
 TODO: This may break, as patterns for objects may change and this is static - it does not because tags are set usually only once
 Fix can be done by adding a tag sum and changing tags to be binary, but is it worth it?</dd>
 
-            <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/PHPlaterVariable.html#method_extract">extract()</a>
-    <span>
-                                &nbsp;: mixed    </span>
-</dt>
-<dd>Will manage the content so that it is a string when stored into data</dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/PHPlaterVariable.html#method_getFiltersAndParts">getFiltersAndParts()</a>
-    <span>
-                                &nbsp;: array&lt;string|int, mixed&gt;    </span>
-</dt>
-<dd>Helper method to separate nesting and filters</dd>
-
         </dl>
 
 
@@ -328,7 +346,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <section class="phpdocumentor-properties">
         <h3 class="phpdocumentor-elements__header" id="properties">
             Properties
-            <a href="classes/PHPlaterVariable.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/PHPlaterUnblock.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
         </h3>
                     <article
         class="
@@ -769,7 +787,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
             Methods
-            <a href="classes/PHPlaterVariable.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
+            <a href="classes/PHPlaterUnblock.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
         </h3>
                     <article
         class="phpdocumentor-element
@@ -839,25 +857,22 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
 >
     <h4 class="phpdocumentor-element__name" id="method_find">
         find()
-        <a href="classes/PHPlaterVariable.html#method_find" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/PHPlaterUnblock.html#method_find" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterVariable.php"><a href="files/src-phplatervariable.html"><abbr title="src/PHPlaterVariable.php">PHPlaterVariable.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterUnblock.php"><a href="files/src-phplaterunblock.html"><abbr title="src/PHPlaterUnblock.php">PHPlaterUnblock.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">39</span>
+    <span class="phpdocumentor-element-found-in__line">31</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Begins with the root plated and iterates through every one and extracts the matching value</p>
+        <p class="phpdocumentor-summary">Finds the include variable and includes the content of the file</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
                     <span class="phpdocumentor-signature__name">find</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">array&lt;int|string, string&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$match</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/PHPlater.html"><abbr title="\PHPlater">PHPlater</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$core</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
 
-        <section class="phpdocumentor-description"><p>Each variable can be nested and in the end, the last vaulue is returned as the exhange for the match
-Example: key.value_as_array.value_as_object.method_to_call</p>
-</section>
-
+    
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
@@ -900,7 +915,7 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">string</span>
             &mdash;
-            <section class="phpdocumentor-description"><p>The result after exchanging all the matched plates</p>
+            <section class="phpdocumentor-description"><p>The hash after holding the result</p>
 </section>
 
     
@@ -1037,17 +1052,16 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
 >
     <h4 class="phpdocumentor-element__name" id="method_pattern">
         pattern()
-        <a href="classes/PHPlaterVariable.html#method_pattern" class="headerlink"><i class="fas fa-link"></i></a>
+        <a href="classes/PHPlaterUnblock.html#method_pattern" class="headerlink"><i class="fas fa-link"></i></a>
     </h4>
     <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterVariable.php"><a href="files/src-phplatervariable.html"><abbr title="src/PHPlaterVariable.php">PHPlaterVariable.php</abbr></a></abbr>
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterUnblock.php"><a href="files/src-phplaterunblock.html"><abbr title="src/PHPlaterUnblock.php">PHPlaterUnblock.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">22</span>
+    <span class="phpdocumentor-element-found-in__line">19</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Get the pattern used to fetch all the variable tags in the template
-\{\{\s*(?P&lt;x&gt;.+?)\s*\}\}</p>
+        <p class="phpdocumentor-summary">Get the pattern used to fetch all the includes in the template list</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -1428,6 +1442,68 @@ Example: key.value_as_array.value_as_object.method_to_call</p>
                     <article
         class="phpdocumentor-element
             -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_unblock">
+        unblock()
+        <a href="classes/PHPlaterUnblock.html#method_unblock" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterUnblock.php"><a href="files/src-phplaterunblock.html"><abbr title="src/PHPlaterUnblock.php">PHPlaterUnblock.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">44</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Goes through all the plates and replaces those that are in need of nesting and returns result</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">unblock</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><a href="classes/PHPlater.html"><abbr title="\PHPlater">PHPlater</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$core</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$core</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/PHPlater.html"><abbr title="\PHPlater">PHPlater</abbr></a></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>The core object</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">access</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>public</p>
+</section>
+
+                                    </dd>
+                        </dl>
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">string</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>The end value</p>
+</section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
             -protected
                                     -static                    "
 >
@@ -1567,139 +1643,6 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
         
     
 </article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -private
-                                    -static                    "
->
-    <h4 class="phpdocumentor-element__name" id="method_extract">
-        extract()
-        <a href="classes/PHPlaterVariable.html#method_extract" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterVariable.php"><a href="files/src-phplatervariable.html"><abbr title="src/PHPlaterVariable.php">PHPlaterVariable.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">95</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Will manage the content so that it is a string when stored into data</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">extract</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">object|array&lt;string|int, mixed&gt;|string|int|float|bool|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$plate</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$part</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
-
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$plate</span>
-                : <span class="phpdocumentor-signature__argument__return-type">object|array&lt;string|int, mixed&gt;|string|int|float|bool|null</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The last plate to check action on</p>
-</section>
-
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$part</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The key of the plate to extract value from</p>
-</section>
-
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">access</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>private</p>
-</section>
-
-                                    </dd>
-                        </dl>
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">mixed</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>The content of the plate, to be acted upon on the next variable depth</p>
-</section>
-
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -private
-                                    -static                    "
->
-    <h4 class="phpdocumentor-element__name" id="method_getFiltersAndParts">
-        getFiltersAndParts()
-        <a href="classes/PHPlaterVariable.html#method_getFiltersAndParts" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterVariable.php"><a href="files/src-phplatervariable.html"><abbr title="src/PHPlaterVariable.php">PHPlaterVariable.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">72</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Helper method to separate nesting and filters</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-            <span class="phpdocumentor-signature__static">static</span>        <span class="phpdocumentor-signature__name">getFiltersAndParts</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$plate</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span></code>
-
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$plate</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"><p>The plate string</p>
-</section>
-
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">access</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                                
-                                                 <section class="phpdocumentor-description"><p>private</p>
-</section>
-
-                                    </dd>
-                        </dl>
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">array&lt;string|int, mixed&gt;</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>Nesting parts and filters separated into array</p>
-</section>
-
-    
-</article>
             </section>
 
         
@@ -1778,7 +1721,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
 </section>
             </div>
         </div>
-        <a href="classes/PHPlaterVariable.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
+        <a href="classes/PHPlaterUnblock.html#top" class="phpdocumentor-back-to-top"><i class="fas fa-chevron-circle-up"></i></a>
 
     </main>
 
