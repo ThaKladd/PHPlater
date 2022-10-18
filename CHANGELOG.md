@@ -11,6 +11,7 @@
  - Improvements on internal arhictecture
  - Memory usage low and stable
  - Changed the way how to change tags through enums
+ - Adding simple block tags functionality
 
 ## v1.1.1
 

@@ -22,22 +22,19 @@ enum Tag: int {
     case CHAIN = 2048;
     case FILTER = 4096;
     case DELIMITER = 8192;
-    case BLOCK_BEFORE = 16384; //Undecided - May not be needed?
-    case BLOCK_AFTER = 32768; //Undecided - May not be needed?
-    case UNBLOCK_BEFORE = 65536; //Undecided - May not be needed?
-    case UNBLOCK_AFTER = 131072; //Undecided - May not be needed?
+    case BLOCK_BEFORE = 16384;
+    case BLOCK_AFTER = 32768;
+    case EMPTY_ARRAY = 65536; //Undecided
+    case EMPTY_STRING = 131072; //Undecided
     case INCLUDE_FILE = 262144;
     case INCLUDE_RENDER = 524288;  //Undecided - Maybe use filter?
     case ASSIGN = 1048576; //Undecided
-    case EMPTY_ARRAY = 2097152; //Undecided
-    case EMPTY_STRING = 4194304; //Undecided
 
     public function affectedClasses(): array {
         $return = match ($this) {
             self::BEFORE, self::AFTER => [ClassString::VARIABLE, ClassString::KEY],
             self::LIST_BEFORE, self::LIST_AFTER => [ClassString::LISTS],
             self::BLOCK_BEFORE, self::BLOCK_AFTER => [ClassString::BLOCK],
-            self::UNBLOCK_BEFORE, self::UNBLOCK_AFTER => [ClassString::UNBLOCK],
             self::CHAIN => [ClassString::LISTS],
             self::LIST_KEY => [ClassString::KEY],
             self::CONDITIONAL_BEFORE, self::CONDITIONAL_AFTER => [ClassString::CONDITIONAL],

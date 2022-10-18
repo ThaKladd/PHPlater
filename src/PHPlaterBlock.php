@@ -32,13 +32,32 @@ class PHPlaterBlock extends PHPlaterBase {
         $exploded = explode(Tag::ASSIGN->get(true), $match['x']);
         $exploded_filter = explode(Tag::FILTER->get(true), $exploded[0]);
         if (isset($exploded[1])) {
-            $core->setPlate(Tag::BLOCK_BEFORE->get(true) . trim($exploded_filter[0]) . Tag::BLOCK_AFTER->get(true), trim($exploded[1]));
+            self::$hold['blocks'][trim($exploded_filter[0])] = trim($exploded[1]);
             if (isset($exploded_filter[1]) && trim($exploded_filter[1]) == 'render') {
                 return $exploded[1];
             }
             return '';
+        } else {
+            $hash = hash('xxh3', $match['x']);
+            self::$hold['block'][$hash] = trim($match['x']);
+            return $hash;
         }
         return $exploded_filter[0];
+    }
+
+    /**
+     * Goes through all the plates and replaces those that are in need of nesting and returns result
+     *
+     * @access public
+     * @param  PHPlater $core The core object
+     * @return string The end value
+     */
+    public function unblock(PHPlater $core): string {
+        $result = $core->getResult();
+        foreach (self::$hold['block'] as $hash => $value) {
+            $result = str_replace($hash, self::$hold['blocks'][$value], $result);
+        }
+        return $result;
     }
 
 }

@@ -19,7 +19,7 @@ class PHPlaterBase {
      * @var array<string|int, mixed>
      */
     public array $plates = [];
-    public static array $hold = ['include' => [], 'block' => []];
+    public static array $hold = ['include' => [], 'block' => [], 'blocks' => []];
     public static array $content_cache = [];
     public static array $instances = [];
     public static bool $changed_tags = true;
@@ -142,19 +142,6 @@ class PHPlaterBase {
     public static function setTagsBlock(string $before, string $after): void {
         Tag::BLOCK_BEFORE->set($before);
         Tag::BLOCK_AFTER->set($after);
-    }
-
-    /**
-     * Set both unblock tags in one method (default << and >>)
-     *
-     * @access public
-     * @param  string $before Tag before list template in template
-     * @param  string $after Tag after list template in template
-     * @return void
-     */
-    public static function setTagsUnblock(string $before, string $after): void {
-        Tag::UNBLOCK_BEFORE->set($before);
-        Tag::UNBLOCK_AFTER->set($after);
     }
 
     /**

@@ -30,8 +30,7 @@ class PHPlater extends PHPlaterBase {
             self::setTagsConditionals('((', '))');
             self::setTagsVariables('{{', '}}');
             self::setTagsList('[[', ']]');
-            self::setTagsBlock('>>', '<<');
-            self::setTagsUnblock('<<', '>>');
+            self::setTagsBlock('<<', '>>');
             Tag::ARGUMENT->set(':');
             Tag::ARGUMENT_LIST->set(',');
             Tag::CHAIN->set('.');
@@ -341,13 +340,6 @@ class PHPlater extends PHPlaterBase {
             $this->setResult($this->renderCallback(ClassString::VARIABLE, Tag::BEFORE->get(true) . '0' . Tag::AFTER->get(true)));
         }
 
-        $cache_before = $this->getCache();
-        if (str_contains($result = $this->getResult(), Tag::UNBLOCK_BEFORE->get(true))) {
-            $this->setCache(false);
-            $this->setResult($this->renderCallback(ClassString::UNBLOCK, $result));
-            $this->setCache($cache_before);
-        }
-
         if ($iterations-- && str_contains($this->getResult(), Tag::BEFORE->get(true))) {
             return $this->render($this->getResult(), $iterations);
         }
@@ -357,15 +349,13 @@ class PHPlater extends PHPlaterBase {
             $this->setResult($this->renderCallback(ClassString::INCLUDE_FILE, $result));
         }
 
-        //Block last in case parent have blocks that need to be rendered
+        //Block last in case parent have blocks are included that need to be rendered
         if (str_contains($result = $this->getResult(), Tag::BLOCK_BEFORE->get(true))) {
-            $this->setCache(false);
             $this->setResult($this->renderCallback(ClassString::BLOCK, $result));
-            $this->setCache($cache_before);
         }
 
         if (self::$hold['block']) {
-            $this->setResult(ClassString::UNBLOCK->object()->unblock($this));
+            $this->setResult(ClassString::BLOCK->object()->unblock($this));
         }
 
         if (self::$hold['include']) {

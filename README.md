@@ -45,6 +45,26 @@ echo $phplater->render('Hello {{hello}}');
 Hello world!
 ```
 
+### Variables
+
+You can set a plate inside the template
+
+```php
+$phplater = new PHPlater();
+$phplater->setPlate('hello', 'world!');
+echo $phplater->render('{{world => [1,2,3,"Hello"]}} {{world.3}} {{hello}}');
+```
+
+### This will be the output
+
+```bash
+Hello world!
+```
+
+### This will be the output
+
+
+
 ## Advanced Usage
 
 Some more examples are available under [/examples](https://github.com/ThaKladd/PHPlater/tree/master/examples) and [/tests](https://github.com/ThaKladd/PHPlater/tree/master/tests)
@@ -149,6 +169,30 @@ echo $phplater->render('<ul>[[<li>{{ list..value.0 }}</li>]]</ul>');
 <ul><li>this</li><li>is</li><li>ok</li></ul>
 ```
 
+### Includes
+
+```php
+$phplater = new PHPlater();
+echo $phplater->render("'' ./tpl/template.tpl ''");
+echo $phplater->render("'' ./tpl/template.tpl|render ''");
+```
+
+### Blocks
+
+```php
+$phplater = new PHPlater();
+$phplater->setPlate('world', 'Hello');
+$phplater->setPlate('hello', 'World');
+echo $phplater->render('<<hello>>! >> hello|render => Hello {{ hello }} <<!');
+```
+
+### Outputting
+
+```html
+Hello World! Hello World!
+```
+
+
 ### Filters
 
 Filters gets inspiration from [Twig](https://github.com/twigphp/Twig) and and come after | tag with arguments to the method inspired by [Latte](https://github.com/nette/latte)
@@ -229,6 +273,7 @@ Tag|Description|Example
 (( and ))|Start and end tag for conditional expression|`(( {{var}} ?? true :: false ))`
 ??|Tag after condition, followed by true result|`(( {{var}} ?? true ))`
 ::|Tag after true result, followed by false result|`(( {{var}} ?? :: false ))`
+=>|Assing|`{{ var => value }}`
 ~|Default preg delimiter|
 
 ## Test
@@ -277,15 +322,7 @@ At the moment, very little of known bugs. Improvements and features are multiple
 
 #### Placeholder block
 
->>block-as-non-existing-plate => values and {{ variables }}<< 
-<<block>> or {{non-existing-plate}}
-
-<<block => Test data >> -> sets test data into block -> Set block plate to data and reduce down to {{block}}
-if only <<block>> create empty plate as a filler spot and translate into {{block}}
-if then later << block => Test data >> overwrites the block in plate, and then renders the block without data
-
->> block => >>other block<< assign data << 
-
+~~>> block|render => <<other block>> assign data << and <<other block>>~~
 
 #### Includes
 

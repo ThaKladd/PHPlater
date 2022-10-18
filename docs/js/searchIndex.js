@@ -166,11 +166,6 @@ Search.appendIndex(
             "summary": "Set\u0020both\u0020block\u0020tags\u0020in\u0020one\u0020method\u0020\u0028default\u0020\u003E\u003E\u0020and\u0020\u003C\u003C\u0029",
             "url": "classes/PHPlaterBase.html#method_setTagsBlock"
         },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003AsetTagsUnblock\u0028\u0029",
-            "name": "setTagsUnblock",
-            "summary": "Set\u0020both\u0020unblock\u0020tags\u0020in\u0020one\u0020method\u0020\u0028default\u0020\u003C\u003C\u0020and\u0020\u003E\u003E\u0029",
-            "url": "classes/PHPlaterBase.html#method_setTagsUnblock"
-        },                {
             "fqsen": "\\PHPlaterBase\u003A\u003AgetTags\u0028\u0029",
             "name": "getTags",
             "summary": "Get\u0020all\u0020tags",
@@ -421,11 +416,6 @@ Search.appendIndex(
             "summary": "",
             "url": ""
         },                {
-            "fqsen": "\\ClassString\u003A\u003AUNBLOCK",
-            "name": "UNBLOCK",
-            "summary": "",
-            "url": ""
-        },                {
             "fqsen": "\\Tag",
             "name": "Tag",
             "summary": "All\u0020the\u0020tags\u0020in\u0020PHPLater\u0020and\u0020corresponding\u0020functionality\nQuick\u0020ref\u0020here\u003A\u0020https\u003A\/\/en.wikipedia.org\/wiki\/Power_of_two",
@@ -526,13 +516,13 @@ Search.appendIndex(
             "summary": "",
             "url": ""
         },                {
-            "fqsen": "\\Tag\u003A\u003AUNBLOCK_BEFORE",
-            "name": "UNBLOCK_BEFORE",
+            "fqsen": "\\Tag\u003A\u003AEMPTY_ARRAY",
+            "name": "EMPTY_ARRAY",
             "summary": "",
             "url": ""
         },                {
-            "fqsen": "\\Tag\u003A\u003AUNBLOCK_AFTER",
-            "name": "UNBLOCK_AFTER",
+            "fqsen": "\\Tag\u003A\u003AEMPTY_STRING",
+            "name": "EMPTY_STRING",
             "summary": "",
             "url": ""
         },                {
@@ -551,16 +541,6 @@ Search.appendIndex(
             "summary": "",
             "url": ""
         },                {
-            "fqsen": "\\Tag\u003A\u003AEMPTY_ARRAY",
-            "name": "EMPTY_ARRAY",
-            "summary": "",
-            "url": ""
-        },                {
-            "fqsen": "\\Tag\u003A\u003AEMPTY_STRING",
-            "name": "EMPTY_STRING",
-            "summary": "",
-            "url": ""
-        },                {
             "fqsen": "\\PHPlaterBlock",
             "name": "PHPlaterBlock",
             "summary": "The\u0020PHPlaterBlock\u0020class",
@@ -576,6 +556,11 @@ Search.appendIndex(
             "summary": "Finds\u0020the\u0020block\u0020variable\u0020and\u0020renders\u0020it\u0020in\u0020place",
             "url": "classes/PHPlaterBlock.html#method_find"
         },                {
+            "fqsen": "\\PHPlaterBlock\u003A\u003Aunblock\u0028\u0029",
+            "name": "unblock",
+            "summary": "Goes\u0020through\u0020all\u0020the\u0020plates\u0020and\u0020replaces\u0020those\u0020that\u0020are\u0020in\u0020need\u0020of\u0020nesting\u0020and\u0020returns\u0020result",
+            "url": "classes/PHPlaterBlock.html#method_unblock"
+        },                {
             "fqsen": "\\PHPlaterInclude",
             "name": "PHPlaterInclude",
             "summary": "The\u0020PHPlaterInclude\u0020class",
@@ -590,26 +575,6 @@ Search.appendIndex(
             "name": "find",
             "summary": "Finds\u0020the\u0020include\u0020variable\u0020and\u0020includes\u0020the\u0020content\u0020of\u0020the\u0020file",
             "url": "classes/PHPlaterInclude.html#method_find"
-        },                {
-            "fqsen": "\\PHPlaterUnblock",
-            "name": "PHPlaterUnblock",
-            "summary": "The\u0020PHPlaterUnblock\u0020class",
-            "url": "classes/PHPlaterUnblock.html"
-        },                {
-            "fqsen": "\\PHPlaterUnblock\u003A\u003Apattern\u0028\u0029",
-            "name": "pattern",
-            "summary": "Get\u0020the\u0020pattern\u0020used\u0020to\u0020fetch\u0020all\u0020the\u0020includes\u0020in\u0020the\u0020template\u0020list",
-            "url": "classes/PHPlaterUnblock.html#method_pattern"
-        },                {
-            "fqsen": "\\PHPlaterUnblock\u003A\u003Afind\u0028\u0029",
-            "name": "find",
-            "summary": "Finds\u0020the\u0020include\u0020variable\u0020and\u0020includes\u0020the\u0020content\u0020of\u0020the\u0020file",
-            "url": "classes/PHPlaterUnblock.html#method_find"
-        },                {
-            "fqsen": "\\PHPlaterUnblock\u003A\u003Aunblock\u0028\u0029",
-            "name": "unblock",
-            "summary": "Goes\u0020through\u0020all\u0020the\u0020plates\u0020and\u0020replaces\u0020those\u0020that\u0020are\u0020in\u0020need\u0020of\u0020nesting\u0020and\u0020returns\u0020result",
-            "url": "classes/PHPlaterUnblock.html#method_unblock"
         },                {
             "fqsen": "\\",
             "name": "\\",

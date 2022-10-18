@@ -17,7 +17,6 @@ enum ClassString: string {
     case KEY = 'PHPlaterKey';
     case INCLUDE_FILE = 'PHPlaterInclude';
     case BLOCK = 'PHPlaterBlock';
-    case UNBLOCK = 'PHPlaterUnblock';
 
     /**
      * Caches the patterns, to reduce unnecessary redundancy
