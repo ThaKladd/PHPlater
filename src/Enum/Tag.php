@@ -36,6 +36,8 @@ enum Tag: int {
         $return = match ($this) {
             self::BEFORE, self::AFTER => [ClassString::VARIABLE, ClassString::KEY],
             self::LIST_BEFORE, self::LIST_AFTER => [ClassString::LISTS],
+            self::BLOCK_BEFORE, self::BLOCK_AFTER => [ClassString::BLOCK],
+            self::UNBLOCK_BEFORE, self::UNBLOCK_AFTER => [ClassString::UNBLOCK],
             self::CHAIN => [ClassString::LISTS],
             self::LIST_KEY => [ClassString::KEY],
             self::CONDITIONAL_BEFORE, self::CONDITIONAL_AFTER => [ClassString::CONDITIONAL],

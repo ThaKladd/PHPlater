@@ -10,7 +10,7 @@ include 'classes/Test.php';
 include 'classes/Data.php';
 
 $return = [];
-$runs = 10000;
+$runs = 1;
 $last_memory = $mid_memory = $first_memory = 0;
 for ($y = 0; $y < $runs; $y++) {
     try {
@@ -18,6 +18,7 @@ for ($y = 0; $y < $runs; $y++) {
     } catch (Exception $ex) {
         echo '<pre>' . print_r($ex, true) . '</pre>';
     }
+
 
     $phplater->setCache(true);
     $phplater->setPlate('test_plate', new TestPlate());
@@ -301,8 +302,21 @@ for ($y = 0; $y < $runs; $y++) {
             ['value' => ['this' => 'ok']]
         ]
     ]);
-    $template = '<ul>[[<li>{{ # }} {{ list.0.value.. }}</li>]]</ul>';
+    $template = '<ul>[[<li>{{ # }} {{ list.0.value.. }}</li>]]</ul><br><br>';
     $return['twelvth'] = $phplater->render($template);
+
+    $phplater = new PHPlater();
+    //$phplater->setCache(true);
+    $phplater->setPlate('test_value', 'Test Value');
+    $template = '
+    Init block: << one_block >> //print "One Value"<br>
+    Test block: >> test_block|render => {{test_value}} << //print "Test Value"<br>
+    and unblock it here: << test_block >> //print "Test Value"<br>
+    double down here: >> second_test|render => <b>With << test_block >></b> << //print "With Test Value"<br>
+    and unblock here: << second_test >> //print "With Test Value"<br>
+    add value to Init block here: >> one_block => One Value << //print "" (but sets one_block with value "One Value")<br><br>';
+
+    $return['thirteenth'] = $phplater->render($template);
 
     if ($y == ceil($runs / 2) - 1) {
         $mid_memory = memory_get_usage() / 1024;

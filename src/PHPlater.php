@@ -30,6 +30,8 @@ class PHPlater extends PHPlaterBase {
             self::setTagsConditionals('((', '))');
             self::setTagsVariables('{{', '}}');
             self::setTagsList('[[', ']]');
+            self::setTagsBlock('>>', '<<');
+            self::setTagsUnblock('<<', '>>');
             Tag::ARGUMENT->set(':');
             Tag::ARGUMENT_LIST->set(',');
             Tag::CHAIN->set('.');
@@ -83,6 +85,16 @@ class PHPlater extends PHPlaterBase {
     public function setCache(bool $toggle): PHPlater {
         self::$cache = $toggle;
         return $this;
+    }
+
+    /**
+     * Get if cache is on
+     *
+     * @access public
+     * @return bool
+     */
+    public function getCache(): bool {
+        return self::$cache;
     }
 
     /**
@@ -142,7 +154,7 @@ class PHPlater extends PHPlaterBase {
      */
     private function cache(string $key, string $context = 'data', array|string $data = ''): array|string {
         $hash = hash('xxh3', $key);
-        if (self::$cache) {
+        if ($this->getCache()) {
             if ($data) {
                 self::$content_cache[$hash][$context] = $data;
             } else if (isset(self::$content_cache[$hash][$context])) {
@@ -165,7 +177,7 @@ class PHPlater extends PHPlaterBase {
             return $this->getContent();
         }
 
-        if (self::$cache) {
+        if ($this->getCache()) {
             $cached_data = $this->cache($data, 'data');
             if ($cached_data) {
                 return $cached_data;
@@ -314,7 +326,7 @@ class PHPlater extends PHPlaterBase {
      * @param  int $iterations To allow for variables that return variables, you can choose the amount of iterations
      * @return string The finished result after all plates are applied to the template
      */
-    public function render(string $template = '', int $iterations = 0): string {
+    public function render(string $template = '', int $iterations = 2): string {
         $this->setResult($this->setContent($template)->getContent());
         if (str_contains($result = $this->getResult(), Tag::LIST_BEFORE->get(true))) {
             $this->setResult($this->renderCallback(ClassString::LISTS, $result));
@@ -322,18 +334,40 @@ class PHPlater extends PHPlaterBase {
         if (str_contains($result = $this->getResult(), Tag::CONDITIONAL_BEFORE->get(true))) {
             $this->setResult($this->renderCallback(ClassString::CONDITIONAL, $result));
         }
-        $tag_before = Tag::BEFORE->get(true);
-        $tag_after = Tag::AFTER->get(true);
-        $content = $this->getMany() ? $tag_before . '0' . $tag_after : $this->getResult();
-        if (str_contains($content, $tag_before)) {
-            $this->setResult($this->renderCallback(ClassString::VARIABLE, $content));
+
+        if (!$this->getMany() && str_contains($result = $this->getResult(), Tag::BEFORE->get(true))) {
+            $this->setResult($this->renderCallback(ClassString::VARIABLE, $result));
+        } else if ($this->getMany()) {
+            $this->setResult($this->renderCallback(ClassString::VARIABLE, Tag::BEFORE->get(true) . '0' . Tag::AFTER->get(true)));
         }
 
-        if ($iterations-- && str_contains($this->getResult(), $tag_before) && str_contains($this->getResult(), $tag_after)) {
+        if (str_contains($result = $this->getResult(), Tag::UNBLOCK_BEFORE->get(true))) {
+            $cache_before = $this->getCache();
+            $this->setCache(false);
+            $this->setResult($this->renderCallback(ClassString::UNBLOCK, $result));
+            $this->setCache($cache_before);
+        }
+
+        if ($iterations-- && str_contains($this->getResult(), Tag::BEFORE->get(true))) {
             return $this->render($this->getResult(), $iterations);
         }
+
+        //Include needs to come here so that it is not rendered unless it is chosen with filter
         if (str_contains($result = $this->getResult(), Tag::INCLUDE_FILE->get(true))) {
             $this->setResult($this->renderCallback(ClassString::INCLUDE_FILE, $result));
+        }
+
+        //Block last in case parent have blocks that need to be rendered
+        if (str_contains($result = $this->getResult(), Tag::BLOCK_BEFORE->get(true))) {
+            $this->setResult($this->renderCallback(ClassString::BLOCK, $result));
+        }
+
+        if (self::$hold['block']) {
+            $this->setResult(ClassString::UNBLOCK->object()->unblock($this));
+        }
+
+        if (self::$hold['include']) {
+            $this->setResult(strtr($this->getResult(), self::$hold['include']));
         }
         return $this->getResult();
     }
@@ -346,7 +380,7 @@ class PHPlater extends PHPlaterBase {
      * @return string The resulting content
      */
     private function renderCallback(ClassString $enum, string $content): string {
-        if (self::$cache) {
+        if ($this->getCache()) {
             $cache_key = $content . json_encode($this->getPlates());
             $data = $this->cache($cache_key, 'rendered');
             if (!$data) {

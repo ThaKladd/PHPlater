@@ -17,8 +17,11 @@ class PHPlaterInclude extends PHPlaterBase {
      * @return string The pattern for preg_replace_callback
      */
     public static function pattern(): string {
+        $old_delimiter = Tag::DELIMITER->get(true);
         Tag::DELIMITER->set('^');
-        return self::buildPattern(Tag::INCLUDE_FILE, '\s*(?P<x>.+?)\s*', Tag::INCLUDE_FILE);
+        $pattern = self::buildPattern(Tag::INCLUDE_FILE, '\s*(?P<x>.+?)\s*', Tag::INCLUDE_FILE);
+        Tag::DELIMITER->set($old_delimiter);
+        return $pattern;
     }
 
     /**
@@ -36,6 +39,10 @@ class PHPlaterInclude extends PHPlaterBase {
         if (isset($exploded[1])) {
             if ($exploded[1] == 'render') {
                 $data = $phplater->render($data);
+            } else {
+                $hash = hash('xxh3', $data);
+                self::$hold['include'][$hash] = $data;
+                return $hash;
             }
         }
         return $data;

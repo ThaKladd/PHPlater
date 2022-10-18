@@ -280,6 +280,13 @@ At the moment, very little of known bugs. Improvements and features are multiple
 >>block-as-non-existing-plate => values and {{ variables }}<< 
 <<block>> or {{non-existing-plate}}
 
+<<block => Test data >> -> sets test data into block -> Set block plate to data and reduce down to {{block}}
+if only <<block>> create empty plate as a filler spot and translate into {{block}}
+if then later << block => Test data >> overwrites the block in plate, and then renders the block without data
+
+>> block => >>other block<< assign data << 
+
+
 #### Includes
 
 ~~''include file or~~ url ~~content'' -> ''css/style.css'' ''js/script.js'', ''text.txt'', ''template.tpl''~~

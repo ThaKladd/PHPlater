@@ -19,6 +19,7 @@ class PHPlaterBase {
      * @var array<string|int, mixed>
      */
     public array $plates = [];
+    public static array $hold = ['include' => [], 'block' => []];
     public static array $content_cache = [];
     public static array $instances = [];
     public static bool $changed_tags = true;
@@ -92,10 +93,7 @@ class PHPlaterBase {
     }
 
     /**
-     * Set both template variable tags in one method
-     *
-     * Change tags if the current(default {{ and }}) tags are part of template
-     * Make sure there are no conflicts with the other tags
+     * Set both template variable tags in one method (default {{ and }})
      *
      * @access public
      * @param  string $before Tag before variable in template
@@ -108,10 +106,7 @@ class PHPlaterBase {
     }
 
     /**
-     * Set both conditional tags in one method
-     *
-     * Change tags if the current(default (( and ))) tags are part of template
-     * Make sure there are no conflicts with the other tags
+     * Set both conditional tags in one method (default (( and )))
      *
      * @access public
      * @param  string $before Tag before conditional template in template
@@ -124,10 +119,7 @@ class PHPlaterBase {
     }
 
     /**
-     * Set both list tags in one method
-     *
-     * Change tags if the current(default [[ and ]]) tags are part of template
-     * Make sure there are no conflicts with the other tags
+     * Set both list tags in one method (default [[ and ]])
      *
      * @access public
      * @param  string $before Tag before list template in template
@@ -137,6 +129,32 @@ class PHPlaterBase {
     public static function setTagsList(string $before, string $after): void {
         Tag::LIST_BEFORE->set($before);
         Tag::LIST_AFTER->set($after);
+    }
+
+    /**
+     * Set both block tags in one method (default >> and <<)
+     *
+     * @access public
+     * @param  string $before Tag before list template in template
+     * @param  string $after Tag after list template in template
+     * @return void
+     */
+    public static function setTagsBlock(string $before, string $after): void {
+        Tag::BLOCK_BEFORE->set($before);
+        Tag::BLOCK_AFTER->set($after);
+    }
+
+    /**
+     * Set both unblock tags in one method (default << and >>)
+     *
+     * @access public
+     * @param  string $before Tag before list template in template
+     * @param  string $after Tag after list template in template
+     * @return void
+     */
+    public static function setTagsUnblock(string $before, string $after): void {
+        Tag::UNBLOCK_BEFORE->set($before);
+        Tag::UNBLOCK_AFTER->set($after);
     }
 
     /**
