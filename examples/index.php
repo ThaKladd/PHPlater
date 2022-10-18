@@ -10,7 +10,7 @@ include 'classes/Test.php';
 include 'classes/Data.php';
 
 $return = [];
-$runs = 1;
+$runs = 1000;
 $last_memory = $mid_memory = $first_memory = 0;
 for ($y = 0; $y < $runs; $y++) {
     try {

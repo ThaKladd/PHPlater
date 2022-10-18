@@ -13,7 +13,15 @@ use Error\RuleBrokenError;
 
 class PHPlater extends PHPlaterBase {
 
-    private static bool $cache = false;
+    /**
+     * @var array<string|int, mixed>
+     */
+    public array $plates = [];
+    public string $content = '';
+    public string $result = '';
+    public string $root = '';
+    public string $extension = '';
+    public bool $many = false;
 
     /**
      * Creates PHPlater object and initializes it
@@ -75,28 +83,6 @@ class PHPlater extends PHPlaterBase {
     }
 
     /**
-     * Set cache true of false. Default: false
-     *
-     * @access public
-     * @param bool $toggle Toggle cache true or false
-     * @return PHPLater
-     */
-    public function setCache(bool $toggle): PHPlater {
-        self::$cache = $toggle;
-        return $this;
-    }
-
-    /**
-     * Get if cache is on
-     *
-     * @access public
-     * @return bool
-     */
-    public function getCache(): bool {
-        return self::$cache;
-    }
-
-    /**
      * Get the template extension
      * Default: .tpl
      *
@@ -140,27 +126,6 @@ class PHPlater extends PHPlaterBase {
     public function setContent(string $data = ''): PHPlater {
         $this->content = $this->contentify($data);
         return $this;
-    }
-
-    /**
-     * Cache data into hash
-     *
-     * @access private
-     * @param  string $key Key or hash of the data
-     * @param  context $context To store within the key
-     * @param  string|array $data Data to store
-     * @return string The stored data or data that is set
-     */
-    private function cache(string $key, string $context = 'data', array|string $data = ''): array|string {
-        $hash = hash('xxh3', $key);
-        if ($this->getCache()) {
-            if ($data) {
-                self::$content_cache[$hash][$context] = $data;
-            } else if (isset(self::$content_cache[$hash][$context])) {
-                $data = self::$content_cache[$hash][$context];
-            }
-        }
-        return $data;
     }
 
     /**

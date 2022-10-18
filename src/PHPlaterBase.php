@@ -15,19 +15,11 @@ include_once 'Enum\ClassString.php';
 
 class PHPlaterBase {
 
-    /**
-     * @var array<string|int, mixed>
-     */
-    public array $plates = [];
     public static array $hold = ['include' => [], 'block' => [], 'blocks' => []];
     public static array $content_cache = [];
     public static array $instances = [];
     public static bool $changed_tags = true;
-    public string $content = '';
-    public string $result = '';
-    public string $root = '';
-    public string $extension = '';
-    public bool $many = false;
+    public static bool $cache = false;
 
     /**
      * @var array<string, callable>
@@ -43,6 +35,49 @@ class PHPlaterBase {
      * @var array<string|int, PHPlater>
      */
     public static array $function_instances = [];
+
+    /**
+     * Set cache true of false. Default: false
+     *
+     * @access public
+     * @param bool $toggle Toggle cache true or false
+     * @return PHPLater
+     */
+    public function setCache(bool $toggle): PHPlater {
+        self::$cache = $toggle;
+        return $this;
+    }
+
+    /**
+     * Get if cache is on
+     *
+     * @access public
+     * @return bool
+     */
+    public function getCache(): bool {
+        return self::$cache;
+    }
+
+    /**
+     * Cache data into hash
+     *
+     * @access private
+     * @param  string $key Key or hash of the data
+     * @param  context $context To store within the key
+     * @param  string|array $data Data to store
+     * @return string The stored data or data that is set
+     */
+    protected function cache(string $key, string $context = 'data', array|string $data = ''): array|string {
+        $hash = hash('xxh3', $key);
+        if ($this->getCache()) {
+            if ($data) {
+                self::$content_cache[$hash][$context] = $data;
+            } else if (isset(self::$content_cache[$hash][$context])) {
+                $data = self::$content_cache[$hash][$context];
+            }
+        }
+        return $data;
+    }
 
     /**
      * Caches the patterns, to reduce unnecessary redundancy

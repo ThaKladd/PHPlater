@@ -153,6 +153,13 @@
 
 <dl class="phpdocumentor-table-of-contents">
                     <dt class="phpdocumentor-table-of-contents__entry -property -public">
+    <a href="classes/PHPlaterBase.html#property_cache">$cache</a>
+    <span>
+                        &nbsp;: bool            </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/PHPlaterBase.html#property_changed_tags">$changed_tags</a>
     <span>
                         &nbsp;: bool            </span>
@@ -160,23 +167,9 @@
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
-    <a href="classes/PHPlaterBase.html#property_content">$content</a>
-    <span>
-                        &nbsp;: string            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/PHPlaterBase.html#property_content_cache">$content_cache</a>
     <span>
                         &nbsp;: array&lt;string|int, mixed&gt;            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -public">
-    <a href="classes/PHPlaterBase.html#property_extension">$extension</a>
-    <span>
-                        &nbsp;: string            </span>
 </dt>
 <dd></dd>
 
@@ -209,34 +202,6 @@
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -public">
-    <a href="classes/PHPlaterBase.html#property_many">$many</a>
-    <span>
-                        &nbsp;: bool            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -public">
-    <a href="classes/PHPlaterBase.html#property_plates">$plates</a>
-    <span>
-                        &nbsp;: array&lt;string|int, mixed&gt;            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -public">
-    <a href="classes/PHPlaterBase.html#property_result">$result</a>
-    <span>
-                        &nbsp;: string            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -public">
-    <a href="classes/PHPlaterBase.html#property_root">$root</a>
-    <span>
-                        &nbsp;: string            </span>
-</dt>
-<dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/PHPlaterBase.html#property_tags">$tags</a>
     <span>
                         &nbsp;: array&lt;string|int, mixed&gt;            </span>
@@ -258,6 +223,13 @@
 <dd>Finds the block variable and renders it in place</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PHPlaterBase.html#method_getCache">getCache()</a>
+    <span>
+                                &nbsp;: bool    </span>
+</dt>
+<dd>Get if cache is on</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PHPlaterBase.html#method_getTags">getTags()</a>
     <span>
                                 &nbsp;: array&lt;string|int, string&gt;    </span>
@@ -277,6 +249,13 @@
                                 &nbsp;: string    </span>
 </dt>
 <dd>Get the pattern used to fetch all the blocks in the template list</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PHPlaterBase.html#method_setCache">setCache()</a>
+    <span>
+                                &nbsp;: <abbr title="\PHPLater">PHPLater</abbr>    </span>
+</dt>
+<dd>Set cache true of false. Default: false</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PHPlaterBase.html#method_setTagsBlock">setTagsBlock()</a>
@@ -321,6 +300,13 @@
 <dd>Get the pattern used to fetch all the variable tags in the template</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
+    <a href="classes/PHPlaterBase.html#method_cache">cache()</a>
+    <span>
+                                &nbsp;: string    </span>
+</dt>
+<dd>Cache data into hash</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/PHPlaterBase.html#method_patternCache">patternCache()</a>
     <span>
                                 &nbsp;: string    </span>
@@ -348,16 +334,16 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
             -public
             -static                                            "
 >
-    <h4 class="phpdocumentor-element__name" id="property_changed_tags">
-        $changed_tags
-        <a href="classes/PHPlaterBase.html#property_changed_tags" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="property_cache">
+        $cache
+        <a href="classes/PHPlaterBase.html#property_cache" class="headerlink"><i class="fas fa-link"></i></a>
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">25</span>
+    <span class="phpdocumentor-element-found-in__line">22</span>
 
     </aside>
 
@@ -365,8 +351,8 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
     <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__type">bool</span>
-    <span class="phpdocumentor-signature__name">$changed_tags</span>
-     = <span class="phpdocumentor-signature__default-value">\true</span></code>
+    <span class="phpdocumentor-signature__name">$cache</span>
+     = <span class="phpdocumentor-signature__default-value">\false</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -380,27 +366,27 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
             phpdocumentor-element
             -property
             -public
-                                                        "
+            -static                                            "
 >
-    <h4 class="phpdocumentor-element__name" id="property_content">
-        $content
-        <a href="classes/PHPlaterBase.html#property_content" class="headerlink"><i class="fas fa-link"></i></a>
+    <h4 class="phpdocumentor-element__name" id="property_changed_tags">
+        $changed_tags
+        <a href="classes/PHPlaterBase.html#property_changed_tags" class="headerlink"><i class="fas fa-link"></i></a>
         <span class="phpdocumentor-element__modifiers">
                                 </span>
     </h4>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">26</span>
+    <span class="phpdocumentor-element-found-in__line">21</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">string</span>
-    <span class="phpdocumentor-signature__name">$content</span>
-     = <span class="phpdocumentor-signature__default-value">&#039;&#039;</span></code>
+    <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__type">bool</span>
+    <span class="phpdocumentor-signature__name">$changed_tags</span>
+     = <span class="phpdocumentor-signature__default-value">\true</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -425,7 +411,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">23</span>
+    <span class="phpdocumentor-element-found-in__line">19</span>
 
     </aside>
 
@@ -450,40 +436,6 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
             -public
                                                         "
 >
-    <h4 class="phpdocumentor-element__name" id="property_extension">
-        $extension
-        <a href="classes/PHPlaterBase.html#property_extension" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">29</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">string</span>
-    <span class="phpdocumentor-signature__name">$extension</span>
-     = <span class="phpdocumentor-signature__default-value">&#039;&#039;</span></code>
-
-        <section class="phpdocumentor-description"></section>
-
-        <section class="phpdocumentor-description"></section>
-
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -public
-                                                        "
->
     <h4 class="phpdocumentor-element__name" id="property_filters">
         $filters
         <a href="classes/PHPlaterBase.html#property_filters" class="headerlink"><i class="fas fa-link"></i></a>
@@ -493,7 +445,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">35</span>
+    <span class="phpdocumentor-element-found-in__line">27</span>
 
     </aside>
 
@@ -525,7 +477,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">45</span>
+    <span class="phpdocumentor-element-found-in__line">37</span>
 
     </aside>
 
@@ -557,7 +509,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">22</span>
+    <span class="phpdocumentor-element-found-in__line">18</span>
 
     </aside>
 
@@ -591,7 +543,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">24</span>
+    <span class="phpdocumentor-element-found-in__line">20</span>
 
     </aside>
 
@@ -601,140 +553,6 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <span class="phpdocumentor-signature__static">static</span>    <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
     <span class="phpdocumentor-signature__name">$instances</span>
      = <span class="phpdocumentor-signature__default-value">[]</span></code>
-
-        <section class="phpdocumentor-description"></section>
-
-        <section class="phpdocumentor-description"></section>
-
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_many">
-        $many
-        <a href="classes/PHPlaterBase.html#property_many" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">30</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">bool</span>
-    <span class="phpdocumentor-signature__name">$many</span>
-     = <span class="phpdocumentor-signature__default-value">\false</span></code>
-
-        <section class="phpdocumentor-description"></section>
-
-        <section class="phpdocumentor-description"></section>
-
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_plates">
-        $plates
-        <a href="classes/PHPlaterBase.html#property_plates" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">21</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">array&lt;string|int, mixed&gt;</span>
-    <span class="phpdocumentor-signature__name">$plates</span>
-     = <span class="phpdocumentor-signature__default-value">[]</span></code>
-
-    
-    
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_result">
-        $result
-        <a href="classes/PHPlaterBase.html#property_result" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">27</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">string</span>
-    <span class="phpdocumentor-signature__name">$result</span>
-     = <span class="phpdocumentor-signature__default-value">&#039;&#039;</span></code>
-
-        <section class="phpdocumentor-description"></section>
-
-        <section class="phpdocumentor-description"></section>
-
-    
-
-</article>
-                    <article
-        class="
-            phpdocumentor-element
-            -property
-            -public
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="property_root">
-        $root
-        <a href="classes/PHPlaterBase.html#property_root" class="headerlink"><i class="fas fa-link"></i></a>
-        <span class="phpdocumentor-element__modifiers">
-                                </span>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">28</span>
-
-    </aside>
-
-    
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">public</span>
-        <span class="phpdocumentor-signature__type">string</span>
-    <span class="phpdocumentor-signature__name">$root</span>
-     = <span class="phpdocumentor-signature__default-value">&#039;&#039;</span></code>
 
         <section class="phpdocumentor-description"></section>
 
@@ -759,7 +577,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">40</span>
+    <span class="phpdocumentor-element-found-in__line">32</span>
 
     </aside>
 
@@ -795,7 +613,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">165</span>
+    <span class="phpdocumentor-element-found-in__line">200</span>
 
     </aside>
 
@@ -917,6 +735,54 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
         class="phpdocumentor-element
             -method
             -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_getCache">
+        getCache()
+        <a href="classes/PHPlaterBase.html#method_getCache" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">57</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Get if cache is on</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">getCache</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+
+    
+    
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">access</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>public</p>
+</section>
+
+                                    </dd>
+                        </dl>
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">bool</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
                                     -static                    "
 >
     <h4 class="phpdocumentor-element__name" id="method_getTags">
@@ -926,7 +792,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">154</span>
+    <span class="phpdocumentor-element-found-in__line">189</span>
 
     </aside>
 
@@ -988,7 +854,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">71</span>
+    <span class="phpdocumentor-element-found-in__line">106</span>
 
     </aside>
 
@@ -1091,6 +957,66 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
         class="phpdocumentor-element
             -method
             -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_setCache">
+        setCache()
+        <a href="classes/PHPlaterBase.html#method_setCache" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">46</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Set cache true of false. Default: false</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">setCache</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$toggle</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><abbr title="\PHPLater">PHPLater</abbr></span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$toggle</span>
+                : <span class="phpdocumentor-signature__argument__return-type">bool</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>Toggle cache true or false</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">access</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>public</p>
+</section>
+
+                                    </dd>
+                        </dl>
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type"><abbr title="\PHPLater">PHPLater</abbr></span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
                                     -static                    "
 >
     <h4 class="phpdocumentor-element__name" id="method_setTagsBlock">
@@ -1100,7 +1026,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">142</span>
+    <span class="phpdocumentor-element-found-in__line">177</span>
 
     </aside>
 
@@ -1169,7 +1095,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">116</span>
+    <span class="phpdocumentor-element-found-in__line">151</span>
 
     </aside>
 
@@ -1238,7 +1164,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">129</span>
+    <span class="phpdocumentor-element-found-in__line">164</span>
 
     </aside>
 
@@ -1307,7 +1233,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">103</span>
+    <span class="phpdocumentor-element-found-in__line">138</span>
 
     </aside>
 
@@ -1438,7 +1364,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">88</span>
+    <span class="phpdocumentor-element-found-in__line">123</span>
 
     </aside>
 
@@ -1509,6 +1435,86 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
         class="phpdocumentor-element
             -method
             -protected
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_cache">
+        cache()
+        <a href="classes/PHPlaterBase.html#method_cache" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">70</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Cache data into hash</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+                    <span class="phpdocumentor-signature__name">cache</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$key</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type"><abbr title="\context">context</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$context</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;data&#039;</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string|array&lt;string|int, mixed&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$data</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$key</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>Key or hash of the data</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$context</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\context">context</abbr></span>
+                 = <span class="phpdocumentor-signature__argument__default-value">&#039;data&#039;</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>To store within the key</p>
+</section>
+
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$data</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string|array&lt;string|int, mixed&gt;</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>Data to store</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">access</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                
+                                                 <section class="phpdocumentor-description"><p>private</p>
+</section>
+
+                                    </dd>
+                        </dl>
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">string</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>The stored data or data that is set</p>
+</section>
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -protected
                                     -static                    "
 >
     <h4 class="phpdocumentor-element__name" id="method_patternCache">
@@ -1518,7 +1524,7 @@ Fix can be done by adding a tag sum and changing tags to be binary, but is it wo
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PHPlaterBase.php"><a href="files/src-phplaterbase.html"><abbr title="src/PHPlaterBase.php">PHPlaterBase.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">57</span>
+    <span class="phpdocumentor-element-found-in__line">92</span>
 
     </aside>
 

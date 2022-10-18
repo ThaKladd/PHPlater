@@ -21,16 +21,6 @@ Search.appendIndex(
             "summary": "Set\u0020the\u0020root\u0020folder\u0020of\u0020templates",
             "url": "classes/PHPlater.html#method_setRoot"
         },                {
-            "fqsen": "\\PHPlater\u003A\u003AsetCache\u0028\u0029",
-            "name": "setCache",
-            "summary": "Set\u0020cache\u0020true\u0020of\u0020false.\u0020Default\u003A\u0020false",
-            "url": "classes/PHPlater.html#method_setCache"
-        },                {
-            "fqsen": "\\PHPlater\u003A\u003AgetCache\u0028\u0029",
-            "name": "getCache",
-            "summary": "Get\u0020if\u0020cache\u0020is\u0020on",
-            "url": "classes/PHPlater.html#method_getCache"
-        },                {
             "fqsen": "\\PHPlater\u003A\u003AgetExtension\u0028\u0029",
             "name": "getExtension",
             "summary": "Get\u0020the\u0020template\u0020extension\nDefault\u003A\u0020.tpl",
@@ -50,11 +40,6 @@ Search.appendIndex(
             "name": "setContent",
             "summary": "Set\u0020the\u0020template\u0020to\u0020act\u0020upon",
             "url": "classes/PHPlater.html#method_setContent"
-        },                {
-            "fqsen": "\\PHPlater\u003A\u003A\u0024cache",
-            "name": "cache",
-            "summary": "",
-            "url": "classes/PHPlater.html#property_cache"
         },                {
             "fqsen": "\\PHPlater\u003A\u003Acontentify\u0028\u0029",
             "name": "contentify",
@@ -116,6 +101,36 @@ Search.appendIndex(
             "summary": "Renders\u0020the\u0020content\u0020with\u0020a\u0020callback\u0020to\u0020a\u0020method",
             "url": "classes/PHPlater.html#method_renderCallback"
         },                {
+            "fqsen": "\\PHPlater\u003A\u003A\u0024plates",
+            "name": "plates",
+            "summary": "",
+            "url": "classes/PHPlater.html#property_plates"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003A\u0024content",
+            "name": "content",
+            "summary": "",
+            "url": "classes/PHPlater.html#property_content"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003A\u0024result",
+            "name": "result",
+            "summary": "",
+            "url": "classes/PHPlater.html#property_result"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003A\u0024root",
+            "name": "root",
+            "summary": "",
+            "url": "classes/PHPlater.html#property_root"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003A\u0024extension",
+            "name": "extension",
+            "summary": "",
+            "url": "classes/PHPlater.html#property_extension"
+        },                {
+            "fqsen": "\\PHPlater\u003A\u003A\u0024many",
+            "name": "many",
+            "summary": "",
+            "url": "classes/PHPlater.html#property_many"
+        },                {
             "fqsen": "\\Error\\RuleBrokenError",
             "name": "RuleBrokenError",
             "summary": "",
@@ -130,6 +145,21 @@ Search.appendIndex(
             "name": "PHPlaterBase",
             "summary": "",
             "url": "classes/PHPlaterBase.html"
+        },                {
+            "fqsen": "\\PHPlaterBase\u003A\u003AsetCache\u0028\u0029",
+            "name": "setCache",
+            "summary": "Set\u0020cache\u0020true\u0020of\u0020false.\u0020Default\u003A\u0020false",
+            "url": "classes/PHPlaterBase.html#method_setCache"
+        },                {
+            "fqsen": "\\PHPlaterBase\u003A\u003AgetCache\u0028\u0029",
+            "name": "getCache",
+            "summary": "Get\u0020if\u0020cache\u0020is\u0020on",
+            "url": "classes/PHPlaterBase.html#method_getCache"
+        },                {
+            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024cache",
+            "name": "cache",
+            "summary": "",
+            "url": "classes/PHPlaterBase.html#property_cache"
         },                {
             "fqsen": "\\PHPlaterBase\u003A\u003ApatternCache\u0028\u0029",
             "name": "patternCache",
@@ -176,11 +206,6 @@ Search.appendIndex(
             "summary": "Quick\u0020debugging",
             "url": "classes/PHPlaterBase.html#method_debug"
         },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024plates",
-            "name": "plates",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#property_plates"
-        },                {
             "fqsen": "\\PHPlaterBase\u003A\u003A\u0024hold",
             "name": "hold",
             "summary": "",
@@ -200,31 +225,6 @@ Search.appendIndex(
             "name": "changed_tags",
             "summary": "",
             "url": "classes/PHPlaterBase.html#property_changed_tags"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024content",
-            "name": "content",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#property_content"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024result",
-            "name": "result",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#property_result"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024root",
-            "name": "root",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#property_root"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024extension",
-            "name": "extension",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#property_extension"
-        },                {
-            "fqsen": "\\PHPlaterBase\u003A\u003A\u0024many",
-            "name": "many",
-            "summary": "",
-            "url": "classes/PHPlaterBase.html#property_many"
         },                {
             "fqsen": "\\PHPlaterBase\u003A\u003A\u0024filters",
             "name": "filters",
