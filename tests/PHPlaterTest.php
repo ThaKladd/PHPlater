@@ -54,8 +54,8 @@ class PHPlaterTest extends TestCase {
     public function testConstruct() {
         $this->assertEquals('::', Tag::ELSE_CONDITIONAL->get(true));
         $this->assertEquals('((', Tag::CONDITIONAL_BEFORE->get(true));
-        $this->assertEquals('[[', Tag::LIST_BEFORE->get(true));
-        $this->assertEquals('{{', Tag::BEFORE->get(true));
+        $this->assertEquals(preg_quote('[['), Tag::LIST_BEFORE->get());
+        $this->assertEquals(preg_quote('{{'), Tag::BEFORE->get());
     }
 
     /**

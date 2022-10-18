@@ -21,7 +21,7 @@ As a backend developer, I want to do most of the logic in PHP, and when to seper
 
 ## Installation
 
-PHP 8.0 or higher is needed for this class to work.
+PHP 8.1 or higher is needed for this class to work.
 
 Use the package manager [composer](https://getcomposer.org/) to install PHPlater.
 
@@ -273,7 +273,9 @@ Tag|Description|Example
 (( and ))|Start and end tag for conditional expression|`(( {{var}} ?? true :: false ))`
 ??|Tag after condition, followed by true result|`(( {{var}} ?? true ))`
 ::|Tag after true result, followed by false result|`(( {{var}} ?? :: false ))`
+''|Strings wreapped in double singlequotes are includes|`'' /template.tpl|render ''`
 =>|Assing|`{{ var => value }}`
+<< and >>|Start and end tag for block|`<title><<title => Hello>></title>`
 ~|Default preg delimiter|
 
 ## Test
@@ -316,18 +318,9 @@ At the moment, very little of known bugs. Improvements and features are multiple
 
 #### Fixes
 
-~~Fix the issues with getPHPlaterObject and patternCache - both can be improved~~
-~~Put constants into enum classes~~
-~~See into reducing memory footprint~~
-
-#### Placeholder block
-
-~~>> block|render => <<other block>> assign data << and <<other block>>~~
-
-#### Includes
-
-~~''include file or~~ url ~~content'' -> ''css/style.css'' ''js/script.js'', ''text.txt'', ''template.tpl''~~
-~~'''includes and renders'''? -> see twig source. Maybe use filter ''includes.tpl|render''~~
+Create Unit Tests for blocks, includes and assigns
+Fix up Unit Test @covers
+Includes to work with urls
 
 #### Filters that comes with engine
 
@@ -381,12 +374,6 @@ At the moment, very little of known bugs. Improvements and features are multiple
 Maybe add function syntax to use anywere inside tags or places -> that can also use filters?
 Filters are for transforming values, and functions should be for generating content -> but can they be combined?
 text text text {{ function(plate) }} text  => text text text {{ escape(plate) }} text 
-
-#### Set Varibales and get them
-
-~~{{ |set_plate:key,value }} or {{ |var:key,value }} or {{ key => value }}~~
-~~{{ |get_plate:key }} or {{ |var:key }} or {{ key }}~~
-~~Value should be able to be an array -> like {{ key => [1,2,3,4] }} or  {{ key => [1 => value, 2 => value2] }}~~
 
 #### Lists first and last
 
