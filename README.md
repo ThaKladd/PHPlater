@@ -183,13 +183,13 @@ echo $phplater->render("'' ./tpl/template.tpl|render ''");
 $phplater = new PHPlater();
 $phplater->setPlate('world', 'Hello');
 $phplater->setPlate('hello', 'World');
-echo $phplater->render('<<hello>>! >> hello|render => Hello {{ hello }} <<!');
+echo $phplater->render('<<hello>>! << hello|render => Hello {{ hello }} >>! <<hello>>!');
 ```
 
 ### Outputting
 
 ```html
-Hello World! Hello World!
+Hello World! Hello World! Hello World!
 ```
 
 
