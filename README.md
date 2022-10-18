@@ -273,7 +273,7 @@ Tag|Description|Example
 (( and ))|Start and end tag for conditional expression|`(( {{var}} ?? true :: false ))`
 ??|Tag after condition, followed by true result|`(( {{var}} ?? true ))`
 ::|Tag after true result, followed by false result|`(( {{var}} ?? :: false ))`
-''|Strings wreapped in double singlequotes are includes|`'' /template.tpl|render ''`
+''|Strings wreapped in double singlequotes are includes|`\'\' /template.tpl|render \'\'`
 =>|Assing|`{{ var => value }}`
 << and >>|Start and end tag for block|`<title><<title => Hello>></title>`
 ~|Default preg delimiter|
@@ -325,50 +325,95 @@ Includes to work with urls
 #### Filters that comes with engine
 
 {{ plate|escape }} -> short {{ plate|e }} -> {{ plate|escape:html }}, {{ plate|escape:js }}, {{ plate|escape:css }}, {{ plate|escape:url }} (url_encode), {{ plate|escape:attr }}
+
 {{ plate|raw }} -> unescape? ignore escape?, {{ plate|raw:url }} -> urldecode
+
 {{ plate|raw:striptags }} or {{ plate|escape:striptags }} or {{ plate|striptags }}??
+
 {{ plate|abs }}, {{ plate|floor }}, {{ plate|ceil }}, {{ plate|round }}, {{ plate|decimals:3 }}, {{ plate|thousand:. }}, {{ plate|multiply:4 }}, {{ plate|add:4 }}, {{ plate|divide:4 }}, {{ plate|pow:4 }}, {{ plate|to_comma }}, {{ plate|to_dot }}
+
 {{ plate|number_format:2, '.', ','}}
+
 {{ plate|first }} -> if plate is array or json, or first char if string
+
 {{ plate|last }} -> if plate is array or json, or last char if string
+
 {{ plate|min }} -> array
+
 {{ plate|max }} -> array
+
 {{ plate|random }} -> array or string too? see twig
+
 {{ plate|dump }} or {{ plate|debug }} -> run debug function in Base
+
 {{ plate|log:file,content }} -> maybe as function too?
+
 {{ plate|capitalize }} or also {{ plate|title }} -> or {{ plate|capitalize:words }} and maybe also syphony {{ plate|humanize }}
+
 {{ plate|lowecase }} = {{ plate|lower }} 
+
 {{ plate|uppercase }} = {{ plate|upper }} 
+
 {{ plate|lenght }} -> both array, and string 
+
 {{ plate|json_encode }} -> short {{ plate|json }} -> encodes json
+
 {{ plate|serialize }} -> if object
+
 {{ plate|format }} ->  test %s |format:this }} -> test this 
+
 {{ plate|replace }}  ->  test %s or %y |replace:%s,this,%y,that }} -> test this or that 
+
 {{ plate|cap }} or {{ plate|truncate }} -> abcdefgh|cap:3,... -> abc...
+
 {{ plate|snake }} -> snakecase, {{ plate|camel }} - camelcase -> to unicode too, or use unicode as standard, and then other encodeing as non standard somehow
+
 {{ plate|implode:', ', ' and '}} -> [1,2,3] to 1, 2 and 3 
+
 {{ plate|explode:', '}} or {{ plate|split:', '}} -> maybe as twig does split with limit argument?
+
 {{ plate|date:d.m Y }} 
+
 {{ plate|reverse }} -> number, string, array
+
 {{ plate|nl2br }} and {{ plate|br2nl }}
+
 {{ plate|default:undefined }}
+
 {{ plate|slug:- }} 
+
 {{ plate|unicode:truncate, 5, '...' }} -> short {{ plate|u:truncate }} //unicode
+
 {{ plate|spaceless }} or  {{ plate|trim:' ' }} or {{ plate|remove:' ' }} -> only html between tags? See trim in twig
+
 {{ plate|sort:abc }} -> sort array abc, cba
+
 {{ plate|divby:3 }} 
+
 {{ plate|empty }} 
+
 {{ plate|even }} 
+
 {{ plate|render }} -> Renders on core
+
 {{ plate|odd }} 
+
 {{ plate|null }} 
+
 {{ plate|object }} 
+
 {{ plate|iterable }} -> {{ plate|array }}
+
 {{ plate|absolute }} -> if url -> to make it absolute or maybe {{ plate|realtive }} too? 
+
 {{ plate|start:'a' }} or {{ plate|start_with:'a' }} -> same with end
+
 {{ plate|match:'regex' }}
+
 {{ plate|in:{{plates.list}} }} and {{ plate|not_in:{{plates.list}} }}
+
 {{ plate|is:{{plates.other}} }}
+
 {{ plates|for:''block.tpl'' }} or {{ plates|for:>>block<< }}
 
 Maybe add function syntax to use anywere inside tags or places -> that can also use filters?
@@ -400,7 +445,7 @@ Twig have own TwigFilter class that stores filter ref, and addFilter accepts onl
 #### Plate Objects
 
 For version 2 or 3 -> When plates are added, build a obkject tree with each plate as a object-type such as PHPlateString etc 
-- to make sure they follow rules and are easier to operate upon. This may take som toll on performance, but also have other gains
+Make sure they follow rules and are easier to operate upon. This may take som toll on performance, but also have other gains
 
 ## Documentation
 
