@@ -273,7 +273,7 @@ Tag|Description|Example
 (( and ))|Start and end tag for conditional expression|`(( {{var}} ?? true :: false ))`
 ??|Tag after condition, followed by true result|`(( {{var}} ?? true ))`
 ::|Tag after true result, followed by false result|`(( {{var}} ?? :: false ))`
-''|Strings wreapped in double singlequotes are includes|`\'\' /template.tpl|render \'\'`
+''|Uri wrapped in double singlequotes are includes|<code>\'\' /template.tpl|render \'\'</code>
 =>|Assing|`{{ var => value }}`
 << and >>|Start and end tag for block|`<title><<title => Hello>></title>`
 ~|Default preg delimiter|
