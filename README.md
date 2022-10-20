@@ -151,7 +151,7 @@ echo $phplater->render('<ul>[[<li>{{ list..value.0 }}</li>]]</ul>');
 
 ###
 
-When rendering a list, within the [[ ]] you can use the [[ Operator|Description ]] to get the key of the array. On this key, you can use a bunch of filters as [[ #|next_value ]]. The following are available:
+When rendering a list, within the [[ ]] you can use the [[ # ]] to get the key of the array. On this key, you can use a bunch of filters as [[ #|next_value ]]. The following are available:
 
 Filter|Description
 ---|---
