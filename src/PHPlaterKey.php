@@ -17,7 +17,7 @@ class PHPlaterKey extends PHPlaterBase {
      * @return string The pattern for preg_replace_callback
      */
     public static function pattern(): string {
-        return self::buildPattern(Tag::BEFORE, '\s*' . Tag::LIST_KEY->get() . '\s*', Tag::AFTER);
+        return self::buildPattern(Tag::BEFORE, '\s*' . Tag::LIST_KEY->get() . '' . Tag::FILTER->get() . '?(\w+)?\s*', Tag::AFTER);
     }
 
 }

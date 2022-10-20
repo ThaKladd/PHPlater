@@ -10,7 +10,13 @@ As a backend developer, I want to do most of the logic in PHP, and when to seper
 
 - [Installation](#installation)
 - [Simple Usage](#simple-usage)
+- [Variables](#variables)
 - [Advanced Usage](#advanced-usage)
+- [Lists](#lists)
+- [Includes](#includes)
+- [Blocks](#blocks)
+- [Filters](#filters)
+- [Conditionals](#conditionals)
 - [Tags](#tags)
 - [Test](#test)
 - [Contributing](#contributing)
@@ -45,7 +51,7 @@ echo $phplater->render('Hello {{hello}}');
 Hello world!
 ```
 
-### Variables
+## Variables
 
 You can set a plate inside the template
 
@@ -125,6 +131,53 @@ echo $phplater->render('template.tpl');
 </div>
 ```
 
+## Lists 
+
+The normal syntax for doing a foreach inside the template using tags and a placeholder without the many method
+
+### Given this
+
+```php
+$phplater = new PHPlater();
+$phplater->setPlates([
+    'list' => [
+        ['value' => ['this']],
+        ['value' => ['is']],
+        ['value' => ['ok']]
+    ]
+]);
+echo $phplater->render('<ul>[[<li>{{ list..value.0 }}</li>]]</ul>');
+```
+
+###
+
+When rendering a list, within the [[ ]] you can use the [[ # ]] to get the key of the array. On this key, you can use a bunch of filters. The following are available:
+
+---
+
+\#\|first
+\#\|last
+\#\|first_value
+\#\|last_value
+\#\|next
+\#\|prev
+\#\|next_value
+\#\|prev_value
+\#\|max
+\#\|min
+\#\|max_value
+\#\|min_value
+\#\|count
+\#\|value
+
+---
+
+### The output wil be like this
+
+```html
+<ul><li>this</li><li>is</li><li>ok</li></ul>
+```
+
 ### Many
 
 In order to ease the looping a array of similar values, it can be sent inn and iterated over on the same template
@@ -147,29 +200,7 @@ echo '<ul>'.$phplater->render('<li>{{ value.0 }}</li>').'</ul>';
 <ul><li>this</li><li>is</li><li>ok</li></ul>
 ```
 
-There is also a syntax for doing a foreach inside the template using tags and a placeholder without the many method
-
-### Given this
-
-```php
-$phplater = new PHPlater();
-$phplater->setPlates([
-    'list' => [
-        ['value' => ['this']],
-        ['value' => ['is']],
-        ['value' => ['ok']]
-    ]
-]);
-echo $phplater->render('<ul>[[<li>{{ list..value.0 }}</li>]]</ul>');
-```
-
-### The output wil be like this
-
-```html
-<ul><li>this</li><li>is</li><li>ok</li></ul>
-```
-
-### Includes
+## Includes
 
 ```php
 $phplater = new PHPlater();
@@ -177,7 +208,7 @@ echo $phplater->render("'' ./tpl/template.tpl ''");
 echo $phplater->render("'' ./tpl/template.tpl|render ''");
 ```
 
-### Blocks
+## Blocks
 
 ```php
 $phplater = new PHPlater();
@@ -192,8 +223,7 @@ echo $phplater->render('<<hello>>! << hello|render => Hello {{ hello }} >>! <<he
 Hello World! Hello World! Hello World!
 ```
 
-
-### Filters
+## Filters
 
 Filters gets inspiration from [Twig](https://github.com/twigphp/Twig) and and come after | tag with arguments to the method inspired by [Latte](https://github.com/nette/latte)
 
@@ -217,7 +247,7 @@ echo $phplater->render('<b>This {{string|add_ok:ok|uppercase}}</b>');
 <b>This TEST IS OK</b>
 ```
 
-### Conditionals
+## Conditionals
 
 The conditional evaluates one or two variables, and return either a true value or a false value. These must have a space before and after the operator and the syntax is as follows.
 
@@ -422,7 +452,13 @@ text text text {{ function(plate) }} text  => text text text {{ escape(plate) }}
 
 #### Lists first and last
 
-[[ {{ #|first }} {{ #|last }} ]]
+~~[[ {{ #|first }} {{ #|last }} ]]~~
+~~[[ {{ #|first_value }} {{ #|last_value }} ]]~~
+~~[[ {{ #|next }} {{ #|prev }} ]]~~
+~~[[ {{ #|next_value }} {{ #|prev_value }} ]]~~
+~~[[ {{ #|max }} {{ #|min }} ]]~~
+~~[[ {{ #|max_value }} {{ #|min_value }} ]]~~
+~~[[ {{ #|count }} {{ #|value }} ]]~~
 
 #### Use filters, with no value
 

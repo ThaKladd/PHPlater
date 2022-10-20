@@ -51,14 +51,20 @@ class PHPlaterList extends PHPlaterBase {
         preg_match_all($variable_pattern, $match['x'], $matches);
 
         //Because a variable can have any cahracter, the key has to be filtered out and not match the character
+        $matches_changed = false;
         if (count($matches['x']) > 1) {
             $tag_key = Tag::LIST_KEY->get(true);
-            $array_index = array_search($tag_key, $matches['x']);
-            if ($array_index !== false) {
-                unset($matches['x'][$array_index]);
+            foreach ($matches['x'] as $key => $value) {
+                if (str_contains($value, $tag_key)) {
+                    $matches_changed = true;
+                    unset($matches['x'][$key]);
+                }
+            }
+            if ($matches_changed) {
                 $matches['x'] = array_values($matches['x']); //Rebuild array indexes
             }
         }
+
         $tag_chain = Tag::CHAIN->get(true);
         $key_pattern = ClassString::KEY->pattern();
         $tag_list = $tag_chain . $tag_chain;
@@ -70,8 +76,10 @@ class PHPlaterList extends PHPlaterBase {
         $list = self::getList($core->getPlates(), $core_parts);
         foreach ($list as $key => $item) {
             $replaced_template = strtr($match['x'], [$tag_list => $tag_first . $key . $tag_last]);
-            $new_template = self::replaceKeys($replaced_template, $key, $key_pattern);
-            $elements .= $core->render($new_template);
+            if ($matches_changed) {
+                $replaced_template = self::replaceKeys($replaced_template, $key_pattern, $key, $list);
+            }
+            $elements .= $core->render($replaced_template);
         }
         return $elements;
     }
@@ -80,17 +88,68 @@ class PHPlaterList extends PHPlaterBase {
      * Replaces the key tags with the current key in list
      *
      * @param string $template The list part of the template
-     * @param string $key The key for the current iteration of the list
      * @param string $pattern the pattern of how to match the key
+     * @param string $key The key for the current iteration of the list
+     * @param string $list The key for the current iteration of the list
      * @return string
      */
-    private static function replaceKeys(string $template, string $key, string $pattern): string {
+    private static function replaceKeys(string $template, string $pattern, string $key, array $list): string {
         if (preg_match_all($pattern, $template, $key_matches) > 0) {
             foreach (array_unique($key_matches[0]) as $key_match) {
-                $template = strtr($template, [$key_match => $key]);
+                $exploded_filter = explode(Tag::FILTER->get(true), $key_match);
+                if (isset($exploded_filter[1])) {
+                    $filter = trim($exploded_filter[1], ' ' . Tag::BEFORE->get() . Tag::AFTER->get());
+                    //Todo: These will be moved to the PHPlaterFilter object
+                    $return_key = match ($filter) {
+                        'value' => $list[$key],
+                        'first' => array_key_first($list),
+                        'last' => array_key_last($list),
+                        'first_value' => $list[array_key_first($list)],
+                        'last_value' => $list[array_key_last($list)],
+                        'count' => count($list),
+                        'max' => array_search(max($list), $list),
+                        'min' => array_search(min($list), $list),
+                        'max_value' => max($list),
+                        'min_value' => min($list),
+                        'prev' => call_user_func(function ($list) use ($key) {
+                            $keys = array_keys($list);
+                            $found_index = array_search($key, $keys);
+                            if ($found_index === false || $found_index === 0) {
+                                return false;
+                            }
+                            return $keys[$found_index - 1];
+                        }, $list),
+                        'next' => call_user_func(function ($list) use ($key) {
+                            $keys = array_keys($list);
+                            $found_index = array_search($key, $keys);
+                            if ($found_index === false || $found_index === array_key_last($list)) {
+                                return false;
+                            }
+                            return $keys[$found_index + 1];
+                        }, $list),
+                        'prev_value' => call_user_func(function ($list) use ($key) {
+                            $keys = array_keys($list);
+                            $found_index = array_search($key, $keys);
+                            if ($found_index === false || $found_index === 0) {
+                                return false;
+                            }
+                            return $list[$keys[$found_index - 1]];
+                        }, $list),
+                        'next_value' => call_user_func(function ($list) use ($key) {
+                            $keys = array_keys($list);
+                            $found_index = array_search($key, $keys);
+                            if ($found_index === false || $found_index === array_key_last($list)) {
+                                return false;
+                            }
+                            return $list[$keys[$found_index + 1]];
+                        }, $list),
+                        default => throw new RuleBrokenError('Filter "' . $filter . '" to key "' . Tag::CHAIN->get() . '" does not exist.')
+                    };
+                }
+                $template = strtr($template, [$key_match => $return_key]);
             }
+            return $template;
         }
-        return $template;
     }
 
 }

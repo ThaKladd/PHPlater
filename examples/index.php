@@ -10,7 +10,7 @@ include 'classes/Test.php';
 include 'classes/Data.php';
 
 $return = [];
-$runs = 1000;
+$runs = 1;
 $last_memory = $mid_memory = $first_memory = 0;
 for ($y = 0; $y < $runs; $y++) {
     try {
@@ -296,12 +296,33 @@ for ($y = 0; $y < $runs; $y++) {
 
     $phplater = new PHPlater();
     //$phplater->setCache(true);
-    $phplater->setPlates([
+
+    $plates = [
         'list' => [
-            ['value' => ['this' => 'ok']]
+            ['value' => ['this' => 'ok', 'that' => 'ok!', 'those' => 'ok+', 'them' => 'ok-']]
         ]
-    ]);
-    $template = '<ul>[[<li>{{ # }} {{ list.0.value.. }}</li>]]</ul><br><br>';
+    ];
+    $phplater->setPlates($plates);
+    $template = print_r($plates, true) . '<ul>[[
+        <li>
+        Key: {{ # }}
+        Value: {{ list.0.value.. }} -
+        First: {{ #|first }}
+        Last: {{ #|last }}
+        Count: {{ #|count }}
+        Max: {{ #|max }}
+        Min: {{ #|min }}
+        Max Value: {{ #|max_value }}
+        Min Value: {{ #|min_value }}
+        First Value: {{ #|first_value }}
+        Last Value: {{ #|last_value }}
+        Next Key: {{ #|next }}
+        Next Value: {{ #|next_value }}
+        Previous Key: {{ #|prev }}
+        Previous Value: {{ #|prev_value }}
+        Value: {{ #|value }}
+        </li>
+        ]]</ul><br><br>';
     $return['twelvth'] = $phplater->render($template);
 
     $phplater = new PHPlater();
