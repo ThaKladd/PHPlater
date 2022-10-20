@@ -151,27 +151,24 @@ echo $phplater->render('<ul>[[<li>{{ list..value.0 }}</li>]]</ul>');
 
 ###
 
-When rendering a list, within the [[ ]] you can use the [[ # ]] to get the key of the array. On this key, you can use a bunch of filters as [[ #|next_value ]]. The following are available:
+When rendering a list, within the [[ ]] you can use the [[ Operator|Description ]] to get the key of the array. On this key, you can use a bunch of filters as [[ #|next_value ]]. The following are available:
 
 Filter|Description
 ---|---
-
-first|First key in list
-last|Last key in list
-first_value|Value of the first key in list
-last_value|Value of the last key in list
-next|Next key (empty if on last)
-prev|Previous key (empty if on first)
-next_value|Next value (empty if on last)
-prev_value|Pervious value (empty if on first)
-max|Key of max value in list
-min|Key of min value in list
-max_value|Max value in list
-min_value|Min value in list
-count|Total elements in list
-value|Current value
-
----|---
+\#\|first|First key in list
+\#\|last|Last key in list
+\#\|first_value|Value of the first key in list
+\#\|last_value|Value of the last key in list
+\#\|next|Next key (empty if on last)
+\#\|prev|Previous key (empty if on first)
+\#\|next_value|Next value (empty if on last)
+\#\|prev_value|Pervious value (empty if on first)
+\#\|max|Key of max value in list
+\#\|min|Key of min value in list
+\#\|max_value|Max value in list
+\#\|min_value|Min value in list
+\#\|count|Total elements in list
+\#\|value|Current value
 
 ### The output wil be like this
 
