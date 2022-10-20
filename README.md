@@ -151,7 +151,7 @@ echo $phplater->render('<ul>[[<li>{{ list..value.0 }}</li>]]</ul>');
 
 ###
 
-When rendering a list, within the [[ ]] you can use the [[ # ]] to get the key of the array. On this key, you can use a bunch of filters as [[ #|next_value ]]. The following are available:
+When rendering a list, within the [[ ]] you can use the [[ {{ # }} ]] to get the key of the array. On this key, you can use a bunch of filters as [[ {{ #|next_value }} ]]. The following are available:
 
 Filter|Description
 ---|---
@@ -348,7 +348,7 @@ At the moment, very little of known bugs. Improvements and features are multiple
 
 Create Unit Tests for blocks, includes and assigns
 Fix up Unit Test @covers
-Includes to work with urls
+Make sure Includes work with urls
 
 #### Filters that comes with engine
 
@@ -447,16 +447,6 @@ Includes to work with urls
 Maybe add function syntax to use anywere inside tags or places -> that can also use filters?
 Filters are for transforming values, and functions should be for generating content -> but can they be combined?
 text text text {{ function(plate) }} text  => text text text {{ escape(plate) }} text 
-
-#### Lists first and last
-
-~~[[ {{ #|first }} {{ #|last }} ]]~~
-~~[[ {{ #|first_value }} {{ #|last_value }} ]]~~
-~~[[ {{ #|next }} {{ #|prev }} ]]~~
-~~[[ {{ #|next_value }} {{ #|prev_value }} ]]~~
-~~[[ {{ #|max }} {{ #|min }} ]]~~
-~~[[ {{ #|max_value }} {{ #|min_value }} ]]~~
-~~[[ {{ #|count }} {{ #|value }} ]]~~
 
 #### Use filters, with no value
 

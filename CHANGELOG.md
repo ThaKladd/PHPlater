@@ -13,6 +13,7 @@
  - Changed the way how to change tags through enums
  - Adding simple block tags functionality
  - PHP 8.1 required
+ - Filter added to the list key tag
 
 ## v1.1.1
 
