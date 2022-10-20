@@ -153,6 +153,7 @@ echo $phplater->render('<ul>[[<li>{{ list..value.0 }}</li>]]</ul>');
 
 When rendering a list, within the [[ ]] you can use the [[ # ]] to get the key of the array. On this key, you can use a bunch of filters. The following are available:
 
+Filter|Description
 ---|---
 
 \#\|first|First key in list
