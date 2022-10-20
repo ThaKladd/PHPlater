@@ -153,24 +153,24 @@ echo $phplater->render('<ul>[[<li>{{ list..value.0 }}</li>]]</ul>');
 
 When rendering a list, within the [[ ]] you can use the [[ # ]] to get the key of the array. On this key, you can use a bunch of filters. The following are available:
 
----
+---|
 
-\#\|first
-\#\|last
-\#\|first_value
-\#\|last_value
-\#\|next
-\#\|prev
-\#\|next_value
-\#\|prev_value
-\#\|max
-\#\|min
-\#\|max_value
-\#\|min_value
-\#\|count
-\#\|value
+\#\|first|
+\#\|last|
+\#\|first_value|
+\#\|last_value|
+\#\|next|
+\#\|prev|
+\#\|next_value|
+\#\|prev_value|
+\#\|max|
+\#\|min|
+\#\|max_value|
+\#\|min_value|
+\#\|count|
+\#\|value|
 
----
+---|
 
 ### The output wil be like this
 
