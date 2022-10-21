@@ -344,6 +344,10 @@ for ($y = 0; $y < $runs; $y++) {
 
     $return['fourteenth'] = $phplater->render('<<hello>>! << hello|render => Hello {{ hello }} >>! <<hello>>!<br><br><br>');
 
+    $phplater = new PHPlater();
+    $template = 'This is Lipsum: {{ |lipsum:130 }}<br><br>';
+    $return['fifthteenth'] = $phplater->render($template);
+
     if ($y == ceil($runs / 2) - 1) {
         $mid_memory = memory_get_usage() / 1024;
     }

@@ -59,7 +59,14 @@ class PHPlaterFilter extends PHPlaterBase {
      */
     private function getFunctionAndArguments(string $filter): array {
         $parts = explode(Tag::ARGUMENT->get(true), $filter);
-        return [$this->getFilter($parts[0]), isset($parts[1]) ? explode(Tag::ARGUMENT_LIST->get(true), $parts[1]) : []];
+        $callable = null;
+        if (method_exists($this, $parts[0])) {
+            $callable = [$this, $parts[0]];
+        } else {
+            $callable = $this->getFilter($parts[0]);
+        }
+        $arguments = isset($parts[1]) ? explode(Tag::ARGUMENT_LIST->get(true), $parts[1]) : [];
+        return [$callable, $arguments];
     }
 
     /**
@@ -75,6 +82,48 @@ class PHPlaterFilter extends PHPlaterBase {
             $plate = $this->doFilter($filter, $plate);
         }
         return $plate;
+    }
+
+    //End of the object -> all the predefined filters. Maybe group them better later.
+
+    /**
+     * Here for the testing, not sure it will be shipped
+     *
+     * @param string $plate
+     * @param string|int $length
+     * @return string
+     */
+    public static function lipsum(string $plate, string|int $length = 100): string {
+        $length = (int) $length;
+        $lipsum = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+        if ($length && strlen($lipsum) >= $length) {
+            return substr($lipsum, 0, $length);
+        }
+        return $lipsum;
+    }
+
+    /**
+     * Here for the testing, not sure it will be shipped
+     *
+     * @param string $plate
+     * @param string $min
+     * @param string $max
+     * @return int
+     */
+    public static function rand(string $plate, string $min, string $max): int {
+        return rand((int) $min, (int) $max);
+    }
+
+    /**
+     * Here for the testing, not sure it will be shipped
+     *
+     * @param string $plate
+     * @param string $min
+     * @param string $max
+     * @return array
+     */
+    public static function range(string $plate, string $min, string $max): array {
+        return range((int) $min, (int) $max);
     }
 
 }

@@ -456,7 +456,7 @@ Ture and falsy filters can be used in iffs
 
 #### If text in " then can use filter on without tags
 
-"Hello"|tolowercase or ""Hello""|tolowercase - seems unneccessary, unless from other source or result of if
+"Hello World"|tolowercase or {{ "Hello World"|tolowercase }} or {{ ""Hello World""|tolowercase }} or {{  Hello World|tolowercase }} - seems unneccessary, unless from other source or result of if
 -> removes surrounding "" after
 
 #### Better extendable
