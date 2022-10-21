@@ -97,6 +97,7 @@ class PHPlaterList extends PHPlaterBase {
         if (preg_match_all($pattern, $template, $key_matches) > 0) {
             foreach (array_unique($key_matches[0]) as $key_match) {
                 $exploded_filter = explode(Tag::FILTER->get(true), $key_match);
+                $return_key = $key;
                 if (isset($exploded_filter[1])) {
                     $filter = trim($exploded_filter[1], ' ' . Tag::BEFORE->get() . Tag::AFTER->get());
                     //Todo: These will be moved to the PHPlaterFilter object
@@ -125,7 +126,7 @@ class PHPlaterList extends PHPlaterBase {
                             if ($found_index === false || $found_index === array_key_last($list)) {
                                 return false;
                             }
-                            return $keys[$found_index + 1];
+                            return $keys[$found_index];
                         }, $list),
                         'prev_value' => call_user_func(function ($list) use ($key) {
                             $keys = array_keys($list);
@@ -141,7 +142,7 @@ class PHPlaterList extends PHPlaterBase {
                             if ($found_index === false || $found_index === array_key_last($list)) {
                                 return false;
                             }
-                            return $list[$keys[$found_index + 1]];
+                            return $list[$keys[$found_index]];
                         }, $list),
                         default => throw new RuleBrokenError('Filter "' . $filter . '" to key "' . Tag::CHAIN->get() . '" does not exist.')
                     };

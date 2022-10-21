@@ -12,6 +12,7 @@ use Error\RuleBrokenError;
 
 include_once 'Enum\Tag.php';
 include_once 'Enum\ClassString.php';
+include_once 'Enum\Operator.php';
 
 class PHPlaterBase {
 
