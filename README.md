@@ -67,10 +67,6 @@ echo $phplater->render('{{world => [1,2,3,"Hello"]}} {{world.3}} {{hello}}');
 Hello world!
 ```
 
-### This will be the output
-
-
-
 ## Advanced Usage
 
 Some more examples are available under [/examples](https://github.com/ThaKladd/PHPlater/tree/master/examples) and [/tests](https://github.com/ThaKladd/PHPlater/tree/master/tests)
@@ -349,18 +345,64 @@ At the moment, very little of known bugs. Improvements and features are multiple
 Create Unit Tests for blocks, includes and assigns
 Fix up Unit Test @covers
 Make sure Includes work with urls
+Test the new operator "in" and "key in" like (( 3 in [1,2,3] ?? yes :: no )) and (( 3 in {{ plate.array }} ?? yes :: no )) 
+Test true and falsy filters in if
 
 #### Filters that comes with engine
 
-{{ plate|escape }} -> short {{ plate|e }} -> {{ plate|escape:html }}, {{ plate|escape:js }}, {{ plate|escape:css }}, {{ plate|escape:url }} (url_encode), {{ plate|escape:attr }}
+~~{{ plate|escape }}~~
 
-{{ plate|raw }} -> unescape? ignore escape?, {{ plate|raw:url }} -> urldecode
+~~{{ plate|e }}~~
 
-{{ plate|raw:striptags }} or {{ plate|escape:striptags }} or {{ plate|striptags }}??
+~~{{ plate|escape:html }}~~
 
-{{ plate|abs }}, {{ plate|floor }}, {{ plate|ceil }}, {{ plate|round }}, {{ plate|decimals:3 }}, {{ plate|thousand:. }}, {{ plate|multiply:4 }}, {{ plate|add:4 }}, {{ plate|divide:4 }}, {{ plate|pow:4 }}, {{ plate|to_comma }}, {{ plate|to_dot }}
+~~{{ plate|escape:url }}~~
 
-{{ plate|number_format:2, '.', ','}}
+~~{{ plate|escape:entities }}~~
+
+~~{{ plate|escape:js }}~~, 
+
+{{ plate|escape:css }}, 
+
+{{ plate|escape:attr }}
+
+~~{{ plate|raw }}~~
+
+~~{{ plate|raw:url }}~~
+
+~~{{ plate|raw:html }}~~
+
+~~{{ plate|raw:entities }}~~
+
+{{ plate|striptags }}
+
+~~{{ plate|abs }}~~
+
+~~{{ plate|floor }}~~
+
+~~{{ plate|ceil }}~~
+
+~~{{ plate|round }}~~
+
+~~{{ plate|decimals:3 }}~~
+
+{{ plate|thousand:. }}
+
+~~{{ plate|multiply:4 }}~~
+
+~~{{ plate|add:4 }}~~
+
+~~{{ plate|divide:4 }}~~
+
+~~{{ plate|pow:4 }}~~
+
+~~{{ plate|root }}~~
+
+{{ plate|to_comma }}
+
+{{ plate|to_dot }}
+
+~~{{ plate|number_format:2, '.', ','}}~~
 
 {{ plate|first }} -> if plate is array or json, or first char if string
 
@@ -430,7 +472,9 @@ Make sure Includes work with urls
 
 {{ plate|object }} 
 
-{{ plate|iterable }} -> {{ plate|array }}
+{{ plate|iterable }} 
+
+{{ plate|array }}
 
 {{ plate|absolute }} -> if url -> to make it absolute or maybe {{ plate|realtive }} too? 
 
@@ -450,9 +494,9 @@ text text text {{ function(plate) }} text  => text text text {{ escape(plate) }}
 
 #### Use filters, with no value
 
-{{ []|range:100,1000 }} or {{ |range:100,1000 }} 
-{{ ""|lipsum:100 }} or {{ |lipsum:100 }}
-Ture and falsy filters can be used in iffs
+~~{{ []|range:100,1000 }} or {{ |range:100,1000 }}~~
+~~{{ ""|lipsum:100 }} or {{ |lipsum:100 }}~~
+~~Ture and falsy filters can be used in iffs~~
 
 #### If text in " then can use filter on without tags
 

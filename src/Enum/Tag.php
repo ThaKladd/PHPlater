@@ -59,7 +59,7 @@ enum Tag: int {
                 throw new RuleBrokenError('Preg Delimiter can not be alphanumeric or backslash.');
             }
         }
-        PHPlaterBase::$tags[false][$this->value] = preg_quote($tag);
+        PHPlaterBase::$tags[false][$this->value] = preg_quote($tag, self::DELIMITER->get(true));
         PHPlaterBase::$tags[true][$this->value] = $tag;
         $affected_classes = $this->affectedClasses();
         if ($affected_classes) {

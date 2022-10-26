@@ -29,6 +29,8 @@ enum Operator: string {
     case LOGICAL_XOR = 'xor';
     case LOGICAL_AND_ALTERNATIVE = 'and';
     case LOGICAL_OR_ALTERNATIVE = 'or';
+    case ARRAY_KEY_EXIST = 'key in';
+    case ARRAY_IN = 'in';
 
     /**
      * Method to return value of operation when done with a matched string operand
@@ -56,6 +58,8 @@ enum Operator: string {
             self::LOGICAL_AND, self::LOGICAL_AND_ALTERNATIVE => $a && $b,
             self::LOGICAL_OR, self::LOGICAL_OR_ALTERNATIVE => $a || $b,
             self::LOGICAL_XOR => $a xor $b,
+            self::ARRAY_IN => in_array($a, PHPlaterBase::ifJsonToArray($b)),
+            self::ARRAY_KEY_EXIST => key_exists($a, PHPlaterBase::ifJsonToArray($b)),
             self::MODULO => ($either_is_string ? throw new RuleBrokenError('Modulo can only be used with numbers. Values are "' . $a . '" and "' . $b . '".') : (int) $a % (int) $b),
             default => throw new RuleBrokenError('Found no matching operator for "' . $this->value . '".')
         };

@@ -100,50 +100,22 @@ class PHPlaterList extends PHPlaterBase {
                 $return_key = $key;
                 if (isset($exploded_filter[1])) {
                     $filter = trim($exploded_filter[1], ' ' . Tag::BEFORE->get() . Tag::AFTER->get());
-                    //Todo: These will be moved to the PHPlaterFilter object
+                    $phplater_filter = ClassString::FILTER->object();
                     $return_key = match ($filter) {
-                        'value' => $list[$key],
-                        'first' => array_key_first($list),
-                        'last' => array_key_last($list),
-                        'first_value' => $list[array_key_first($list)],
-                        'last_value' => $list[array_key_last($list)],
-                        'count' => count($list),
-                        'max' => array_search(max($list), $list),
-                        'min' => array_search(min($list), $list),
-                        'max_value' => max($list),
-                        'min_value' => min($list),
-                        'prev' => call_user_func(function ($list) use ($key) {
-                            $keys = array_keys($list);
-                            $found_index = array_search($key, $keys);
-                            if ($found_index === false || $found_index === 0) {
-                                return false;
-                            }
-                            return $keys[$found_index - 1];
-                        }, $list),
-                        'next' => call_user_func(function ($list) use ($key) {
-                            $keys = array_keys($list);
-                            $found_index = array_search($key, $keys);
-                            if ($found_index === false || $found_index === array_key_last($list)) {
-                                return false;
-                            }
-                            return $keys[$found_index];
-                        }, $list),
-                        'prev_value' => call_user_func(function ($list) use ($key) {
-                            $keys = array_keys($list);
-                            $found_index = array_search($key, $keys);
-                            if ($found_index === false || $found_index === 0) {
-                                return false;
-                            }
-                            return $list[$keys[$found_index - 1]];
-                        }, $list),
-                        'next_value' => call_user_func(function ($list) use ($key) {
-                            $keys = array_keys($list);
-                            $found_index = array_search($key, $keys);
-                            if ($found_index === false || $found_index === array_key_last($list)) {
-                                return false;
-                            }
-                            return $list[$keys[$found_index]];
-                        }, $list),
+                        'value' => $phplater_filter->value($list, $key),
+                        'first' => $phplater_filter->first_key($list),
+                        'last' => $phplater_filter->last_key($list),
+                        'first_value' => $phplater_filter->first_value($list),
+                        'last_value' => $phplater_filter->last_value($list),
+                        'count' => $phplater_filter->count($list),
+                        'max' => $phplater_filter->max_key($list),
+                        'min' => $phplater_filter->min_key($list),
+                        'max_value' => $phplater_filter->max_value($list),
+                        'min_value' => $phplater_filter->min_value($list),
+                        'prev' => $phplater_filter->prev_key($list, $key),
+                        'next' => $phplater_filter->next_key($list, $key),
+                        'prev_value' => $phplater_filter->prev_value($list, $key),
+                        'next_value' => $phplater_filter->next_value($list, $key),
                         default => throw new RuleBrokenError('Filter "' . $filter . '" to key "' . Tag::CHAIN->get() . '" does not exist.')
                     };
                 }
