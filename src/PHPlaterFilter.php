@@ -104,6 +104,29 @@ class PHPlaterFilter extends PHPlaterBase {
     }
 
     /**
+     * Helper method to check if true
+     *
+     * @param string $plate
+     * @return boolean
+     */
+    private static function is_true(string $plate): bool {
+        return self::is_false($plate);
+    }
+
+    /**
+     * Helper method to check if false
+     *
+     * @param string $plate
+     * @return boolean
+     */
+    private static function is_false(string $plate): bool {
+        if (self::is_empty($plate) || $plate == 'false' || $plate == 'null' || $plate == '0') {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Returns a Lorem Ipsum for a spesific lenght to fill inn
      *
      * @param string $plate
@@ -172,7 +195,7 @@ class PHPlaterFilter extends PHPlaterBase {
      */
     public static function escape(string $plate, string $mode = ''): string {
         $result = match ($mode) {
-            '', 'html' => htmlspecialchars($plate, ENT_QUOTES, 'UTF-8'),
+            '', 'html', 'attr' => htmlspecialchars($plate, ENT_QUOTES, 'UTF-8'),
             'entities', htmlentities($plate),
             'url' => rawurlencode($plate),
             'js' => function (string $plate): string {
@@ -182,7 +205,10 @@ class PHPlaterFilter extends PHPlaterBase {
                     $escaped[] = '\\x' . dechex(ord($plate[$i])); //substr($plate, $i, 1)
                 }
                 return implode('', $escaped);
-            }
+            },
+            'css' => preg_replace_callback('/[^a-z0-9]/iSu', function ($char) {
+                return sprintf('\\%X ', hexdec(bin2hex($char)));
+            }, $plate)
         };
         return $result;
     }
@@ -270,6 +296,14 @@ class PHPlaterFilter extends PHPlaterBase {
         return json_encode($plate);
     }
 
+    public static function json_decode(string $plate): string {
+        return json_decode($plate, true);
+    }
+
+    public static function json(string $plate): string {
+        return self::json_encode($plate);
+    }
+
     public static function serialize(string|object|array|int $plate): string {
         return serialize($plate);
     }
@@ -288,6 +322,14 @@ class PHPlaterFilter extends PHPlaterBase {
 
     public static function explode(string $plate, string $separator): array {
         return explode($separator, $plate);
+    }
+
+    public static function join(array $plate, string $separator): string {
+        return self::implode($plate, $separator);
+    }
+
+    public static function split(string $plate, string $separator): array {
+        return self::explode($plate, $separator);
     }
 
     public static function in(string $plate, PHPlater $core, array $array): bool {
@@ -327,6 +369,12 @@ class PHPlaterFilter extends PHPlaterBase {
         return false;
     }
 
+    /**
+     * TODO: Somehow get the latest Core object here -> Maybe in a filter method with DI
+     * @param string $plate
+     * @param PHPlater $core
+     * @return int
+     */
     public static function render(string $plate, PHPlater $core): int {
         return (clone $core)->render($plate);
     }
@@ -360,20 +408,40 @@ class PHPlaterFilter extends PHPlaterBase {
         return false;
     }
 
-    public static function cap(string $plate, string $length, $more_char = '&mldr;'): string {
+    public static function truncate(string $plate, string $length, $more_char = '&mldr;'): string {
         if ($length && strlen($plate) > (int) $length) {
             return mb_substr($plate, 0, (int) $length) . $more_char;
         }
         return $plate;
     }
 
-    public static function snake(string $plate): int {
+    public static function cap(string $plate, string $length, $more_char = '&mldr;'): string {
+        return self::truncate($plate, $length, $more_char);
+    }
+
+    public static function camel(string $plate, string $delimiter = '-', string $capitalize_first = '0'): int {
+        return self::camelcase($plate, $delimiter, $capitalize_first);
+    }
+
+    public static function camelcase(string $plate, string $delimiter = '-', string $capitalize_first = '0'): int {
+        $str = str_replace($delimiter, '', ucwords($plate, $delimiter));
+        if (!(bool) $capitalize_first) {
+            $str = lcfirst($str);
+        }
+        return $str;
+    }
+
+    public static function snake(string $plate, string $separator = '-'): int {
+        return self::snakecase($plate, $separator);
+    }
+
+    public static function snakecase(string $plate, string $separator = '-'): int {
         if (str_contains($plate, ' ')) {
-            return mb_strtolower(str_replace(' ', '_', $plate));
+            return mb_strtolower(str_replace(' ', $separator, $plate));
         }
         $delimiter = Tag::DELIMITER->get(true);
-        $return = preg_replace($delimiter . '[A-Z]([A-Z](?![a-z]))*' . $delimiter, '_$0', $plate);
-        return ltrim(mb_strtolower($return), '_');
+        $return = preg_replace($delimiter . '[A-Z]([A-Z](?![a-z]))*' . $delimiter, $separator . '$0', $plate);
+        return ltrim(mb_strtolower($return), $separator);
     }
 
     public static function date(string $plate, $format): int {
@@ -390,7 +458,17 @@ class PHPlaterFilter extends PHPlaterBase {
         return parse_url($plate, PHP_URL_PATH);
     }
 
-    public static function lowecase(string $plate): string {
+    /**
+     * Todo: Tricky one, needs to do more than simple removal of working path an work with url
+     * Ideas here: https://stackoverflow.com/questions/2637945/getting-relative-path-from-absolute-path-in-php
+     * @param string $plate
+     * @return int
+     */
+    public static function relative_url(string $plate): int {
+        return str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $plate);
+    }
+
+    public static function lowercase(string $plate): string {
         return mb_strtolower($plate);
     }
 
@@ -398,8 +476,24 @@ class PHPlaterFilter extends PHPlaterBase {
         return mb_strtoupper($plate);
     }
 
+    public static function lower(string $plate): string {
+        return self::lowercase($plate);
+    }
+
+    public static function debug(string $plate): string {
+        return self::debug($plate);
+    }
+
+    public static function upper(string $plate): string {
+        return self::uppercase($plate);
+    }
+
     public static function capitalize(string $plate): string {
         return ucwords($plate);
+    }
+
+    public static function title(string $plate): string {
+        return self::capitalize($plate);
     }
 
     public static function slug(string $plate, string $separator = '-'): int {
@@ -445,15 +539,26 @@ class PHPlaterFilter extends PHPlaterBase {
     }
 
     public static function replace(string $plate, string $replace, string $with): int {
-        return str_replace($replace, $with, $plate);
+        return str_replace(PHPlaterBase::ifJsonToArray($replace), PHPlaterBase::ifJsonToArray($with), $plate);
     }
 
     public static function format(string $plate): int {
-        return $plate;
+        $args = array_shift(func_get_args());
+        return sprintf($plate, ...$args);
     }
 
-    public static function sort(string $plate): int {
-        return asort($plate);
+    public static function sort(string|array $plate, string $direction = 'abc'): int {
+        $array = PHPlaterBase::ifJsonToArray($plate);
+        if (is_array($array)) {
+            if (in_array($direction, ['abc', '123'])) {
+                asort($array);
+            } else if (in_array($direction, ['cba', '321'])) {
+                arsort($array);
+            }
+            return $array;
+        }
+
+        return $plate;
     }
 
     public static function start_with(string $plate, string $first_chars = ''): int {
@@ -491,7 +596,11 @@ class PHPlaterFilter extends PHPlaterBase {
 
     public static function count(string|array $plate): int {
         $list = PHPlaterBase::ifJsonToArray($plate);
-        return count($list);
+        return is_array($list) ? count($list) : strlen($plate);
+    }
+
+    public static function length(string|array $plate): int {
+        return self::count($plate);
     }
 
     public static function max_key(string|array $plate): int|string {

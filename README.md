@@ -93,7 +93,7 @@ class Test {
         return 'Kaksi';
     }
     public function returnArray() {
-        return ['seven' => 'Seitsemän'];
+        return ['seven' => 'SeitsemÃ¤n'];
     }
 }
 
@@ -103,7 +103,7 @@ $phplater->setPlates([
     'two' => new Test(),
     'assoc' => [
         'three' => 'Kolme',
-        4 => 'Neljä',
+        4 => 'NeljÃ¤',
         5 => ['Viisi'],
         'six' => ['Kuusi']
     ],
@@ -120,10 +120,10 @@ echo $phplater->render('template.tpl');
     One: Yksi<br />
     Two: Kaksi<br />
     Three: Kolme<br />
-    Four: Neljä<br />
+    Four: NeljÃ¤<br />
     Five: Viisi<br />
     Six: Kuusi<br />
-    Seven: Seitsemän 
+    Seven: SeitsemÃ¤n 
 </div>
 ```
 
@@ -362,9 +362,9 @@ Test true and falsy filters in if
 
 ~~{{ plate|escape:js }}~~, 
 
-{{ plate|escape:css }}, 
+~~{{ plate|escape:css }}~~, 
 
-{{ plate|escape:attr }}
+~~{{ plate|escape:attr }}~~
 
 ~~{{ plate|raw }}~~
 
@@ -374,7 +374,7 @@ Test true and falsy filters in if
 
 ~~{{ plate|raw:entities }}~~
 
-{{ plate|striptags }}
+~~{{ plate|striptags }}~~
 
 ~~{{ plate|abs }}~~
 
@@ -386,8 +386,6 @@ Test true and falsy filters in if
 
 ~~{{ plate|decimals:3 }}~~
 
-{{ plate|thousand:. }}
-
 ~~{{ plate|multiply:4 }}~~
 
 ~~{{ plate|add:4 }}~~
@@ -398,99 +396,87 @@ Test true and falsy filters in if
 
 ~~{{ plate|root }}~~
 
-{{ plate|to_comma }}
-
-{{ plate|to_dot }}
-
 ~~{{ plate|number_format:2, '.', ','}}~~
 
-{{ plate|first }} -> if plate is array or json, or first char if string
+~~{{ plate|first }} -> if plate is array or json, or first char if string
 
-{{ plate|last }} -> if plate is array or json, or last char if string
+~~{{ plate|last }} -> if plate is array or json, or last char if string
 
-{{ plate|min }} -> array
+~~{{ plate|min }} -> array
 
-{{ plate|max }} -> array
+~~{{ plate|max }} -> array
 
-{{ plate|random }} -> array or string too? see twig
+~~{{ plate|dump }} or {{ plate|debug }} -> run debug function in Base~~
 
-{{ plate|dump }} or {{ plate|debug }} -> run debug function in Base
+~~{{ plate|capitalize }} or also {{ plate|title }} -> or {{ plate|capitalize:words }} and maybe also syphony {{ plate|humanize }}~~
 
-{{ plate|log:file,content }} -> maybe as function too?
+~~{{ plate|lowecase }} = {{ plate|lower }}~~ 
 
-{{ plate|capitalize }} or also {{ plate|title }} -> or {{ plate|capitalize:words }} and maybe also syphony {{ plate|humanize }}
+~~{{ plate|uppercase }} = {{ plate|upper }}~~ 
 
-{{ plate|lowecase }} = {{ plate|lower }} 
+~~ {{ plate|lenght }} -> both array, and string ~~ 
 
-{{ plate|uppercase }} = {{ plate|upper }} 
+~~ {{ plate|json_encode }} -> short {{ plate|json }} -> encodes json~~ 
 
-{{ plate|lenght }} -> both array, and string 
+~~ {{ plate|serialize }} -> if object~~ 
 
-{{ plate|json_encode }} -> short {{ plate|json }} -> encodes json
+~~{{ plate|format }} ->  test %s |format:this }} -> test this~~ 
 
-{{ plate|serialize }} -> if object
+~~ {{ plate|cap }} or {{ plate|truncate }} -> abcdefgh|cap:3,... -> abc...~~ 
 
-{{ plate|format }} ->  test %s |format:this }} -> test this 
+~~ {{ plate|snake }} -> snakecase,~~  
 
-{{ plate|replace }}  ->  test %s or %y |replace:%s,this,%y,that }} -> test this or that 
+~~ {{ plate|camel }} - camelcase -> to unicode too, or use unicode as standard, and then other encodeing as non standard somehow ~~ 
 
-{{ plate|cap }} or {{ plate|truncate }} -> abcdefgh|cap:3,... -> abc...
+~~ {{ plate|implode:', ', ' and '}} -> [1,2,3] to 1, 2 and 3 ~~
 
-{{ plate|snake }} -> snakecase, {{ plate|camel }} - camelcase -> to unicode too, or use unicode as standard, and then other encodeing as non standard somehow
+~~ {{ plate|explode:', '}} or {{ plate|split:', '}} -> maybe as twig does split with limit argument? ~~
 
-{{ plate|implode:', ', ' and '}} -> [1,2,3] to 1, 2 and 3 
+~~ {{ plate|date:d.m Y }} ~~
 
-{{ plate|explode:', '}} or {{ plate|split:', '}} -> maybe as twig does split with limit argument?
+~~ {{ plate|reverse }} -> number, string, array~~
 
-{{ plate|date:d.m Y }} 
+~~{{ plate|nl2br }} and {{ plate|br2nl }}~~
 
-{{ plate|reverse }} -> number, string, array
+~~{{ plate|default:undefined }}~~
 
-{{ plate|nl2br }} and {{ plate|br2nl }}
+~~{{ plate|slug:- }} ~~
 
-{{ plate|default:undefined }}
+~~ {{ plate|spaceless }} or  {{ plate|trim:' ' }} or {{ plate|remove:' ' }} -> only html between tags? See trim in twig ~~
 
-{{ plate|slug:- }} 
+~~{{ plate|sort:abc }} -> sort array abc, cba~~
 
-{{ plate|unicode:truncate, 5, '...' }} -> short {{ plate|u:truncate }} //unicode
+~~{{ plate|divby:3 }} ~~
 
-{{ plate|spaceless }} or  {{ plate|trim:' ' }} or {{ plate|remove:' ' }} -> only html between tags? See trim in twig
+~~{{ plate|empty }} ~~
 
-{{ plate|sort:abc }} -> sort array abc, cba
+~~{{ plate|even }} ~~
 
-{{ plate|divby:3 }} 
+~~{{ plate|render }} -> Renders on core~~
 
-{{ plate|empty }} 
+~~{{ plate|odd }} ~~
 
-{{ plate|even }} 
+~~{{ plate|null }} ~~
 
-{{ plate|render }} -> Renders on core
+~~{{ plate|object }} ~~
 
-{{ plate|odd }} 
+~~{{ plate|iterable }} ~~
 
-{{ plate|null }} 
+~~{{ plate|array }}~~
 
-{{ plate|object }} 
+~~{{ plate|absolute }} -> if url ~~
 
-{{ plate|iterable }} 
+~~ -> to make it absolute or maybe {{ plate|realtive }} too? ~~
 
-{{ plate|array }}
+~~{{ plate|start_with:'a' }}~~
 
-{{ plate|absolute }} -> if url -> to make it absolute or maybe {{ plate|realtive }} too? 
+~~{{ plate|end_with:'a' }}~~
 
-{{ plate|start:'a' }} or {{ plate|start_with:'a' }} -> same with end
+~~{{ plate|match:'regex' }}~~
 
-{{ plate|match:'regex' }}
+~~{{ plate|in:{{plates.list}} }} and {{ plate|not_in:{{plates.list}} }}~~
 
-{{ plate|in:{{plates.list}} }} and {{ plate|not_in:{{plates.list}} }}
-
-{{ plate|is:{{plates.other}} }}
-
-{{ plates|for:''block.tpl'' }} or {{ plates|for:>>block<< }}
-
-Maybe add function syntax to use anywere inside tags or places -> that can also use filters?
-Filters are for transforming values, and functions should be for generating content -> but can they be combined?
-text text text {{ function(plate) }} text  => text text text {{ escape(plate) }} text 
+~~{{ plate|is:{{plates.other}} }}~~
 
 #### Use filters, with no value
 
